@@ -300,8 +300,10 @@ img { max-width: 100%; display: block; }
 .slide-1 { background-image: url('../images/slide-ph-1_2.jpg'); }
 .slide-2 { background-image: url('../images/slide-ph-2_2.jpg'); }
 .slide-3 { background-image: url('../images/slide-ph-3_2.jpeg'); }
-.slide-4 { background-image: url('../images/slide-ph-6_2.png'); }
-.slide-5 { background-image: url('../images/slide-ph-7_2.jpeg'); }
+.slide-4 { background-image: url('../images/slide-ph-4_2.jpg'); }
+.slide-5 { background-image: url('../images/slide-ph-5_2.png'); }
+.slide-6 { background-image: url('../images/slide-ph-6_2.png'); }
+.slide-7 { background-image: url('../images/slide-ph-7_2.jpeg'); }
 
 .hero-overlay {
   position: absolute; inset: 0;
