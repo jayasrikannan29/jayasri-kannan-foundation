@@ -41,6 +41,7 @@
       <a href="mailto:jskfoundation29@gmail.com"><i class="fa-solid fa-envelope"></i> jskfoundation29@gmail.com</a>
     </div>
     <div class="topbar-right">
+      <a href="../admin-side/login.html" id="adminPortalLink" title="Admin Login" style="display:inline-flex;align-items:center;gap:4px;color:rgba(255,255,255,0.75);font-size:12px;font-weight:500;text-decoration:none;white-space:nowrap;margin-right:12px;transition:color 0.2s;" onmouseover="this.style.color='#f0c84a';" onmouseout="this.style.color='rgba(255,255,255,0.75)';"><i class="fa-solid fa-lock" style="font-size:10px;"></i> Admin</a>
       <a href="#" aria-label="Facebook">f</a><a href="#" aria-label="Instagram">in</a><a href="#" aria-label="YouTube">▶</a>
     </div>
   </div>
@@ -95,70 +96,73 @@
       <button onclick="filterEvents('health',this)" class="btn btn-outline-blue btn-sm" style="border-radius:50px;">Healthcare</button>
     </div>
 
-    <!-- Event 1 -->
-    <div class="event-full-card" data-cat="eye">
-      <div class="event-full-header">
-        <img src="images/eye/eye1.jpeg" alt="Free Eye Check-Up Camp" class="event-full-img" />
-        <div class="event-full-body">
-          <span class="event-badge" style="position:static;display:inline-block;margin-bottom:12px;">Eye Care</span>
-          <h2 style="font-family:'Montserrat',sans-serif;font-size:1.4rem;font-weight:800;color:var(--deep-blue);margin-bottom:10px;">Free Eye Check-Up Camp</h2>
-          <p style="font-size:0.9rem;color:var(--text-gray);margin-bottom:6px;">Free eye screening and eye-health awareness programme for students and community members.</p>
-          <div class="event-detail-grid">
-            <div class="event-detail-item"><span>Date</span><p>As Announced</p></div>
-            <div class="event-detail-item"><span>Time</span><p>As Announced</p></div>
-            <div class="event-detail-item"><span>Venue</span><p>To Be Announced</p></div>
-            <div class="event-detail-item"><span>Organised By</span><p>Jayasri Kannan Foundation</p></div>
-          </div>
-          <p style="font-size:0.88rem;color:var(--text-gray);margin-bottom:20px;">In association with participating educational institutions, healthcare professionals and hospital partners.</p>
-          <div style="display:flex;gap:12px;flex-wrap:wrap;">
-            <a href="eye-care.html" class="btn btn-blue btn-sm">View Programme</a>
-            <a href="contact.html" class="btn btn-outline-blue btn-sm">Register Interest</a>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Event 2 -->
-    <div class="event-full-card" data-cat="blood">
-      <div class="event-full-header">
-        <img src="images/Blood/Blood1.jpeg" alt="Blood Donation Camp" class="event-full-img" />
-        <div class="event-full-body">
-          <span class="event-badge" style="position:static;display:inline-block;margin-bottom:12px;background:#c62828;color:white;">Blood Donation</span>
-          <h2 style="font-family:'Montserrat',sans-serif;font-size:1.4rem;font-weight:800;color:var(--deep-blue);margin-bottom:10px;">Blood Donation Camp</h2>
-          <p style="font-size:0.9rem;color:var(--text-gray);margin-bottom:6px;">Community blood donation programme conducted with appropriate healthcare partners.</p>
-          <div class="event-detail-grid">
-            <div class="event-detail-item"><span>Date</span><p>As Announced</p></div>
-            <div class="event-detail-item"><span>Time</span><p>As Announced</p></div>
-            <div class="event-detail-item"><span>Venue</span><p>To Be Announced</p></div>
-            <div class="event-detail-item"><span>Organised By</span><p>Jayasri Kannan Foundation</p></div>
-          </div>
-          <p style="font-size:0.88rem;color:var(--text-gray);margin-bottom:20px;">In collaboration with appropriate hospitals, blood banks and service organisations.</p>
-          <div style="display:flex;gap:12px;flex-wrap:wrap;">
-            <a href="blood-donation.html" class="btn btn-red btn-sm">View Programme</a>
-            <a href="contact.html" class="btn btn-outline-blue btn-sm">Register Interest</a>
+    <!-- Event Cards Container -->
+    <div id="eventsListWrapper">
+      <!-- Event 1 -->
+      <div class="event-full-card" data-cat="eye">
+        <div class="event-full-header">
+          <img src="images/eye/eye1.jpeg" alt="Free Eye Check-Up Camp" class="event-full-img" />
+          <div class="event-full-body">
+            <span class="event-badge" style="position:static;display:inline-block;margin-bottom:12px;">Eye Care</span>
+            <h2 style="font-family:'Montserrat',sans-serif;font-size:1.4rem;font-weight:800;color:var(--deep-blue);margin-bottom:10px;">Free Eye Check-Up Camp</h2>
+            <p style="font-size:0.9rem;color:var(--text-gray);margin-bottom:6px;">Free eye screening and eye-health awareness programme for students and community members.</p>
+            <div class="event-detail-grid">
+              <div class="event-detail-item"><span>Date</span><p>As Announced</p></div>
+              <div class="event-detail-item"><span>Time</span><p>As Announced</p></div>
+              <div class="event-detail-item"><span>Venue</span><p>To Be Announced</p></div>
+              <div class="event-detail-item"><span>Organised By</span><p>Jayasri Kannan Foundation</p></div>
+            </div>
+            <p style="font-size:0.88rem;color:var(--text-gray);margin-bottom:20px;">In association with participating educational institutions, healthcare professionals and hospital partners.</p>
+            <div style="display:flex;gap:12px;flex-wrap:wrap;">
+              <a href="eye-care.html" class="btn btn-blue btn-sm">View Programme</a>
+              <a href="contact.html" class="btn btn-outline-blue btn-sm">Register Interest</a>
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- Event 3 -->
-    <div class="event-full-card" data-cat="health">
-      <div class="event-full-header">
-        <img src="images/health/Health.jpeg" alt="Health Awareness Programme" class="event-full-img" />
-        <div class="event-full-body">
-          <span class="event-badge" style="position:static;display:inline-block;margin-bottom:12px;background:var(--accent-green);color:white;">Healthcare</span>
-          <h2 style="font-family:'Montserrat',sans-serif;font-size:1.4rem;font-weight:800;color:var(--deep-blue);margin-bottom:10px;">Health Awareness Programme</h2>
-          <p style="font-size:0.9rem;color:var(--text-gray);margin-bottom:6px;">Health education and awareness programmes for students and communities.</p>
-          <div class="event-detail-grid">
-            <div class="event-detail-item"><span>Date</span><p>As Announced</p></div>
-            <div class="event-detail-item"><span>Time</span><p>As Announced</p></div>
-            <div class="event-detail-item"><span>Venue</span><p>To Be Announced</p></div>
-            <div class="event-detail-item"><span>Organised By</span><p>Jayasri Kannan Foundation</p></div>
+      <!-- Event 2 -->
+      <div class="event-full-card" data-cat="blood">
+        <div class="event-full-header">
+          <img src="images/Blood/Blood1.jpeg" alt="Blood Donation Camp" class="event-full-img" />
+          <div class="event-full-body">
+            <span class="event-badge" style="position:static;display:inline-block;margin-bottom:12px;background:#c62828;color:white;">Blood Donation</span>
+            <h2 style="font-family:'Montserrat',sans-serif;font-size:1.4rem;font-weight:800;color:var(--deep-blue);margin-bottom:10px;">Blood Donation Camp</h2>
+            <p style="font-size:0.9rem;color:var(--text-gray);margin-bottom:6px;">Community blood donation programme conducted with appropriate healthcare partners.</p>
+            <div class="event-detail-grid">
+              <div class="event-detail-item"><span>Date</span><p>As Announced</p></div>
+              <div class="event-detail-item"><span>Time</span><p>As Announced</p></div>
+              <div class="event-detail-item"><span>Venue</span><p>To Be Announced</p></div>
+              <div class="event-detail-item"><span>Organised By</span><p>Jayasri Kannan Foundation</p></div>
+            </div>
+            <p style="font-size:0.88rem;color:var(--text-gray);margin-bottom:20px;">In collaboration with appropriate hospitals, blood banks and service organisations.</p>
+            <div style="display:flex;gap:12px;flex-wrap:wrap;">
+              <a href="blood-donation.html" class="btn btn-red btn-sm">View Programme</a>
+              <a href="contact.html" class="btn btn-outline-blue btn-sm">Register Interest</a>
+            </div>
           </div>
-          <p style="font-size:0.88rem;color:var(--text-gray);margin-bottom:20px;">Community healthcare initiatives with qualified professionals and partners.</p>
-          <div style="display:flex;gap:12px;flex-wrap:wrap;">
-            <a href="activities.html" class="btn btn-blue btn-sm">View Programme</a>
-            <a href="contact.html" class="btn btn-outline-blue btn-sm">Register Interest</a>
+        </div>
+      </div>
+
+      <!-- Event 3 -->
+      <div class="event-full-card" data-cat="health">
+        <div class="event-full-header">
+          <img src="images/health/Health.jpeg" alt="Health Awareness Programme" class="event-full-img" />
+          <div class="event-full-body">
+            <span class="event-badge" style="position:static;display:inline-block;margin-bottom:12px;background:var(--accent-green);color:white;">Healthcare</span>
+            <h2 style="font-family:'Montserrat',sans-serif;font-size:1.4rem;font-weight:800;color:var(--deep-blue);margin-bottom:10px;">Health Awareness Programme</h2>
+            <p style="font-size:0.9rem;color:var(--text-gray);margin-bottom:6px;">Health education and awareness programmes for students and communities.</p>
+            <div class="event-detail-grid">
+              <div class="event-detail-item"><span>Date</span><p>As Announced</p></div>
+              <div class="event-detail-item"><span>Time</span><p>As Announced</p></div>
+              <div class="event-detail-item"><span>Venue</span><p>To Be Announced</p></div>
+              <div class="event-detail-item"><span>Organised By</span><p>Jayasri Kannan Foundation</p></div>
+            </div>
+            <p style="font-size:0.88rem;color:var(--text-gray);margin-bottom:20px;">Community healthcare initiatives with qualified professionals and partners.</p>
+            <div style="display:flex;gap:12px;flex-wrap:wrap;">
+              <a href="activities.html" class="btn btn-blue btn-sm">View Programme</a>
+              <a href="contact.html" class="btn btn-outline-blue btn-sm">Register Interest</a>
+            </div>
           </div>
         </div>
       </div>
@@ -227,6 +231,61 @@
       else { card.style.display = 'none'; }
     });
   }
+
+  // Dynamic mapping with Admin Side jsk_events
+  (function initEventsFromAdmin() {
+    try {
+      const stored = localStorage.getItem('jsk_events');
+      if (!stored) return;
+      const events = JSON.parse(stored);
+      if (!Array.isArray(events) || events.length === 0) return;
+
+      const container = document.getElementById('eventsListWrapper');
+      if (!container) return;
+
+      const categoryMap = {
+        'Eye Care': 'eye',
+        'Blood Donation': 'blood',
+        'Health & Medical': 'health',
+        'Education': 'health',
+        'Social Welfare': 'health'
+      };
+
+      container.innerHTML = events.map(ev => {
+        const catKey = categoryMap[ev.category] || 'health';
+        const badgeColor = catKey === 'blood' ? '#c62828' : (catKey === 'eye' ? 'var(--primary-blue)' : 'var(--accent-green)');
+        const imgSrc = ev.image || (catKey === 'blood' ? 'images/Blood/Blood1.jpeg' : (catKey === 'eye' ? 'images/eye/eye1.jpeg' : 'images/health/Health.jpeg'));
+
+        return `
+          <div class="event-full-card" data-cat="${catKey}">
+            <div class="event-full-header">
+              <img src="${imgSrc}" alt="${ev.title}" class="event-full-img" onerror="this.src='images/health/Health.jpeg'" />
+              <div class="event-full-body">
+                <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+                  <span class="event-badge" style="position:static;display:inline-block;background:${badgeColor};color:white;">${ev.category || 'Foundation Initiative'}</span>
+                  <span style="font-size:.78rem;font-weight:700;color:var(--accent-gold);text-transform:uppercase;">${ev.status || 'Active'}</span>
+                </div>
+                <h2 style="font-family:'Montserrat',sans-serif;font-size:1.4rem;font-weight:800;color:var(--deep-blue);margin-bottom:10px;">${ev.title}</h2>
+                <p style="font-size:0.9rem;color:var(--text-gray);margin-bottom:6px;">${ev.desc}</p>
+                <div class="event-detail-grid">
+                  <div class="event-detail-item"><span>Date</span><p>${ev.date}</p></div>
+                  <div class="event-detail-item"><span>Time</span><p>${ev.time || 'As Scheduled'}</p></div>
+                  <div class="event-detail-item"><span>Venue</span><p>${ev.venue}</p></div>
+                  <div class="event-detail-item"><span>Organised By</span><p>Jayasri Kannan Foundation</p></div>
+                </div>
+                <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:16px;">
+                  <a href="contact.html" class="btn btn-blue btn-sm">Register Interest</a>
+                  <a href="donate.html" class="btn btn-outline-blue btn-sm">Support This Event</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    } catch(err) {
+      console.warn('Could not hydrate events from admin store:', err);
+    }
+  })();
 </script>
 </body>
 </html>

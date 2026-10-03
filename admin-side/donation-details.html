@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Donation Details | Admin | Jayasri Kannan Foundation</title>
+  <link rel="icon" type="image/jpeg" href="../user-side/images/logo.jpg" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="admin.css" />
+</head>
+<body>
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <img src="../user-side/images/logo.jpg" alt="Logo" class="sidebar-logo" onerror="this.src='https://placehold.co/36x36/0d2548/c9a227?text=JSK'" />
+      <div class="sidebar-brand-text">
+        <div class="sidebar-brand-name">Jayasri Kannan</div>
+        <div class="sidebar-brand-sub">Admin Console</div>
+      </div>
+      <button class="sidebar-toggle" id="sidebarToggle" title="Collapse sidebar">
+        <i class="fa-solid fa-chevron-left toggle-icon"></i>
+      </button>
+    </div>
+
+    <nav class="sidebar-nav" aria-label="Admin Navigation">
+      <div class="nav-section-label">Main</div>
+      <a href="dashboard.html" class="nav-item" data-tooltip="Dashboard">
+        <i class="fa-solid fa-gauge nav-item-icon"></i>
+        <span class="nav-item-text">Dashboard Home</span>
+      </a>
+
+      <div class="nav-section-label">Management</div>
+      <a href="what-we-do.html" class="nav-item" data-tooltip="What We Do">
+        <i class="fa-solid fa-hand-holding-heart nav-item-icon"></i>
+        <span class="nav-item-text">1. Update 'What We Do'</span>
+      </a>
+      <a href="activities.html" class="nav-item" data-tooltip="Manage Activities">
+        <i class="fa-solid fa-bolt nav-item-icon"></i>
+        <span class="nav-item-text">2. Manage Activities</span>
+      </a>
+      <a href="events.html" class="nav-item" data-tooltip="Events">
+        <i class="fa-solid fa-calendar-days nav-item-icon"></i>
+        <span class="nav-item-text">3. Events Management</span>
+      </a>
+      <a href="gallery.html" class="nav-item" data-tooltip="Gallery">
+        <i class="fa-solid fa-images nav-item-icon"></i>
+        <span class="nav-item-text">4. Gallery Management</span>
+      </a>
+      <a href="donation-details.html" class="nav-item active" data-tooltip="Donations">
+        <i class="fa-solid fa-indian-rupee-sign nav-item-icon"></i>
+        <span class="nav-item-text">5. Donation Details</span>
+      </a>
+
+      <div class="nav-section-label">Utilities</div>
+      <a href="../user-side/index.html" class="nav-item" target="_blank" data-tooltip="Public Website">
+        <i class="fa-solid fa-globe nav-item-icon"></i>
+        <span class="nav-item-text">View Public Website</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <button class="btn-logout nav-item" id="logoutBtn" data-tooltip="Logout">
+        <i class="fa-solid fa-right-from-bracket nav-item-icon"></i>
+        <span class="nav-item-text">Logout</span>
+      </button>
+    </div>
+  </aside>
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- MAIN APP -->
+  <div class="app-main" id="appMain">
+    <header class="top-header">
+      <div class="header-left">
+        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu"><i class="fa-solid fa-bars"></i></button>
+        <span class="header-page-title">5. Donation Details</span>
+      </div>
+      <div class="header-right">
+        <button class="header-icon-btn" title="Notifications"><i class="fa-regular fa-bell"></i></button>
+        <div class="admin-chip">
+          <div class="admin-avatar" id="adminAvatar">JK</div>
+          <span class="admin-chip-name" id="adminName">Admin</span>
+        </div>
+      </div>
+    </header>
+
+    <main class="dashboard-content">
+      <div class="page-header">
+        <div class="page-header-left">
+          <div class="page-header-title">Donation Records & Submissions</div>
+          <div class="page-header-sub">Track real-time donor submissions, transaction IDs, payment confirmations, and reconciliation data.</div>
+        </div>
+        <div class="page-header-actions">
+          <button class="btn btn-outline" id="exportCsvBtn"><i class="fa-solid fa-file-csv"></i> Export to CSV</button>
+          <button class="btn btn-gold" id="recordManualDonationBtn"><i class="fa-solid fa-plus"></i> Log Offline Donation</button>
+        </div>
+      </div>
+
+      <!-- METRIC STATS -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon gold"><i class="fa-solid fa-indian-rupee-sign"></i></div>
+          <div>
+            <div class="stat-value" id="statTotalAmount">&#8377;0</div>
+            <div class="stat-label">Total Contributions</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon green"><i class="fa-solid fa-circle-check"></i></div>
+          <div>
+            <div class="stat-value" id="statVerifiedCount">0</div>
+            <div class="stat-label">Verified Transactions</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon blue"><i class="fa-solid fa-users"></i></div>
+          <div>
+            <div class="stat-value" id="statDonorsCount">0</div>
+            <div class="stat-label">Unique Donors</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon red"><i class="fa-solid fa-clock"></i></div>
+          <div>
+            <div class="stat-value" id="statPendingCount">0</div>
+            <div class="stat-label">Pending Verification</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FILTER & SEARCH -->
+      <div class="card" style="margin-bottom:20px;">
+        <div class="card-body" style="padding:16px 20px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+            <div style="position:relative;width:100%;max-width:400px;">
+              <i class="fa-solid fa-magnifying-glass" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text-light);font-size:.85rem;"></i>
+              <input type="text" id="searchDonationsInput" class="form-control" style="padding-left:34px;" placeholder="Search donor name, txn ID, phone, cause..." />
+            </div>
+
+            <div style="display:flex;gap:8px;align-items:center;">
+              <button class="tab-btn active filter-tab" data-filter="all">All Records</button>
+              <button class="tab-btn filter-tab" data-filter="Verified">Verified</button>
+              <button class="tab-btn filter-tab" data-filter="Pending">Pending</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DONATION TABLE -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title"><i class="fa-solid fa-receipt"></i> Logged Donor Submissions</div>
+          <span class="badge badge-blue" id="donationCountBadge">0 Records</span>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Donor Information</th>
+                <th>Amount</th>
+                <th>Transaction ID</th>
+                <th>Payment Cause</th>
+                <th>Date & Time Logged</th>
+                <th>Status</th>
+                <th style="text-align:right;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="donationsTableBody">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- DONOR DETAILS MODAL -->
+  <div class="modal-backdrop" id="donorModal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <div class="modal-title"><i class="fa-solid fa-address-card"></i> Donation Record & Receipt Details</div>
+        <button class="modal-close" id="closeDonorModalBtn">&times;</button>
+      </div>
+      <div class="modal-body" id="donorModalContent">
+        <!-- Injected via JS -->
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" id="closeDonorModalBtn2">Close</button>
+        <button class="btn btn-gold" id="toggleVerifyBtn"><i class="fa-solid fa-badge-check"></i> Mark Verified</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MANUAL / OFFLINE DONATION MODAL -->
+  <div class="modal-backdrop" id="manualModal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <div class="modal-title"><i class="fa-solid fa-hand-holding-dollar"></i> Log Offline / Direct Donation</div>
+        <button class="modal-close" id="closeManualModalBtn">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="manualDonationForm" onsubmit="return false;">
+          <div class="form-grid" style="gap:14px;">
+            <div class="form-group full-width">
+              <label class="form-label">Donor Full Name <span class="req">*</span></label>
+              <input class="form-control" type="text" id="mName" required placeholder="e.g. S. Ramakrishnan" />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Phone Number</label>
+              <input class="form-control" type="tel" id="mPhone" placeholder="+91 98400 12345" />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Email Address</label>
+              <input class="form-control" type="email" id="mEmail" placeholder="donor@example.com" />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Amount (&#8377;) <span class="req">*</span></label>
+              <input class="form-control" type="number" id="mAmount" required min="10" placeholder="5000" />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Transaction / Cheque ID <span class="req">*</span></label>
+              <input class="form-control" type="text" id="mTxn" required placeholder="UPI / Bank Ref / Cheque No" />
+            </div>
+
+            <div class="form-group full-width">
+              <label class="form-label">Supported Cause</label>
+              <select class="form-control" id="mCause">
+                <option value="Healthcare & Medical Outreach">Healthcare & Medical Outreach</option>
+                <option value="Eye Care & Spectacles Camp">Eye Care & Spectacles Camp</option>
+                <option value="Student Scholarships & Education">Student Scholarships & Education</option>
+                <option value="Emergency Relief & Community Support">Emergency Relief & Community Support</option>
+                <option value="General Foundation Corpus">General Foundation Corpus</option>
+              </select>
+            </div>
+
+            <div class="form-group full-width">
+              <label class="form-label">PAN Number (For 80G Tax Exemption)</label>
+              <input class="form-control" type="text" id="mPan" placeholder="ABCDE1234F" style="text-transform:uppercase;" />
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" id="cancelManualModalBtn">Cancel</button>
+        <button class="btn btn-gold" id="saveManualDonationBtn"><i class="fa-solid fa-check"></i> Save Record</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast"></div>
+
+  <script>
+    const DONATIONS_KEY = 'jsk_donations';
+    const DEFAULT_DONATIONS = [
+      {
+        id: 'don-101',
+        name: 'R. Soundararajan',
+        phone: '+91 98410 44321',
+        email: 'soundar.r@gmail.com',
+        pan: 'ABCPS1234K',
+        amount: 10000,
+        txnId: 'UPI-628491028301',
+        cause: 'Eye Care & Spectacles Camp',
+        paymentMethod: 'Google Pay / UPI',
+        date: '2026-10-02',
+        time: '14:25:10',
+        status: 'Verified',
+        notes: 'In memory of late mother.'
+      },
+      {
+        id: 'don-102',
+        name: 'Lakshmi Narayanan',
+        phone: '+91 97908 11223',
+        email: 'lakshmin@yahoo.co.in',
+        pan: 'BCDPN5432M',
+        amount: 5000,
+        txnId: 'UPI-628109827364',
+        cause: 'Healthcare & Medical Outreach',
+        paymentMethod: 'PhonePe / UPI',
+        date: '2026-10-01',
+        time: '11:10:45',
+        status: 'Verified',
+        notes: ''
+      },
+      {
+        id: 'don-103',
+        name: 'Anitha & Friends Group',
+        phone: '+91 94441 87654',
+        email: 'anitha.chennai@gmail.com',
+        pan: 'AAAPT9876R',
+        amount: 25000,
+        txnId: 'NEFT-HDFC262749102',
+        cause: 'Student Scholarships & Education',
+        paymentMethod: 'NEFT Net Banking',
+        date: '2026-09-28',
+        time: '16:42:00',
+        status: 'Verified',
+        notes: 'Quarterly sponsorship for 5 children.'
+      },
+      {
+        id: 'don-104',
+        name: 'K. Venkatesh',
+        phone: '+91 98402 99887',
+        email: 'kvenkat_77@hotmail.com',
+        pan: '',
+        amount: 2500,
+        txnId: 'UPI-627918273645',
+        cause: 'General Foundation Corpus',
+        paymentMethod: 'Paytm UPI',
+        date: '2026-10-03',
+        time: '09:15:33',
+        status: 'Pending',
+        notes: 'Awaiting bank settlement reconciliation.'
+      },
+      {
+        id: 'don-105',
+        name: 'M. S. Swaminathan Foundation Staff',
+        phone: '+91 98840 55667',
+        email: 'swaminathan.m@gmail.com',
+        pan: 'CPSSM2345T',
+        amount: 15000,
+        txnId: 'IMPS-2628471920',
+        cause: 'Emergency Relief & Community Support',
+        paymentMethod: 'IMPS Bank Transfer',
+        date: '2026-09-20',
+        time: '18:05:12',
+        status: 'Verified',
+        notes: 'Flood relief distribution reserve fund.'
+      }
+    ];
+
+    let currentFilter = 'all';
+    let currentViewingId = null;
+
+    function loadDonations() {
+      try {
+        const stored = localStorage.getItem(DONATIONS_KEY);
+        if (stored) return JSON.parse(stored);
+      } catch (e) {
+        console.error(e);
+      }
+      return DEFAULT_DONATIONS;
+    }
+
+    function saveDonations(data) {
+      localStorage.setItem(DONATIONS_KEY, JSON.stringify(data));
+    }
+
+    function renderDonations() {
+      const donations = loadDonations();
+      const tbody = document.getElementById('donationsTableBody');
+      const badge = document.getElementById('donationCountBadge');
+      const query = document.getElementById('searchDonationsInput').value.toLowerCase().trim();
+
+      // Stats calculation
+      const totalAmt = donations.reduce((sum, d) => sum + Number(d.amount || 0), 0);
+      const verifiedList = donations.filter(d => d.status === 'Verified');
+      const pendingList = donations.filter(d => d.status === 'Pending');
+      const uniqueDonors = new Set(donations.map(d => d.name.toLowerCase().trim())).size;
+
+      document.getElementById('statTotalAmount').innerHTML = `&#8377;${totalAmt.toLocaleString('en-IN')}`;
+      document.getElementById('statVerifiedCount').textContent = verifiedList.length;
+      document.getElementById('statDonorsCount').textContent = uniqueDonors;
+      document.getElementById('statPendingCount').textContent = pendingList.length;
+
+      const filtered = donations.filter(d => {
+        const matchesFilter = (currentFilter === 'all' || d.status === currentFilter);
+        const matchesQuery = !query ||
+          d.name.toLowerCase().includes(query) ||
+          d.txnId.toLowerCase().includes(query) ||
+          (d.phone && d.phone.toLowerCase().includes(query)) ||
+          (d.email && d.email.toLowerCase().includes(query)) ||
+          (d.cause && d.cause.toLowerCase().includes(query));
+        return matchesFilter && matchesQuery;
+      });
+
+      badge.textContent = `${filtered.length} of ${donations.length} Records`;
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" class="empty-state"><i class="fa-solid fa-receipt"></i><h3>No donation records found</h3><p>Try modifying your search or filter criteria.</p></td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(d => {
+        const isVerified = d.status === 'Verified';
+        return `
+          <tr>
+            <td>
+              <div style="font-weight:700;color:var(--text-dark);">${escapeHtml(d.name)}</div>
+              <div class="td-muted">${d.phone || d.email || 'No contact provided'}</div>
+            </td>
+            <td>
+              <div style="font-family:'Montserrat',sans-serif;font-weight:700;color:var(--primary-blue);font-size:.95rem;">
+                &#8377;${Number(d.amount).toLocaleString('en-IN')}
+              </div>
+            </td>
+            <td>
+              <code style="background:var(--light-gray);padding:3px 8px;border-radius:4px;font-size:.78rem;font-weight:600;color:var(--deep-blue);">${escapeHtml(d.txnId)}</code>
+            </td>
+            <td>
+              <span class="badge badge-blue">${escapeHtml(d.cause || 'General Support')}</span>
+            </td>
+            <td>
+              <div><i class="fa-regular fa-calendar" style="color:var(--text-light);margin-right:4px;"></i> ${d.date}</div>
+              <div class="td-muted"><i class="fa-regular fa-clock" style="margin-right:4px;"></i> ${d.time || 'N/A'}</div>
+            </td>
+            <td>
+              <span class="badge ${isVerified ? 'badge-green' : 'badge-gold'}">
+                <i class="${isVerified ? 'fa-solid fa-circle-check' : 'fa-solid fa-clock'}"></i>
+                ${escapeHtml(d.status)}
+              </span>
+            </td>
+            <td style="text-align:right;">
+              <div class="td-actions" style="justify-content:flex-end;">
+                <button class="btn btn-outline btn-sm" onclick="viewDonorDetails('${d.id}')" title="View Details"><i class="fa-solid fa-eye"></i> View</button>
+                <button class="btn btn-danger-outline btn-sm btn-icon" onclick="deleteDonation('${d.id}')" title="Delete record"><i class="fa-solid fa-trash"></i></button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function escapeHtml(text) {
+      if (!text) return '';
+      return String(text).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    // Modal Views
+    const donorModal = document.getElementById('donorModal');
+    window.viewDonorDetails = function(id) {
+      const donations = loadDonations();
+      const d = donations.find(x => x.id === id);
+      if (!d) return;
+
+      currentViewingId = d.id;
+      const isVerified = d.status === 'Verified';
+
+      document.getElementById('donorModalContent').innerHTML = `
+        <div style="background:var(--off-white);padding:18px;border-radius:var(--radius-sm);border:1px solid var(--border);margin-bottom:16px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+            <div style="font-size:1.25rem;font-weight:800;color:var(--primary-blue);">${escapeHtml(d.name)}</div>
+            <span class="badge ${isVerified ? 'badge-green' : 'badge-gold'}">${d.status}</span>
+          </div>
+          <div style="font-size:1.5rem;font-weight:800;color:var(--accent-gold);margin-bottom:6px;">
+            &#8377;${Number(d.amount).toLocaleString('en-IN')}
+          </div>
+          <div style="font-size:.8rem;color:var(--text-gray);">
+            Transaction Reference: <strong>${escapeHtml(d.txnId)}</strong>
+          </div>
+        </div>
+
+        <div class="form-grid cols-1" style="gap:10px;font-size:.85rem;">
+          <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);">
+            <span style="color:var(--text-gray);">Phone:</span>
+            <strong>${d.phone || 'N/A'}</strong>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);">
+            <span style="color:var(--text-gray);">Email:</span>
+            <strong>${d.email || 'N/A'}</strong>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);">
+            <span style="color:var(--text-gray);">PAN for 80G:</span>
+            <strong>${d.pan || 'Not provided'}</strong>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);">
+            <span style="color:var(--text-gray);">Designated Cause:</span>
+            <strong>${escapeHtml(d.cause || 'General')}</strong>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);">
+            <span style="color:var(--text-gray);">Payment Method:</span>
+            <strong>${escapeHtml(d.paymentMethod || 'UPI / Gateway')}</strong>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);">
+            <span style="color:var(--text-gray);">Logged Timestamp:</span>
+            <strong>${d.date} at ${d.time || 'N/A'}</strong>
+          </div>
+          ${d.notes ? `
+          <div style="padding:10px;background:var(--warn-light);border-radius:var(--radius-sm);margin-top:6px;font-size:.82rem;color:#7a5f00;">
+            <strong>Donor Message / Note:</strong> ${escapeHtml(d.notes)}
+          </div>` : ''}
+        </div>
+      `;
+
+      const verifyBtn = document.getElementById('toggleVerifyBtn');
+      verifyBtn.innerHTML = isVerified ? '<i class="fa-solid fa-clock"></i> Mark Pending' : '<i class="fa-solid fa-circle-check"></i> Mark Verified';
+      verifyBtn.className = isVerified ? 'btn btn-outline' : 'btn btn-gold';
+
+      donorModal.classList.add('active');
+    };
+
+    function closeDonorModal() {
+      donorModal.classList.remove('active');
+      currentViewingId = null;
+    }
+    document.getElementById('closeDonorModalBtn').addEventListener('click', closeDonorModal);
+    document.getElementById('closeDonorModalBtn2').addEventListener('click', closeDonorModal);
+
+    document.getElementById('toggleVerifyBtn').addEventListener('click', () => {
+      if (!currentViewingId) return;
+      let donations = loadDonations();
+      const d = donations.find(x => x.id === currentViewingId);
+      if (d) {
+        d.status = d.status === 'Verified' ? 'Pending' : 'Verified';
+        saveDonations(donations);
+        toast(`Transaction status toggled to "${d.status}".`, 'success');
+        viewDonorDetails(d.id);
+        renderDonations();
+      }
+    });
+
+    window.deleteDonation = function(id) {
+      if (confirm('Delete this donation record? This should only be done for erroneous test entries.')) {
+        let donations = loadDonations();
+        donations = donations.filter(x => x.id !== id);
+        saveDonations(donations);
+        renderDonations();
+        toast('Donation record removed.', 'success');
+      }
+    };
+
+    // Filter Tabs
+    document.querySelectorAll('.filter-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        currentFilter = tab.dataset.filter;
+        renderDonations();
+      });
+    });
+
+    document.getElementById('searchDonationsInput').addEventListener('input', renderDonations);
+
+    // Manual / Offline Donation Modal
+    const manualModal = document.getElementById('manualModal');
+    document.getElementById('recordManualDonationBtn').addEventListener('click', () => {
+      document.getElementById('manualDonationForm').reset();
+      manualModal.classList.add('active');
+    });
+    function closeManualModal() {
+      manualModal.classList.remove('active');
+      document.getElementById('manualDonationForm').reset();
+    }
+    document.getElementById('closeManualModalBtn').addEventListener('click', closeManualModal);
+    document.getElementById('cancelManualModalBtn').addEventListener('click', closeManualModal);
+
+    document.getElementById('saveManualDonationBtn').addEventListener('click', () => {
+      const name = document.getElementById('mName').value.trim();
+      const phone = document.getElementById('mPhone').value.trim();
+      const email = document.getElementById('mEmail').value.trim();
+      const amount = Number(document.getElementById('mAmount').value);
+      const txnId = document.getElementById('mTxn').value.trim();
+      const cause = document.getElementById('mCause').value;
+      const pan = document.getElementById('mPan').value.trim().toUpperCase();
+
+      if (!name || !amount || !txnId) {
+        toast('Please fill in Name, Amount, and Transaction Reference.', 'error');
+        return;
+      }
+
+      const now = new Date();
+      const dateStr = now.toISOString().split('T')[0];
+      const timeStr = now.toTimeString().split(' ')[0];
+
+      const newRec = {
+        id: 'don-' + Date.now(),
+        name,
+        phone,
+        email,
+        pan,
+        amount,
+        txnId,
+        cause,
+        paymentMethod: 'Direct / Offline Entry',
+        date: dateStr,
+        time: timeStr,
+        status: 'Verified',
+        notes: 'Manually logged by admin.'
+      };
+
+      let donations = loadDonations();
+      donations.unshift(newRec);
+      saveDonations(donations);
+      closeManualModal();
+      renderDonations();
+      toast('Offline donation recorded and verified!', 'success');
+    });
+
+    // CSV Export
+    document.getElementById('exportCsvBtn').addEventListener('click', () => {
+      const donations = loadDonations();
+      if (donations.length === 0) {
+        toast('No records to export.', 'error');
+        return;
+      }
+
+      const headers = ['ID', 'Donor Name', 'Phone', 'Email', 'PAN', 'Amount (INR)', 'Transaction ID', 'Cause', 'Payment Method', 'Date', 'Time', 'Status'];
+      const rows = donations.map(d => [
+        `"${d.id}"`,
+        `"${d.name.replace(/"/g, '""')}"`,
+        `"${(d.phone || '').replace(/"/g, '""')}"`,
+        `"${(d.email || '').replace(/"/g, '""')}"`,
+        `"${(d.pan || '').replace(/"/g, '""')}"`,
+        d.amount,
+        `"${d.txnId.replace(/"/g, '""')}"`,
+        `"${(d.cause || '').replace(/"/g, '""')}"`,
+        `"${(d.paymentMethod || '').replace(/"/g, '""')}"`,
+        `"${d.date}"`,
+        `"${d.time || ''}"`,
+        `"${d.status}"`
+      ]);
+
+      const csvContent = 'data:text/csv;charset=utf-8,' + [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement('a');
+      link.setAttribute('href', encodedUri);
+      link.setAttribute('download', `JSK_Foundation_Donations_${new Date().toISOString().split('T')[0]}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      toast('Donation ledger downloaded as CSV!', 'success');
+    });
+
+    function toast(msg, type = '') {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.className = type ? `show toast-${type}` : 'show';
+      setTimeout(() => t.className = '', 3200);
+    }
+
+    // Auth & Navigation
+    const token = localStorage.getItem('jsk_admin_token');
+    if (!token) window.location.replace('login.html');
+    const name = localStorage.getItem('jsk_admin_name') || 'Admin';
+    document.getElementById('adminName').textContent = name.split(' ')[0];
+    document.getElementById('adminAvatar').textContent = name.split(' ').map(n=>n[0]).slice(0,2).join('').toUpperCase();
+
+    const sidebar = document.getElementById('sidebar');
+    const appMain = document.getElementById('appMain');
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    let isCollapsed = localStorage.getItem('jsk_sidebar_collapsed') === 'true';
+    if (isCollapsed) { sidebar.classList.add('collapsed'); appMain.classList.add('shifted'); }
+
+    sidebarToggle.addEventListener('click', () => {
+      isCollapsed = !isCollapsed;
+      sidebar.classList.toggle('collapsed', isCollapsed);
+      appMain.classList.toggle('shifted', isCollapsed);
+      localStorage.setItem('jsk_sidebar_collapsed', isCollapsed);
+    });
+
+    document.getElementById('mobileMenuBtn').addEventListener('click', () => {
+      sidebar.classList.toggle('mobile-open');
+      document.getElementById('sidebarOverlay').classList.toggle('visible');
+    });
+
+    document.getElementById('sidebarOverlay').addEventListener('click', () => {
+      sidebar.classList.remove('mobile-open');
+      document.getElementById('sidebarOverlay').classList.remove('visible');
+    });
+
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      if (confirm('Are you sure you want to sign out?')) {
+        ['jsk_admin_token', 'jsk_admin_name', 'jsk_admin_email', 'jsk_admin_role'].forEach(k => localStorage.removeItem(k));
+        window.location.href = 'login.html';
+      }
+    });
+
+    renderDonations();
+  </script>
+</body>
+</html>

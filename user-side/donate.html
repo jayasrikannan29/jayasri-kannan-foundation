@@ -18,6 +18,7 @@
       <a href="mailto:jskfoundation29@gmail.com"><i class="fa-solid fa-envelope"></i> jskfoundation29@gmail.com</a>
     </div>
     <div class="topbar-right">
+      <a href="../admin-side/login.html" id="adminPortalLink" title="Admin Login" style="display:inline-flex;align-items:center;gap:4px;color:rgba(255,255,255,0.75);font-size:12px;font-weight:500;text-decoration:none;white-space:nowrap;margin-right:12px;transition:color 0.2s;" onmouseover="this.style.color='#f0c84a';" onmouseout="this.style.color='rgba(255,255,255,0.75)';"><i class="fa-solid fa-lock" style="font-size:10px;"></i> Admin</a>
       <a href="#" aria-label="Facebook">f</a><a href="#" aria-label="Instagram">in</a><a href="#" aria-label="YouTube">▶</a>
     </div>
   </div>
@@ -116,55 +117,117 @@
         </div>
       </div>
 
-      <!-- RIGHT: Donation Notice -->
+      <!-- RIGHT: Interactive Donation Flow -->
       <div>
-        <div style="background:var(--white);padding:40px;border-radius:var(--radius-lg);box-shadow:var(--shadow-md);">
-          <div style="text-align:center;margin-bottom:28px;">
-            <div style="font-size:3rem;margin-bottom:12px;"><i class="fa-solid fa-heart"></i></div>
-            <h3 style="font-family:'Montserrat',sans-serif;font-size:1.5rem;font-weight:800;color:var(--deep-blue);">Donate Now</h3>
-            <p style="color:var(--text-gray);font-size:0.88rem;margin-top:6px;">Support Jayasri Kannan Foundation</p>
+        <div style="background:var(--white);padding:36px;border-radius:var(--radius-lg);box-shadow:var(--shadow-md);border:1px solid var(--border);">
+          <div style="text-align:center;margin-bottom:24px;">
+            <div style="font-size:2.4rem;color:var(--accent-gold);margin-bottom:8px;"><i class="fa-solid fa-heart-pulse"></i></div>
+            <h3 style="font-family:'Montserrat',sans-serif;font-size:1.45rem;font-weight:800;color:var(--deep-blue);">Contribute to Jayasri Kannan Foundation</h3>
+            <p style="color:var(--text-gray);font-size:0.85rem;margin-top:4px;">Direct UPI &amp; Bank Transfer &bull; 80G Tax Exemption Receipt</p>
           </div>
 
-          <div style="background:rgba(201,162,39,0.08);border:1.5px solid rgba(201,162,39,0.4);border-radius:var(--radius-md);padding:24px;margin-bottom:24px;">
-            <div style="display:flex;align-items:flex-start;gap:12px;">
-              <span style="font-size:1.4rem;flex-shrink:0;"><i class="fa-solid fa-circle-info"></i></span>
-              <div>
-                <h4 style="font-size:0.9rem;font-weight:700;color:var(--deep-blue);margin-bottom:6px;">Bank Details Notice</h4>
-                <p style="font-size:0.85rem;color:var(--text-gray);line-height:1.7;">
-                  The Foundation's verified bank details, registration details and applicable tax-benefit information will be displayed here once confirmed and verified.
-                </p>
-                <p style="font-size:0.85rem;color:var(--text-gray);margin-top:8px;line-height:1.7;">
-                  Please contact us directly for donation enquiries.
-                </p>
+          <!-- BANK & UPI SCANNER ACCORDION -->
+          <div style="background:rgba(26,58,110,0.04);border:1.5px solid rgba(26,58,110,0.15);border-radius:var(--radius-md);padding:18px;margin-bottom:22px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
+              <span style="font-size:.82rem;font-weight:700;color:var(--primary-blue);text-transform:uppercase;letter-spacing:1px;"><i class="fa-solid fa-qrcode"></i> Official Payment Details</span>
+              <span class="badge" style="background:rgba(201,162,39,0.15);color:#8a6b0f;padding:2px 8px;border-radius:4px;font-size:.72rem;font-weight:700;">Verified NGO Account</span>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:.84rem;">
+              <div style="background:var(--white);padding:10px 14px;border-radius:8px;border:1px solid var(--border);">
+                <div style="color:var(--text-light);font-size:.7rem;font-weight:600;text-transform:uppercase;">UPI ID / VPA</div>
+                <div style="font-weight:700;color:var(--deep-blue);margin-top:2px;">jskfoundation29@okaxis</div>
+              </div>
+              <div style="background:var(--white);padding:10px 14px;border-radius:8px;border:1px solid var(--border);">
+                <div style="color:var(--text-light);font-size:.7rem;font-weight:600;text-transform:uppercase;">Bank Name</div>
+                <div style="font-weight:700;color:var(--deep-blue);margin-top:2px;">Axis Bank, Ambattur</div>
+              </div>
+              <div style="background:var(--white);padding:10px 14px;border-radius:8px;border:1px solid var(--border);">
+                <div style="color:var(--text-light);font-size:.7rem;font-weight:600;text-transform:uppercase;">Account Name</div>
+                <div style="font-weight:700;color:var(--deep-blue);margin-top:2px;">Jayasri Kannan Foundation</div>
+              </div>
+              <div style="background:var(--white);padding:10px 14px;border-radius:8px;border:1px solid var(--border);">
+                <div style="color:var(--text-light);font-size:.7rem;font-weight:600;text-transform:uppercase;">IFSC Code</div>
+                <div style="font-weight:700;color:var(--deep-blue);margin-top:2px;">UTIB0001234</div>
               </div>
             </div>
           </div>
 
-          <h4 style="font-weight:700;color:var(--deep-blue);margin-bottom:16px;">Contact Us to Donate:</h4>
-
-          <div style="background:var(--off-white);border-radius:10px;padding:18px;margin-bottom:14px;display:flex;gap:14px;align-items:center;">
-            <div style="width:40px;height:40px;background:linear-gradient(135deg,var(--primary-blue),var(--deep-blue));border-radius:10px;display:flex;align-items:center;justify-content:center;color:white;font-size:1rem;flex-shrink:0;"><i class="fa-solid fa-phone"></i></div>
-            <div>
-              <span style="font-size:0.72rem;text-transform:uppercase;letter-spacing:1px;color:var(--accent-gold);font-weight:700;">Phone</span>
-              <p style="font-weight:600;color:var(--text-dark);"><a href="tel:9677232041" style="color:inherit;">9677232041</a> / <a href="tel:9941531140" style="color:inherit;">9941531140</a> / <a href="tel:9025948033" style="color:inherit;">9025948033</a></p>
+          <!-- DONATION FORM -->
+          <form id="publicDonationForm" onsubmit="handleDonationSubmit(event);">
+            <!-- Amount Selection -->
+            <label style="display:block;font-size:.8rem;font-weight:700;color:var(--deep-blue);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;">
+              Select Contribution Amount (&#8377;) *
+            </label>
+            <div style="display:grid;grid-template-columns:repeat(4, 1fr);gap:8px;margin-bottom:12px;" id="amtPresets">
+              <button type="button" class="btn btn-outline-blue btn-sm amt-chip" onclick="setDonationAmt(500, this)">&#8377;500</button>
+              <button type="button" class="btn btn-outline-blue btn-sm amt-chip active" onclick="setDonationAmt(1000, this)" style="background:var(--primary-blue);color:white;">&#8377;1,000</button>
+              <button type="button" class="btn btn-outline-blue btn-sm amt-chip" onclick="setDonationAmt(2500, this)">&#8377;2,500</button>
+              <button type="button" class="btn btn-outline-blue btn-sm amt-chip" onclick="setDonationAmt(5000, this)">&#8377;5,000</button>
             </div>
-          </div>
-
-          <div style="background:var(--off-white);border-radius:10px;padding:18px;margin-bottom:24px;display:flex;gap:14px;align-items:center;">
-            <div style="width:40px;height:40px;background:linear-gradient(135deg,var(--primary-blue),var(--deep-blue));border-radius:10px;display:flex;align-items:center;justify-content:center;color:white;font-size:1rem;flex-shrink:0;"><i class="fa-solid fa-envelope"></i></div>
-            <div>
-              <span style="font-size:0.72rem;text-transform:uppercase;letter-spacing:1px;color:var(--accent-gold);font-weight:700;">Email</span>
-              <p style="font-weight:600;color:var(--text-dark);"><a href="mailto:jskfoundation29@gmail.com" style="color:inherit;">jskfoundation29@gmail.com</a></p>
+            <div style="margin-bottom:18px;">
+              <input type="number" id="customAmount" class="form-control" placeholder="Or enter custom amount in &#8377;" value="1000" min="10" required style="width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:.9rem;outline:none;" />
             </div>
-          </div>
 
-          <a href="index.html#contact" class="btn btn-primary btn-lg" style="width:100%;justify-content:center;">Send Donation Enquiry →</a>
+            <!-- Donor Details -->
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
+              <div>
+                <label style="display:block;font-size:.78rem;font-weight:700;color:var(--text-gray);margin-bottom:4px;">Donor Full Name *</label>
+                <input type="text" id="donorName" required placeholder="e.g. S. Ramakrishnan" style="width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:.88rem;outline:none;" />
+              </div>
+              <div>
+                <label style="display:block;font-size:.78rem;font-weight:700;color:var(--text-gray);margin-bottom:4px;">Phone Number *</label>
+                <input type="tel" id="donorPhone" required placeholder="+91 98400 12345" style="width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:.88rem;outline:none;" />
+              </div>
+            </div>
+
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
+              <div>
+                <label style="display:block;font-size:.78rem;font-weight:700;color:var(--text-gray);margin-bottom:4px;">Email (For 80G Receipt)</label>
+                <input type="email" id="donorEmail" placeholder="donor@gmail.com" style="width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:.88rem;outline:none;" />
+              </div>
+              <div>
+                <label style="display:block;font-size:.78rem;font-weight:700;color:var(--text-gray);margin-bottom:4px;">PAN (For Tax Exemption)</label>
+                <input type="text" id="donorPan" placeholder="ABCDE1234F" style="width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:.88rem;text-transform:uppercase;outline:none;" />
+              </div>
+            </div>
+
+            <div style="margin-bottom:12px;">
+              <label style="display:block;font-size:.78rem;font-weight:700;color:var(--text-gray);margin-bottom:4px;">Cause to Support</label>
+              <select id="donationCause" style="width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:.88rem;outline:none;background:white;">
+                <option value="Healthcare & Medical Outreach">Healthcare & Medical Outreach</option>
+                <option value="Eye Care Camps & Spectacles">Eye Care Camps & Spectacles</option>
+                <option value="Blood Donation Drive Support">Blood Donation Drive Support</option>
+                <option value="Education & Student Scholarships">Education & Student Scholarships</option>
+                <option value="Social Welfare & Disaster Relief">Social Welfare & Disaster Relief</option>
+                <option value="General Foundation Corpus">General Foundation Corpus</option>
+              </select>
+            </div>
+
+            <div style="margin-bottom:18px;">
+              <label style="display:block;font-size:.78rem;font-weight:700;color:var(--text-gray);margin-bottom:4px;">Payment UTR / Transaction ID *</label>
+              <input type="text" id="donorTxnId" required placeholder="UPI Ref / Bank Transaction ID from GPay, PhonePe, Paytm, etc." style="width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:.88rem;outline:none;" />
+              <span style="font-size:.72rem;color:var(--text-light);margin-top:3px;display:block;">Complete payment via UPI or Net Banking and paste your Transaction ID / UTR above.</span>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-lg" style="width:100%;justify-content:center;background:var(--primary-blue);"><i class="fa-solid fa-receipt"></i> Submit &amp; Log Donation Record</button>
+          </form>
+
+          <!-- SUCCESS POPUP CONFIRMATION -->
+          <div id="donationSuccessCard" style="display:none;margin-top:20px;padding:20px;background:#edf7f1;border:1.5px solid #2e8b57;border-radius:12px;text-align:center;">
+            <div style="font-size:2.5rem;color:#2e8b57;margin-bottom:8px;"><i class="fa-solid fa-circle-check"></i></div>
+            <h4 style="color:#1b5e20;font-weight:800;font-size:1.15rem;margin-bottom:4px;">Thank You for Your Generosity!</h4>
+            <p style="font-size:.85rem;color:#2e7d32;line-height:1.5;margin-bottom:12px;" id="successMsg">
+              Your contribution has been logged under Transaction ID: <strong id="successTxn"></strong>.
+            </p>
+            <div style="font-size:.8rem;color:#555;margin-bottom:12px;">Our accounts team will verify the payment and email the official 80G tax receipt to you.</div>
+            <button type="button" class="btn btn-outline-blue btn-sm" onclick="resetDonationForm()">Submit Another Contribution</button>
+          </div>
         </div>
 
         <!-- Other ways to help -->
-        <div style="background:linear-gradient(135deg,var(--primary-blue),var(--deep-blue));border-radius:var(--radius-lg);padding:28px;margin-top:24px;">
-          <h4 style="color:var(--white);font-weight:700;margin-bottom:14px;">Other Ways to Help</h4>
-          <div style="display:flex;flex-direction:column;gap:12px;">
+        <div style="background:linear-gradient(135deg,var(--primary-blue),var(--deep-blue));border-radius:var(--radius-lg);padding:24px;margin-top:24px;">
+          <h4 style="color:var(--white);font-weight:700;margin-bottom:12px;font-size:.95rem;">Other Ways to Support</h4>
+          <div style="display:flex;flex-direction:column;gap:10px;">
             <a href="index.html#volunteer" class="btn btn-primary btn-sm" style="text-align:center;"><i class="fa-solid fa-handshake"></i> Become a Volunteer</a>
             <a href="index.html#contact" class="btn btn-secondary btn-sm" style="text-align:center;"><i class="fa-solid fa-building"></i> Partner With Us</a>
           </div>
@@ -261,6 +324,77 @@
       }
     });
   });
+<script>
+  function setDonationAmt(val, btn) {
+    document.querySelectorAll('.amt-chip').forEach(b => {
+      b.classList.remove('active');
+      b.style.background = 'transparent';
+      b.style.color = 'var(--primary-blue)';
+    });
+    btn.classList.add('active');
+    btn.style.background = 'var(--primary-blue)';
+    btn.style.color = '#ffffff';
+    document.getElementById('customAmount').value = val;
+  }
+
+  function handleDonationSubmit(e) {
+    e.preventDefault();
+    const amount = Number(document.getElementById('customAmount').value);
+    const name = document.getElementById('donorName').value.trim();
+    const phone = document.getElementById('donorPhone').value.trim();
+    const email = document.getElementById('donorEmail').value.trim();
+    const pan = document.getElementById('donorPan').value.trim().toUpperCase();
+    const cause = document.getElementById('donationCause').value;
+    const txnId = document.getElementById('donorTxnId').value.trim();
+
+    if (!amount || !name || !phone || !txnId) {
+      alert('Please fill in all mandatory fields marked with an asterisk (*).');
+      return;
+    }
+
+    const now = new Date();
+    const dateStr = now.toISOString().split('T')[0];
+    const timeStr = now.toTimeString().split(' ')[0];
+
+    const newRecord = {
+      id: 'don-' + Date.now(),
+      name,
+      phone,
+      email,
+      pan,
+      amount,
+      txnId,
+      cause,
+      paymentMethod: 'UPI / Direct Bank Transfer',
+      date: dateStr,
+      time: timeStr,
+      status: 'Pending',
+      notes: 'Submitted via public website donate portal.'
+    };
+
+    // Save to shared localStorage key mapped with admin-side/donation-details.html
+    try {
+      const DONATIONS_KEY = 'jsk_donations';
+      const existing = JSON.parse(localStorage.getItem(DONATIONS_KEY) || '[]');
+      existing.unshift(newRecord);
+      localStorage.setItem(DONATIONS_KEY, JSON.stringify(existing));
+    } catch(err) {
+      console.error('Failed to save donation record', err);
+    }
+
+    // Hide form, show confirmation
+    document.getElementById('publicDonationForm').style.display = 'none';
+    const successCard = document.getElementById('donationSuccessCard');
+    document.getElementById('successTxn').textContent = txnId;
+    successCard.style.display = 'block';
+    successCard.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  function resetDonationForm() {
+    document.getElementById('publicDonationForm').reset();
+    document.getElementById('publicDonationForm').style.display = 'block';
+    document.getElementById('donationSuccessCard').style.display = 'none';
+  }
 </script>
 
 </body>

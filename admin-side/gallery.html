@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gallery Management | Admin | Jayasri Kannan Foundation</title>
+  <link rel="icon" type="image/jpeg" href="../user-side/images/logo.jpg" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="admin.css" />
+  <style>
+    .album-pill {
+      background: var(--light-gray);
+      color: var(--text-dark);
+      padding: 6px 14px;
+      border-radius: 50px;
+      font-size: .8rem;
+      font-weight: 600;
+      border: 1px solid var(--border);
+      cursor: pointer;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .album-pill:hover, .album-pill.active {
+      background: var(--primary-blue);
+      color: var(--white);
+      border-color: var(--primary-blue);
+    }
+    .selection-toolbar {
+      position: sticky;
+      top: calc(var(--header-h) + 12px);
+      z-index: 100;
+      background: var(--deep-blue);
+      color: var(--white);
+      padding: 12px 20px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      box-shadow: var(--shadow-md);
+      margin-bottom: 20px;
+      animation: modalIn .2s ease-out;
+    }
+  </style>
+</head>
+<body>
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <img src="../user-side/images/logo.jpg" alt="Logo" class="sidebar-logo" onerror="this.src='https://placehold.co/36x36/0d2548/c9a227?text=JSK'" />
+      <div class="sidebar-brand-text">
+        <div class="sidebar-brand-name">Jayasri Kannan</div>
+        <div class="sidebar-brand-sub">Admin Console</div>
+      </div>
+      <button class="sidebar-toggle" id="sidebarToggle" title="Collapse sidebar">
+        <i class="fa-solid fa-chevron-left toggle-icon"></i>
+      </button>
+    </div>
+
+    <nav class="sidebar-nav" aria-label="Admin Navigation">
+      <div class="nav-section-label">Main</div>
+      <a href="dashboard.html" class="nav-item" data-tooltip="Dashboard">
+        <i class="fa-solid fa-gauge nav-item-icon"></i>
+        <span class="nav-item-text">Dashboard Home</span>
+      </a>
+
+      <div class="nav-section-label">Management</div>
+      <a href="what-we-do.html" class="nav-item" data-tooltip="What We Do">
+        <i class="fa-solid fa-hand-holding-heart nav-item-icon"></i>
+        <span class="nav-item-text">1. Update 'What We Do'</span>
+      </a>
+      <a href="activities.html" class="nav-item" data-tooltip="Manage Activities">
+        <i class="fa-solid fa-bolt nav-item-icon"></i>
+        <span class="nav-item-text">2. Manage Activities</span>
+      </a>
+      <a href="events.html" class="nav-item" data-tooltip="Events">
+        <i class="fa-solid fa-calendar-days nav-item-icon"></i>
+        <span class="nav-item-text">3. Events Management</span>
+      </a>
+      <a href="gallery.html" class="nav-item active" data-tooltip="Gallery">
+        <i class="fa-solid fa-images nav-item-icon"></i>
+        <span class="nav-item-text">4. Gallery Management</span>
+      </a>
+      <a href="donation-details.html" class="nav-item" data-tooltip="Donations">
+        <i class="fa-solid fa-indian-rupee-sign nav-item-icon"></i>
+        <span class="nav-item-text">5. Donation Details</span>
+      </a>
+
+      <div class="nav-section-label">Utilities</div>
+      <a href="../user-side/index.html" class="nav-item" target="_blank" data-tooltip="Public Website">
+        <i class="fa-solid fa-globe nav-item-icon"></i>
+        <span class="nav-item-text">View Public Website</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <button class="btn-logout nav-item" id="logoutBtn" data-tooltip="Logout">
+        <i class="fa-solid fa-right-from-bracket nav-item-icon"></i>
+        <span class="nav-item-text">Logout</span>
+      </button>
+    </div>
+  </aside>
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- MAIN APP -->
+  <div class="app-main" id="appMain">
+    <header class="top-header">
+      <div class="header-left">
+        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu"><i class="fa-solid fa-bars"></i></button>
+        <span class="header-page-title">4. Gallery Management</span>
+      </div>
+      <div class="header-right">
+        <button class="header-icon-btn" title="Notifications"><i class="fa-regular fa-bell"></i></button>
+        <div class="admin-chip">
+          <div class="admin-avatar" id="adminAvatar">JK</div>
+          <span class="admin-chip-name" id="adminName">Admin</span>
+        </div>
+      </div>
+    </header>
+
+    <main class="dashboard-content">
+      <div class="page-header">
+        <div class="page-header-left">
+          <div class="page-header-title">Media & Album Management</div>
+          <div class="page-header-sub">Upload, preview, organize, and group event photos & videos into dedicated albums.</div>
+        </div>
+        <div class="page-header-actions">
+          <button class="btn btn-outline" id="toggleUploadZoneBtn"><i class="fa-solid fa-cloud-arrow-up"></i> Upload Media</button>
+          <button class="btn btn-gold" id="triggerGroupingBtn" disabled title="Select 1 or more items to group"><i class="fa-solid fa-folder-plus"></i> Group into Event Album</button>
+        </div>
+      </div>
+
+      <!-- SELECTION FLOATING TOOLBAR (APPEARS WHEN >=1 SELECTED) -->
+      <div class="selection-toolbar" id="selectionToolbar" style="display:none;">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <span style="font-weight:700;font-size:.9rem;color:var(--light-gold);" id="selectionCountText">0 selected</span>
+          <button class="btn btn-outline btn-sm" id="clearSelectionBtn" style="color:var(--white);border-color:rgba(255,255,255,0.4);"><i class="fa-solid fa-xmark"></i> Clear</button>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <button class="btn btn-gold btn-sm" id="groupSelectedBtn"><i class="fa-solid fa-folder-plus"></i> Group as Event Album</button>
+          <button class="btn btn-danger btn-sm" id="deleteSelectedBtn"><i class="fa-solid fa-trash"></i> Delete Selected</button>
+        </div>
+      </div>
+
+      <!-- UPLOAD DROPZONE -->
+      <div class="card" id="uploadCard" style="margin-bottom:24px;display:none;">
+        <div class="card-header">
+          <div class="card-title"><i class="fa-solid fa-cloud-arrow-up"></i> Upload Images or Videos</div>
+          <button class="btn btn-outline btn-sm" id="closeUploadCardBtn"><i class="fa-solid fa-xmark"></i> Close</button>
+        </div>
+        <div class="card-body">
+          <div class="upload-dropzone" id="dropzone">
+            <i class="fa-solid fa-photo-film upload-icon"></i>
+            <div class="upload-text">Drag & drop image or video files here, or click to browse</div>
+            <div class="upload-hint">Supports JPG, PNG, WEBP, MP4, WebM (Max 50MB per file)</div>
+            <input type="file" id="mediaFileInput" multiple accept="image/*,video/*" style="display:none;" />
+          </div>
+
+          <div style="margin-top:18px;">
+            <div class="form-grid" style="gap:14px;">
+              <div class="form-group">
+                <label class="form-label">Assign Album / Event Title directly (Optional)</label>
+                <input class="form-control" type="text" id="uploadAlbumInput" placeholder="e.g. Free Eye Camp 2026 or General" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Or Add Media via Web URL</label>
+                <div style="display:flex;gap:8px;">
+                  <input class="form-control" type="url" id="uploadUrlInput" placeholder="https://example.com/photo.jpg" />
+                  <button class="btn btn-primary" id="addUrlMediaBtn">Add</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FILTER & ALBUM SELECTION BAR -->
+      <div class="card" style="margin-bottom:20px;">
+        <div class="card-body" style="padding:16px 20px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+            <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;" id="albumPillsContainer">
+              <span class="album-pill active" data-album="all"><i class="fa-solid fa-border-all"></i> All Media</span>
+              <span class="album-pill" data-album="images"><i class="fa-solid fa-image"></i> Photos Only</span>
+              <span class="album-pill" data-album="videos"><i class="fa-solid fa-video"></i> Videos Only</span>
+              <!-- Grouped album pills dynamically injected here -->
+            </div>
+            <div style="display:flex;gap:10px;align-items:center;">
+              <button class="btn btn-outline btn-sm" id="selectAllBtn"><i class="fa-regular fa-square-check"></i> Select All</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MEDIA GRID -->
+      <div class="gallery-grid" id="galleryGrid">
+        <!-- Rendered by JS -->
+      </div>
+    </main>
+  </div>
+
+  <!-- GROUPING MODAL (ASSIGN TO ALBUM) -->
+  <div class="modal-backdrop" id="groupModal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <div class="modal-title"><i class="fa-solid fa-folder-plus"></i> Group Selected Media into Event Album</div>
+        <button class="modal-close" id="closeGroupModalBtn">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-info" style="margin-bottom:16px;">
+          <i class="fa-solid fa-images"></i>
+          <span>Grouping <strong id="modalSelectedCount">0</strong> media items into a unified foundation album.</span>
+        </div>
+        <form id="albumForm" onsubmit="return false;">
+          <div class="form-grid cols-1" style="gap:14px;">
+            <div class="form-group">
+              <label class="form-label">Event / Album Title <span class="req">*</span></label>
+              <input class="form-control" type="text" id="albTitle" required placeholder="e.g. Free Eye Screening & Glasses Camp 2026" />
+            </div>
+
+            <div class="form-grid" style="gap:12px;">
+              <div class="form-group">
+                <label class="form-label">Event Date</label>
+                <input class="form-control" type="date" id="albDate" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Location / Chapter</label>
+                <input class="form-control" type="text" id="albLocation" placeholder="e.g. Ambattur, Chennai" />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Album Description / Caption</label>
+              <textarea class="form-control" id="albDesc" rows="3" placeholder="Brief context describing the highlights captured in this album..."></textarea>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" id="cancelGroupModalBtn">Cancel</button>
+        <button class="btn btn-gold" id="saveAlbumBtn"><i class="fa-solid fa-check"></i> Save & Group Album</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MEDIA PREVIEW MODAL -->
+  <div class="modal-backdrop" id="previewModal">
+    <div class="modal-box modal-lg" style="background:#0a1220;border-color:rgba(255,255,255,0.1);color:var(--white);">
+      <div class="modal-header" style="border-bottom:1px solid rgba(255,255,255,0.1);">
+        <div class="modal-title" style="color:var(--white);" id="previewModalTitle">Media Preview</div>
+        <button class="modal-close" id="closePreviewBtn" style="color:var(--white);">&times;</button>
+      </div>
+      <div class="modal-body" style="padding:0;display:flex;align-items:center;justify-content:center;min-height:350px;background:#000;" id="previewContainer">
+        <!-- Injected img or video -->
+      </div>
+      <div class="modal-footer" style="background:#0a1220;border-color:rgba(255,255,255,0.1);justify-content:space-between;">
+        <span style="font-size:.82rem;color:var(--accent-gold);" id="previewAlbumMeta"></span>
+        <button class="btn btn-outline btn-sm" id="closePreviewBtn2" style="color:var(--white);border-color:rgba(255,255,255,0.3);">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast"></div>
+
+  <script>
+    const API_BASE = (window.location.protocol==='file:'||window.location.hostname==='localhost'||window.location.hostname==='127.0.0.1') ? 'http://localhost:5000' : '';
+    const GALLERY_KEY = 'jsk_gallery_items';
+
+    const DEFAULT_GALLERY = [
+      {
+        _id: 'seed-1',
+        type: 'image',
+        name: 'Eye Examination Camp - Ambattur',
+        url: '../user-side/images/event01.jpeg',
+        album: 'Free Eye Camp 2026',
+        date: '2026-10-18',
+        uploadedAt: '2026-10-18'
+      },
+      {
+        _id: 'seed-2',
+        type: 'image',
+        name: 'Blood Donation Donor Desk',
+        url: '../user-side/images/Blood/Blood1.jpeg',
+        album: 'Blood Drive 2026',
+        date: '2026-09-22',
+        uploadedAt: '2026-09-22'
+      },
+      {
+        _id: 'seed-3',
+        type: 'image',
+        name: 'Student Notebook & Kit Handover',
+        url: '../user-side/images/event3.jpeg',
+        album: 'Education Kits 2026',
+        date: '2026-08-15',
+        uploadedAt: '2026-08-15'
+      },
+      {
+        _id: 'seed-4',
+        type: 'image',
+        name: 'Health Camp Doctor Consultation',
+        url: '../user-side/images/event4.jpeg',
+        album: 'Rural Health Outreach',
+        date: '2026-07-10',
+        uploadedAt: '2026-07-10'
+      },
+      {
+        _id: 'seed-5',
+        type: 'image',
+        name: 'Women Welfare & Community Support',
+        url: '../user-side/images/event2.jpeg',
+        album: 'Community Welfare 2026',
+        date: '2026-06-20',
+        uploadedAt: '2026-06-20'
+      },
+      {
+        _id: 'seed-6',
+        type: 'video',
+        name: 'Foundation Annual Day Highlights',
+        url: '../user-side/images/VID-20260926-WA0444.mp4',
+        album: 'Foundation Anniversary',
+        date: '2026-06-01',
+        uploadedAt: '2026-06-01'
+      }
+    ];
+
+    let mediaItems = [];
+    let selectedIds = new Set();
+    let currentFilter = 'all';
+
+    function getDisplayUrl(url) {
+      if (!url) return '../user-side/images/event01.jpeg';
+      if (url.startsWith('data:') || url.startsWith('http://') || url.startsWith('https://')) return url;
+      if (url.startsWith('/user-side/')) return '..' + url;
+      if (url.startsWith('user-side/')) return '../' + url;
+      if (url.startsWith('images/')) return '../user-side/' + url;
+      return url;
+    }
+
+    async function loadMedia() {
+      try {
+        const res = await fetch(`${API_BASE}/api/gallery`);
+        if (res.ok) {
+          const result = await res.json();
+          if (result.success && Array.isArray(result.data) && result.data.length > 0) {
+            mediaItems = result.data.map(item => ({
+              ...item,
+              id: item._id || item.id,
+              url: getDisplayUrl(item.url)
+            }));
+            localStorage.setItem(GALLERY_KEY, JSON.stringify(mediaItems));
+            renderGallery();
+            return;
+          }
+        }
+      } catch (err) {
+        console.warn('Backend API connection offline, reading from local cache:', err);
+      }
+
+      // Local fallback
+      try {
+        const stored = localStorage.getItem(GALLERY_KEY);
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            mediaItems = parsed.map(item => ({ ...item, id: item._id || item.id, url: getDisplayUrl(item.url) }));
+            renderGallery();
+            return;
+          }
+        }
+      } catch (e) {}
+
+      mediaItems = DEFAULT_GALLERY.map(item => ({ ...item, id: item._id }));
+      localStorage.setItem(GALLERY_KEY, JSON.stringify(mediaItems));
+      renderGallery();
+    }
+
+    function renderGallery() {
+      const grid = document.getElementById('galleryGrid');
+
+      // Update Album Filter Pills
+      updateAlbumPills(mediaItems);
+
+      let filtered = mediaItems;
+      if (currentFilter === 'images') {
+        filtered = mediaItems.filter(i => i.type === 'image');
+      } else if (currentFilter === 'videos') {
+        filtered = mediaItems.filter(i => i.type === 'video');
+      } else if (currentFilter !== 'all') {
+        filtered = mediaItems.filter(i => i.album === currentFilter);
+      }
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `
+          <div style="grid-column:1/-1;" class="empty-state">
+            <i class="fa-solid fa-photo-film"></i>
+            <h3>No media found</h3>
+            <p>Upload files or choose a different album filter.</p>
+          </div>
+        `;
+        return;
+      }
+
+      grid.innerHTML = filtered.map(item => {
+        const itemId = String(item._id || item.id);
+        const isSelected = selectedIds.has(itemId);
+        const isVid = item.type === 'video';
+        const displayUrl = getDisplayUrl(item.url);
+
+        return `
+          <div class="media-card ${isSelected ? 'selected' : ''}" data-id="${itemId}">
+            <div class="media-thumb-wrap">
+              <input type="checkbox" class="media-select-chk" ${isSelected ? 'checked' : ''} onchange="toggleSelect('${itemId}', this.checked)" />
+              <span class="media-badge">
+                <i class="${isVid ? 'fa-solid fa-video' : 'fa-solid fa-image'}"></i>
+                ${isVid ? 'Video' : 'Photo'}
+              </span>
+              ${isVid ? `
+                <video src="${displayUrl}" class="media-thumb" muted preload="metadata" onclick="previewMedia('${itemId}')" style="cursor:pointer;"></video>
+              ` : `
+                <img src="${displayUrl}" class="media-thumb" alt="${escapeHtml(item.name)}" onclick="previewMedia('${itemId}')" style="cursor:pointer;" onerror="this.src='../user-side/images/event01.jpeg'" />
+              `}
+            </div>
+
+            <div class="media-details">
+              <div>
+                <div class="media-name" title="${escapeHtml(item.name)}">${escapeHtml(item.name)}</div>
+                <div class="media-meta">
+                  <span><i class="fa-solid fa-folder" style="color:var(--accent-gold);margin-right:3px;"></i> ${escapeHtml(item.album || 'Unassigned')}</span>
+                  <span>${item.date || ''}</span>
+                </div>
+              </div>
+
+              <div class="media-card-actions">
+                <button class="btn btn-outline btn-sm btn-icon" onclick="previewMedia('${itemId}')" title="Preview"><i class="fa-solid fa-eye"></i></button>
+                <button class="btn btn-danger-outline btn-sm btn-icon" onclick="deleteSingleMedia('${itemId}')" title="Delete from Database"><i class="fa-solid fa-trash"></i></button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      updateSelectionUI();
+    }
+
+    function updateAlbumPills(items) {
+      const container = document.getElementById('albumPillsContainer');
+      const uniqueAlbums = [...new Set(items.map(i => i.album).filter(Boolean))];
+
+      let pillsHtml = `
+        <span class="album-pill ${currentFilter === 'all' ? 'active' : ''}" data-album="all"><i class="fa-solid fa-border-all"></i> All (${items.length})</span>
+        <span class="album-pill ${currentFilter === 'images' ? 'active' : ''}" data-album="images"><i class="fa-solid fa-image"></i> Photos</span>
+        <span class="album-pill ${currentFilter === 'videos' ? 'active' : ''}" data-album="videos"><i class="fa-solid fa-video"></i> Videos</span>
+      `;
+
+      uniqueAlbums.forEach(alb => {
+        const count = items.filter(i => i.album === alb).length;
+        pillsHtml += `
+          <span class="album-pill ${currentFilter === alb ? 'active' : ''}" data-album="${escapeHtml(alb)}">
+            <i class="fa-solid fa-folder"></i> ${escapeHtml(alb)} (${count})
+          </span>
+        `;
+      });
+
+      container.innerHTML = pillsHtml;
+
+      container.querySelectorAll('.album-pill').forEach(pill => {
+        pill.addEventListener('click', () => {
+          currentFilter = pill.dataset.album;
+          renderGallery();
+        });
+      });
+    }
+
+    function escapeHtml(text) {
+      if (!text) return '';
+      return String(text).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    // Selection
+    window.toggleSelect = function(id, isChecked) {
+      if (isChecked) selectedIds.add(String(id));
+      else selectedIds.delete(String(id));
+      renderGallery();
+    };
+
+    function updateSelectionUI() {
+      const count = selectedIds.size;
+      const toolbar = document.getElementById('selectionToolbar');
+      const groupBtn = document.getElementById('triggerGroupingBtn');
+      const countText = document.getElementById('selectionCountText');
+
+      if (count > 0) {
+        toolbar.style.display = 'flex';
+        groupBtn.removeAttribute('disabled');
+        countText.textContent = `${count} item${count > 1 ? 's' : ''} selected`;
+      } else {
+        toolbar.style.display = 'none';
+        groupBtn.setAttribute('disabled', 'true');
+      }
+    }
+
+    document.getElementById('selectAllBtn').addEventListener('click', () => {
+      if (selectedIds.size === mediaItems.length) {
+        selectedIds.clear();
+      } else {
+        mediaItems.forEach(i => selectedIds.add(String(i._id || i.id)));
+      }
+      renderGallery();
+    });
+
+    document.getElementById('clearSelectionBtn').addEventListener('click', () => {
+      selectedIds.clear();
+      renderGallery();
+    });
+
+    // Delete single & bulk with backend API
+    window.deleteSingleMedia = async function(id) {
+      if (confirm('Delete this media item from the database?')) {
+        try {
+          await fetch(`${API_BASE}/api/gallery/${id}`, { method: 'DELETE' });
+        } catch(e) {}
+        mediaItems = mediaItems.filter(i => String(i._id || i.id) !== String(id));
+        selectedIds.delete(String(id));
+        localStorage.setItem(GALLERY_KEY, JSON.stringify(mediaItems));
+        renderGallery();
+        toast('Media item deleted from database.', 'success');
+      }
+    };
+
+    document.getElementById('deleteSelectedBtn').addEventListener('click', async () => {
+      if (confirm(`Delete ${selectedIds.size} selected media item(s) from database?`)) {
+        const idsArray = Array.from(selectedIds);
+        try {
+          await fetch(`${API_BASE}/api/gallery/bulk-delete`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ ids: idsArray })
+          });
+        } catch(e) {}
+        mediaItems = mediaItems.filter(i => !selectedIds.has(String(i._id || i.id)));
+        selectedIds.clear();
+        localStorage.setItem(GALLERY_KEY, JSON.stringify(mediaItems));
+        renderGallery();
+        toast('Selected media items deleted.', 'success');
+      }
+    });
+
+    // Grouping into Album Modal
+    const groupModal = document.getElementById('groupModal');
+    function openGroupModal() {
+      if (selectedIds.size === 0) {
+        toast('Select at least one photo or video to group.', 'error');
+        return;
+      }
+      document.getElementById('modalSelectedCount').textContent = selectedIds.size;
+      groupModal.classList.add('active');
+    }
+    function closeGroupModal() {
+      groupModal.classList.remove('active');
+      document.getElementById('albumForm').reset();
+    }
+
+    document.getElementById('triggerGroupingBtn').addEventListener('click', openGroupModal);
+    document.getElementById('groupSelectedBtn').addEventListener('click', openGroupModal);
+    document.getElementById('closeGroupModalBtn').addEventListener('click', closeGroupModal);
+    document.getElementById('cancelGroupModalBtn').addEventListener('click', closeGroupModal);
+
+    document.getElementById('saveAlbumBtn').addEventListener('click', async () => {
+      const title = document.getElementById('albTitle').value.trim();
+      const date = document.getElementById('albDate').value;
+      const location = document.getElementById('albLocation').value.trim();
+      const desc = document.getElementById('albDesc').value.trim();
+
+      if (!title) {
+        toast('Please specify an album or event title.', 'error');
+        return;
+      }
+
+      const idsArray = Array.from(selectedIds);
+
+      try {
+        await fetch(`${API_BASE}/api/gallery/group`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            ids: idsArray,
+            album: title,
+            date,
+            location,
+            albumDesc: desc
+          })
+        });
+      } catch(e) {}
+
+      mediaItems.forEach(item => {
+        if (selectedIds.has(String(item._id || item.id))) {
+          item.album = title;
+          if (date) item.date = date;
+          if (location) item.location = location;
+          if (desc) item.albumDesc = desc;
+        }
+      });
+
+      localStorage.setItem(GALLERY_KEY, JSON.stringify(mediaItems));
+      selectedIds.clear();
+      closeGroupModal();
+      currentFilter = title;
+      renderGallery();
+      toast(`Successfully grouped items into "${title}" in the database!`, 'success');
+    });
+
+    // Upload & Dropzone Handling
+    const uploadCard = document.getElementById('uploadCard');
+    const toggleUploadBtn = document.getElementById('toggleUploadZoneBtn');
+    const closeUploadBtn = document.getElementById('closeUploadCardBtn');
+    const dropzone = document.getElementById('dropzone');
+    const fileInput = document.getElementById('mediaFileInput');
+
+    toggleUploadBtn.addEventListener('click', () => {
+      uploadCard.style.display = uploadCard.style.display === 'none' ? 'block' : 'none';
+      if (uploadCard.style.display === 'block') uploadCard.scrollIntoView({ behavior: 'smooth' });
+    });
+    closeUploadBtn.addEventListener('click', () => { uploadCard.style.display = 'none'; });
+
+    dropzone.addEventListener('click', () => fileInput.click());
+
+    ['dragenter', 'dragover'].forEach(eventName => {
+      dropzone.addEventListener(eventName, e => { e.preventDefault(); dropzone.classList.add('dragover'); }, false);
+    });
+    ['dragleave', 'drop'].forEach(eventName => {
+      dropzone.addEventListener(eventName, e => { e.preventDefault(); dropzone.classList.remove('dragover'); }, false);
+    });
+
+    dropzone.addEventListener('drop', e => {
+      const files = e.dataTransfer.files;
+      handleFiles(files);
+    });
+    fileInput.addEventListener('change', e => {
+      handleFiles(e.target.files);
+    });
+
+    async function handleFiles(files) {
+      if (!files || files.length === 0) return;
+      const album = document.getElementById('uploadAlbumInput').value.trim() || 'General';
+      const today = new Date().toISOString().split('T')[0];
+
+      for (const file of Array.from(files)) {
+        const isVideo = file.type.startsWith('video');
+        const reader = new FileReader();
+
+        reader.onload = async function(e) {
+          const payload = {
+            name: file.name.replace(/\.[^/.]+$/, ''),
+            type: isVideo ? 'video' : 'image',
+            url: e.target.result,
+            album: album,
+            date: today
+          };
+
+          try {
+            const res = await fetch(`${API_BASE}/api/gallery`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(payload)
+            });
+            if (res.ok) {
+              const created = await res.json();
+              if (created.data) {
+                payload._id = created.data._id;
+              }
+            }
+          } catch(err) {}
+
+          if (!payload._id) payload._id = 'up-' + Date.now();
+          mediaItems.unshift(payload);
+          localStorage.setItem(GALLERY_KEY, JSON.stringify(mediaItems));
+          renderGallery();
+        };
+
+        reader.readAsDataURL(file);
+      }
+
+      toast(`Saved ${files.length} file(s) into database album "${album}"!`, 'success');
+      uploadCard.style.display = 'none';
+      fileInput.value = '';
+    }
+
+    document.getElementById('addUrlMediaBtn').addEventListener('click', async () => {
+      const url = document.getElementById('uploadUrlInput').value.trim();
+      const album = document.getElementById('uploadAlbumInput').value.trim() || 'General';
+      if (!url) { toast('Please enter a media URL.', 'error'); return; }
+
+      const isVideo = url.endsWith('.mp4') || url.endsWith('.webm');
+      const today = new Date().toISOString().split('T')[0];
+      const payload = {
+        name: 'Web Media ' + (new Date().toLocaleTimeString()),
+        type: isVideo ? 'video' : 'image',
+        url: url,
+        album: album,
+        date: today
+      };
+
+      try {
+        const res = await fetch(`${API_BASE}/api/gallery`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        if (res.ok) {
+          const created = await res.json();
+          if (created.data) payload._id = created.data._id;
+        }
+      } catch(err) {}
+
+      if (!payload._id) payload._id = 'url-' + Date.now();
+      mediaItems.unshift(payload);
+      localStorage.setItem(GALLERY_KEY, JSON.stringify(mediaItems));
+      document.getElementById('uploadUrlInput').value = '';
+      uploadCard.style.display = 'none';
+      renderGallery();
+      toast('Media saved to database!', 'success');
+    });
+
+    // Preview Modal
+    const previewModal = document.getElementById('previewModal');
+    window.previewMedia = function(id) {
+      const item = mediaItems.find(i => String(i._id || i.id) === String(id));
+      if (!item) return;
+
+      document.getElementById('previewModalTitle').textContent = item.name;
+      document.getElementById('previewAlbumMeta').innerHTML = `<i class="fa-solid fa-folder"></i> Album: ${escapeHtml(item.album || 'None')} &bull; Date: ${item.date || 'N/A'}`;
+
+      const container = document.getElementById('previewContainer');
+      const displayUrl = getDisplayUrl(item.url);
+      if (item.type === 'video') {
+        container.innerHTML = `<video src="${displayUrl}" controls autoplay style="max-width:100%;max-height:70vh;"></video>`;
+      } else {
+        container.innerHTML = `<img src="${displayUrl}" alt="${escapeHtml(item.name)}" style="max-width:100%;max-height:70vh;object-fit:contain;" onerror="this.src='../user-side/images/event01.jpeg'" />`;
+      }
+      previewModal.classList.add('active');
+    };
+
+    function closePreview() {
+      const container = document.getElementById('previewContainer');
+      const video = container.querySelector('video');
+      if (video) video.pause();
+      previewModal.classList.remove('active');
+      container.innerHTML = '';
+    }
+    document.getElementById('closePreviewBtn').addEventListener('click', closePreview);
+    document.getElementById('closePreviewBtn2').addEventListener('click', closePreview);
+
+    function toast(msg, type = '') {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.className = type ? `show toast-${type}` : 'show';
+      setTimeout(() => t.className = '', 3200);
+    }
+
+    // Auth & Navigation
+    const token = localStorage.getItem('jsk_admin_token');
+    if (!token) window.location.replace('login.html');
+    const name = localStorage.getItem('jsk_admin_name') || 'Admin';
+    document.getElementById('adminName').textContent = name.split(' ')[0];
+    document.getElementById('adminAvatar').textContent = name.split(' ').map(n=>n[0]).slice(0,2).join('').toUpperCase();
+
+    const sidebar = document.getElementById('sidebar');
+    const appMain = document.getElementById('appMain');
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    let isCollapsed = localStorage.getItem('jsk_sidebar_collapsed') === 'true';
+    if (isCollapsed) { sidebar.classList.add('collapsed'); appMain.classList.add('shifted'); }
+
+    sidebarToggle.addEventListener('click', () => {
+      isCollapsed = !isCollapsed;
+      sidebar.classList.toggle('collapsed', isCollapsed);
+      appMain.classList.toggle('shifted', isCollapsed);
+      localStorage.setItem('jsk_sidebar_collapsed', isCollapsed);
+    });
+
+    document.getElementById('mobileMenuBtn').addEventListener('click', () => {
+      sidebar.classList.toggle('mobile-open');
+      document.getElementById('sidebarOverlay').classList.toggle('visible');
+    });
+
+    document.getElementById('sidebarOverlay').addEventListener('click', () => {
+      sidebar.classList.remove('mobile-open');
+      document.getElementById('sidebarOverlay').classList.remove('visible');
+    });
+
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      if (confirm('Are you sure you want to sign out?')) {
+        ['jsk_admin_token', 'jsk_admin_name', 'jsk_admin_email', 'jsk_admin_role'].forEach(k => localStorage.removeItem(k));
+        window.location.href = 'login.html';
+      }
+    });
+
+    // Initial load from backend database
+    loadMedia();
+  </script>
+</body>
+</html>

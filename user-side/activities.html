@@ -18,6 +18,7 @@
       <a href="mailto:jskfoundation29@gmail.com"><i class="fa-solid fa-envelope"></i> jskfoundation29@gmail.com</a>
     </div>
     <div class="topbar-right">
+      <a href="../admin-side/login.html" id="adminPortalLink" title="Admin Login" style="display:inline-flex;align-items:center;gap:4px;color:rgba(255,255,255,0.75);font-size:12px;font-weight:500;text-decoration:none;white-space:nowrap;margin-right:12px;transition:color 0.2s;" onmouseover="this.style.color='#f0c84a';" onmouseout="this.style.color='rgba(255,255,255,0.75)';"><i class="fa-solid fa-lock" style="font-size:10px;"></i> Admin</a>
       <a href="#" aria-label="Facebook">f</a><a href="#" aria-label="Instagram">in</a><a href="#" aria-label="YouTube">▶</a>
     </div>
   </div>
@@ -68,6 +69,22 @@
       <h2 class="section-title">Making a Difference<br><span>Through Service</span></h2>
       <div class="divider center"></div>
       <p class="section-subtitle">Each of our programmes is designed around real community needs with a focus on sustainable, accessible impact.</p>
+    </div>
+
+    <!-- ACTIVE NEXT ACTIVITY SLOT BANNER (SYNCED WITH ADMIN) -->
+    <div id="userActiveSlotBanner" style="display:none;background:linear-gradient(135deg,var(--deep-blue) 0%,var(--primary-blue) 100%);color:var(--white);padding:30px;border-radius:var(--radius-lg);margin-bottom:45px;border:1.5px solid rgba(201,162,39,0.4);box-shadow:var(--shadow-md);position:relative;overflow:hidden;">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:12px;">
+        <span class="badge" style="background:rgba(201,162,39,0.2);color:var(--light-gold);padding:4px 12px;border-radius:50px;font-size:.78rem;font-weight:700;"><i class="fa-solid fa-star"></i> Featured Next Activity Slot</span>
+        <span id="userSlotCategory" style="font-size:.85rem;color:rgba(255,255,255,0.85);font-weight:600;"></span>
+      </div>
+      <h3 id="userSlotTitle" style="font-family:'Montserrat',sans-serif;font-size:1.45rem;font-weight:800;color:var(--white);margin-bottom:8px;"></h3>
+      <p id="userSlotDesc" style="color:rgba(255,255,255,0.85);line-height:1.6;font-size:.92rem;max-width:760px;margin-bottom:18px;"></p>
+      <div style="display:flex;gap:24px;flex-wrap:wrap;font-size:.84rem;color:rgba(255,255,255,0.8);align-items:center;">
+        <span><i class="fa-regular fa-calendar" style="color:var(--accent-gold);margin-right:4px;"></i> <strong id="userSlotDate"></strong></span>
+        <span><i class="fa-solid fa-location-dot" style="color:var(--accent-gold);margin-right:4px;"></i> <span id="userSlotLocation"></span></span>
+        <span><i class="fa-solid fa-users" style="color:var(--accent-gold);margin-right:4px;"></i> <span id="userSlotTarget"></span></span>
+        <a href="contact.html" class="btn btn-gold btn-sm" style="margin-left:auto;background:var(--accent-gold);color:var(--deep-blue);font-weight:700;">Join This Activity →</a>
+      </div>
     </div>
 
     <!-- Healthcare -->

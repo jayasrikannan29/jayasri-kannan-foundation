@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const Contact = require('../models/Contact');
 const { Resend } = require('resend');
 
@@ -142,6 +143,9 @@ exports.createContact = async (req, res) => {
  */
 exports.getAllContacts = async (req, res) => {
   try {
+    if (mongoose.connection.readyState !== 1) {
+      return res.status(200).json({ success: true, count: 0, data: [], note: 'Database offline or IP not whitelisted in Atlas' });
+    }
     const contacts = await Contact.find().sort({ createdAt: -1 });
     return res.status(200).json({ success: true, count: contacts.length, data: contacts });
   } catch (error) {

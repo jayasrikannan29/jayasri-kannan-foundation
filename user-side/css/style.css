@@ -255,6 +255,27 @@ img { max-width: 100%; display: block; }
   margin-left: 12px;
 }
 
+/* Admin portal lock icon — subtle, top-right of navbar */
+.nav-admin-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  color: var(--text-light);
+  font-size: 0.82rem;
+  flex-shrink: 0;
+  transition: var(--transition);
+  border: 1.5px solid var(--mid-gray);
+  margin-left: 6px;
+}
+.nav-admin-link:hover {
+  background: var(--deep-blue);
+  color: var(--accent-gold);
+  border-color: var(--deep-blue);
+}
+
 .nav-toggle {
   display: none;
   flex-direction: column;

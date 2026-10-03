@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const Volunteer = require('../models/Volunteer');
 const { Resend } = require('resend');
 
@@ -155,6 +156,9 @@ exports.createVolunteer = async (req, res) => {
  */
 exports.getAllVolunteers = async (req, res) => {
   try {
+    if (mongoose.connection.readyState !== 1) {
+      return res.status(200).json({ success: true, count: 0, data: [], note: 'Database offline or IP not whitelisted in Atlas' });
+    }
     const volunteers = await Volunteer.find().sort({ createdAt: -1 });
     return res.status(200).json({ success: true, count: volunteers.length, data: volunteers });
   } catch (error) {
