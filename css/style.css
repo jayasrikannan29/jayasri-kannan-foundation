@@ -27,6 +27,9 @@
   --radius-md: 14px;
   --radius-lg: 22px;
   --transition: all 0.3s ease;
+  --topbar-height: 40px;
+  --navbar-height: 64px;
+  --header-height: calc(var(--topbar-height) + var(--navbar-height));
 }
 
 /* ---- RESET & BASE ---- */
@@ -189,11 +192,12 @@ img { max-width: 100%; display: block; }
   z-index: 1000;
   box-shadow: 0 2px 20px rgba(26,58,110,0.1);
   transition: var(--transition);
+  padding: 8px 0;
 }
 
 .navbar .container {
   display: flex; align-items: center; gap: 20px;
-  padding-top: 10px; padding-bottom: 10px;
+  padding-top: 4px; padding-bottom: 4px;
 }
 
 .nav-brand {
@@ -201,7 +205,7 @@ img { max-width: 100%; display: block; }
   flex-shrink: 0;
 }
 
-.nav-logo { width: 62px; height: 62px; object-fit: contain; }
+.nav-logo { width: 50px; height: 50px; object-fit: contain; }
 
 .nav-brand-text {}
 .nav-brand-name {
@@ -267,11 +271,16 @@ img { max-width: 100%; display: block; }
   display: block;
 }
 
-/* ---- HERO SLIDER ---- */
+/* ---- SECTION SCROLL OFFSET & HERO SLIDER ---- */
+section[id], #home {
+  position: relative;
+  scroll-margin-top: var(--navbar-height);
+}
+
 .hero {
   position: relative;
   overflow: hidden;
-  height: 88vh;
+  height: calc(100vh - var(--header-height));
   min-height: 520px;
 }
 
@@ -287,14 +296,14 @@ img { max-width: 100%; display: block; }
   position: relative;
   overflow: hidden;
   background-size: cover;
-  background-position: center;
+  background-position: center top;
   background-repeat: no-repeat;
 }
 
 .hero-slide img, .slide img {
   width: 100%; height: 100%;
   object-fit: cover;
-  object-position: center;
+  object-position: center top;
 }
 
 .slide-1 { background-image: url('../images/slide-ph-1_2.jpg'); }
@@ -1281,10 +1290,15 @@ footer {
 
 /* ---- TOPBAR: hide on very small screens ---- */
 @media (max-width: 768px) {
+  :root {
+    --header-height: var(--navbar-height);
+  }
+
   .topbar { display: none; }
 
   /* Navbar */
-  .navbar .container { padding-top: 8px; padding-bottom: 8px; gap: 10px; }
+  .navbar { padding: 4px 0; }
+  .navbar .container { padding-top: 6px; padding-bottom: 6px; gap: 10px; }
   .nav-logo { width: 46px; height: 46px; }
   .nav-brand-name { font-size: 0.88rem; }
   .nav-brand-tag { font-size: 0.6rem; }
