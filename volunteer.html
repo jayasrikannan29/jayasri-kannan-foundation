@@ -158,11 +158,14 @@
             <textarea id="volMessage" placeholder="Tell us about your skills, availability or any other information..." style="min-height:100px;"></textarea>
           </div>
 
-          <button type="submit" class="btn btn-blue" style="width:100%;justify-content:center;font-size:1rem;padding:16px;"><i class="fa-solid fa-handshake"></i> Join As a Volunteer</button>
+          <button type="submit" id="volSubmitBtn" class="btn btn-blue" style="width:100%;justify-content:center;font-size:1rem;padding:16px;"><i class="fa-solid fa-handshake"></i> Join As a Volunteer</button>
         </form>
 
         <div id="volSuccess" style="display:none;margin-top:16px;padding:16px;background:rgba(46,139,87,0.1);border-radius:10px;border:1px solid var(--accent-green);color:var(--accent-green);font-weight:600;">
           <i class="fa-solid fa-check-circle"></i> Thank you for registering as a volunteer! We will contact you soon about opportunities to serve.
+        </div>
+        <div id="volError" style="display:none;margin-top:16px;padding:16px;background:rgba(217,83,79,0.1);border-radius:10px;border:1px solid #d9534f;color:#d9534f;font-weight:600;">
+          <i class="fa-solid fa-exclamation-circle"></i> <span id="volErrorMsg">Something went wrong. Please try again.</span>
         </div>
       </div>
 
@@ -225,11 +228,65 @@
   navToggle.addEventListener('click',()=>navMenu.classList.add('open'));closeMenu.addEventListener('click',()=>navMenu.classList.remove('open'));
   const s=document.getElementById('scrollTop');window.addEventListener('scroll',()=>s.classList.toggle('visible',scrollY>400));s.addEventListener('click',()=>scrollTo({top:0,behavior:'smooth'}));
 
-  function handleVolunteerForm(e) {
+  async function handleVolunteerForm(e) {
     e.preventDefault();
-    document.getElementById('volSuccess').style.display = 'block';
-    e.target.reset();
-    setTimeout(()=>{ document.getElementById('volSuccess').style.display='none'; }, 6000);
+    const submitBtn = document.getElementById('volSubmitBtn');
+    const successDiv = document.getElementById('volSuccess');
+    const errorDiv = document.getElementById('volError');
+    const errorMsgSpan = document.getElementById('volErrorMsg');
+
+    successDiv.style.display = 'none';
+    errorDiv.style.display = 'none';
+
+    const payload = {
+      fullName: document.getElementById('volName').value.trim(),
+      mobile: document.getElementById('volMobile').value.trim(),
+      email: document.getElementById('volEmail').value.trim(),
+      location: document.getElementById('volLocation').value.trim(),
+      ageGroup: document.getElementById('volAge').value,
+      areaOfInterest: document.getElementById('volInterest').value,
+      profession: document.getElementById('volProfession').value.trim(),
+      message: document.getElementById('volMessage').value.trim()
+    };
+
+    if (!payload.fullName || !payload.mobile || !payload.location || !payload.areaOfInterest) {
+      errorMsgSpan.textContent = 'Please fill in all required fields (*).';
+      errorDiv.style.display = 'block';
+      return;
+    }
+
+    try {
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Submitting...';
+
+      const API_URL = window.location.origin.includes('localhost')
+        ? 'http://localhost:5000/api/volunteers'
+        : '/api/volunteers';
+
+      const response = await fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      const result = await response.json();
+
+      if (response.ok && result.success) {
+        successDiv.style.display = 'block';
+        e.target.reset();
+        setTimeout(() => { successDiv.style.display = 'none'; }, 8000);
+      } else {
+        errorMsgSpan.textContent = result.error || 'Failed to submit application. Please check your entries.';
+        errorDiv.style.display = 'block';
+      }
+    } catch (err) {
+      console.error('Volunteer Form Error:', err);
+      errorMsgSpan.textContent = 'Network error. Please make sure the backend server is running.';
+      errorDiv.style.display = 'block';
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = '<i class="fa-solid fa-handshake"></i> Join As a Volunteer';
+    }
   }
 </script>
 </body>
