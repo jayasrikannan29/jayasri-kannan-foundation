@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Events & Programmes | Jayasri Kannan Foundation</title>
+  <meta name="description" content="Stay updated with Jayasri Kannan Foundation's latest community events, healthcare camps, eye camps, blood donation drives and youth programmes." />
+  <link rel="icon" type="image/jpeg" href="images/logo.jpg" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    .event-full-card {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      border: 1.5px solid var(--mid-gray);
+      transition: var(--transition);
+      margin-bottom: 30px;
+    }
+    .event-full-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-4px); }
+    .event-full-header {
+      display: grid;
+      grid-template-columns: 340px 1fr;
+    }
+    .event-full-img { height: 100%; min-height: 260px; object-fit: cover; width: 100%; }
+    .event-full-body { padding: 36px; }
+    .event-detail-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin: 20px 0; }
+    .event-detail-item { background: var(--off-white); padding: 12px 16px; border-radius: 10px; }
+    .event-detail-item span { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 1px; color: var(--accent-gold); font-weight: 700; }
+    .event-detail-item p { font-size: 0.9rem; color: var(--text-dark); font-weight: 500; }
+    @media(max-width:768px) { .event-full-header { grid-template-columns: 1fr; } .event-detail-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="container">
+    <div class="topbar-left">
+      <a href="tel:9677232041"><i class="fa-solid fa-phone"></i> 9677232041 / 9941531140 / 9025948033</a>
+      <a href="mailto:jskfoundation29@gmail.com"><i class="fa-solid fa-envelope"></i> jskfoundation29@gmail.com</a>
+    </div>
+    <div class="topbar-right">
+      <a href="#" aria-label="Facebook">f</a><a href="#" aria-label="Instagram">in</a><a href="#" aria-label="YouTube">▶</a>
+    </div>
+  </div>
+</div>
+
+<nav class="navbar">
+  <div class="container">
+    <a href="index.html" class="nav-brand">
+      <img src="images/logo.jpg" alt="Logo" class="nav-logo" />
+      <div class="nav-brand-text">
+        <div class="nav-brand-name">Jayasri Kannan<br>Foundation</div>
+        <div class="nav-brand-tag">Serving Humanity</div>
+      </div>
+    </a>
+    <ul class="nav-menu" id="navMenu">
+      <button class="close-menu" id="closeMenu">✕</button>
+      <li><a href="index.html" class="nav-link">Home</a></li>
+      <li><a href="about.html" class="nav-link">About Us</a></li>
+      <li><a href="activities.html" class="nav-link">Our Activities</a></li>
+      <li><a href="eye-care.html" class="nav-link">Eye Care</a></li>
+      <li><a href="blood-donation.html" class="nav-link">Blood Donation</a></li>
+      <li><a href="events.html" class="nav-link active">Events</a></li>
+      <li><a href="gallery.html" class="nav-link">Gallery</a></li>
+      <li><a href="volunteer.html" class="nav-link">Volunteer</a></li>
+      <li><a href="contact.html" class="nav-link">Contact</a></li>
+    </ul>
+    <a href="donate.html" class="btn btn-primary btn-sm nav-donate"><i class="fa-solid fa-heart"></i> Donate Now</a>
+    <button class="nav-toggle" id="navToggle"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<!-- PAGE HERO -->
+<section class="page-hero">
+  <div class="container">
+    <div class="page-hero-content">
+      <div class="breadcrumb"><a href="index.html">Home</a> <span>›</span> Events</div>
+      <h1>Events &amp; Programmes</h1>
+      <p>Stay updated with our latest community activities and programmes.</p>
+    </div>
+  </div>
+</section>
+
+<!-- EVENTS LIST -->
+<section class="section-pad" style="background:var(--off-white);">
+  <div class="container">
+
+    <!-- Filter Tabs -->
+    <div style="display:flex;gap:12px;margin-bottom:48px;flex-wrap:wrap;" id="eventFilters">
+      <button onclick="filterEvents('all',this)" class="btn btn-blue btn-sm" style="border-radius:50px;">All Events</button>
+      <button onclick="filterEvents('eye',this)" class="btn btn-outline-blue btn-sm" style="border-radius:50px;">Eye Care</button>
+      <button onclick="filterEvents('blood',this)" class="btn btn-outline-blue btn-sm" style="border-radius:50px;">Blood Donation</button>
+      <button onclick="filterEvents('health',this)" class="btn btn-outline-blue btn-sm" style="border-radius:50px;">Healthcare</button>
+    </div>
+
+    <!-- Event 1 -->
+    <div class="event-full-card" data-cat="eye">
+      <div class="event-full-header">
+        <img src="images/eye/eye1.jpeg" alt="Free Eye Check-Up Camp" class="event-full-img" />
+        <div class="event-full-body">
+          <span class="event-badge" style="position:static;display:inline-block;margin-bottom:12px;">Eye Care</span>
+          <h2 style="font-family:'Montserrat',sans-serif;font-size:1.4rem;font-weight:800;color:var(--deep-blue);margin-bottom:10px;">Free Eye Check-Up Camp</h2>
+          <p style="font-size:0.9rem;color:var(--text-gray);margin-bottom:6px;">Free eye screening and eye-health awareness programme for students and community members.</p>
+          <div class="event-detail-grid">
+            <div class="event-detail-item"><span>Date</span><p>As Announced</p></div>
+            <div class="event-detail-item"><span>Time</span><p>As Announced</p></div>
+            <div class="event-detail-item"><span>Venue</span><p>To Be Announced</p></div>
+            <div class="event-detail-item"><span>Organised By</span><p>Jayasri Kannan Foundation</p></div>
+          </div>
+          <p style="font-size:0.88rem;color:var(--text-gray);margin-bottom:20px;">In association with participating educational institutions, healthcare professionals and hospital partners.</p>
+          <div style="display:flex;gap:12px;flex-wrap:wrap;">
+            <a href="eye-care.html" class="btn btn-blue btn-sm">View Programme</a>
+            <a href="contact.html" class="btn btn-outline-blue btn-sm">Register Interest</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Event 2 -->
+    <div class="event-full-card" data-cat="blood">
+      <div class="event-full-header">
+        <img src="images/Blood/Blood1.jpeg" alt="Blood Donation Camp" class="event-full-img" />
+        <div class="event-full-body">
+          <span class="event-badge" style="position:static;display:inline-block;margin-bottom:12px;background:#c62828;color:white;">Blood Donation</span>
+          <h2 style="font-family:'Montserrat',sans-serif;font-size:1.4rem;font-weight:800;color:var(--deep-blue);margin-bottom:10px;">Blood Donation Camp</h2>
+          <p style="font-size:0.9rem;color:var(--text-gray);margin-bottom:6px;">Community blood donation programme conducted with appropriate healthcare partners.</p>
+          <div class="event-detail-grid">
+            <div class="event-detail-item"><span>Date</span><p>As Announced</p></div>
+            <div class="event-detail-item"><span>Time</span><p>As Announced</p></div>
+            <div class="event-detail-item"><span>Venue</span><p>To Be Announced</p></div>
+            <div class="event-detail-item"><span>Organised By</span><p>Jayasri Kannan Foundation</p></div>
+          </div>
+          <p style="font-size:0.88rem;color:var(--text-gray);margin-bottom:20px;">In collaboration with appropriate hospitals, blood banks and service organisations.</p>
+          <div style="display:flex;gap:12px;flex-wrap:wrap;">
+            <a href="blood-donation.html" class="btn btn-red btn-sm">View Programme</a>
+            <a href="contact.html" class="btn btn-outline-blue btn-sm">Register Interest</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Event 3 -->
+    <div class="event-full-card" data-cat="health">
+      <div class="event-full-header">
+        <img src="images/health/Health.jpeg" alt="Health Awareness Programme" class="event-full-img" />
+        <div class="event-full-body">
+          <span class="event-badge" style="position:static;display:inline-block;margin-bottom:12px;background:var(--accent-green);color:white;">Healthcare</span>
+          <h2 style="font-family:'Montserrat',sans-serif;font-size:1.4rem;font-weight:800;color:var(--deep-blue);margin-bottom:10px;">Health Awareness Programme</h2>
+          <p style="font-size:0.9rem;color:var(--text-gray);margin-bottom:6px;">Health education and awareness programmes for students and communities.</p>
+          <div class="event-detail-grid">
+            <div class="event-detail-item"><span>Date</span><p>As Announced</p></div>
+            <div class="event-detail-item"><span>Time</span><p>As Announced</p></div>
+            <div class="event-detail-item"><span>Venue</span><p>To Be Announced</p></div>
+            <div class="event-detail-item"><span>Organised By</span><p>Jayasri Kannan Foundation</p></div>
+          </div>
+          <p style="font-size:0.88rem;color:var(--text-gray);margin-bottom:20px;">Community healthcare initiatives with qualified professionals and partners.</p>
+          <div style="display:flex;gap:12px;flex-wrap:wrap;">
+            <a href="activities.html" class="btn btn-blue btn-sm">View Programme</a>
+            <a href="contact.html" class="btn btn-outline-blue btn-sm">Register Interest</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    
+    </div>
+
+  </div>
+</section>
+
+<!-- UPCOMING NOTICE -->
+<section style="background:linear-gradient(135deg,var(--primary-blue),var(--deep-blue));padding:60px 0;">
+  <div class="container">
+    <div class="text-center">
+      <div style="font-size:3rem;margin-bottom:16px;"><i class="fa-solid fa-bullhorn"></i></div>
+      <h2 style="font-family:'Montserrat',sans-serif;font-size:1.8rem;font-weight:800;color:var(--white);margin-bottom:12px;">Stay Updated</h2>
+      <p style="color:rgba(255,255,255,0.8);max-width:550px;margin:0 auto 28px;">Follow us on social media and check this page regularly for updates on upcoming camps and programmes.</p>
+      <a href="contact.html" class="btn btn-primary btn-lg">Register Your Interest</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo-wrap"><img src="images/logo.jpg" alt="Logo" class="footer-logo" /><div class="footer-brand-name">Jayasri Kannan<br>Foundation</div></div>
+        <p>Serving Humanity • Supporting Communities • Creating a Healthier Future</p>
+        <div class="footer-social"><a href="#" aria-label="Facebook">f</a><a href="#" aria-label="Instagram">in</a><a href="#" aria-label="YouTube">▶</a></div>
+      </div>
+      <div class="footer-col"><h4>Quick Links</h4><ul>
+        <li><a href="index.html">Home</a></li><li><a href="about.html">About Us</a></li>
+        <li><a href="activities.html">Our Activities</a></li><li><a href="eye-care.html">Eye Care</a></li>
+        <li><a href="blood-donation.html">Blood Donation</a></li><li><a href="events.html">Events</a></li><li><a href="gallery.html">Gallery</a></li>
+      </ul></div>
+      <div class="footer-col"><h4>Get Involved</h4><ul>
+        <li><a href="volunteer.html">Become a Volunteer</a></li>
+        <li><a href="donate.html">Donate</a></li>
+        <li><a href="contact.html">Partner With Us</a></li>
+      </ul></div>
+      <div class="footer-col"><h4>Contact Us</h4>
+        <div class="footer-contact-item"><div class="footer-contact-icon"><i class="fa-solid fa-phone"></i></div><p>9677232041 / 9941531140 / 9025948033</p></div>
+        <div class="footer-contact-item"><div class="footer-contact-icon"><i class="fa-solid fa-envelope"></i></div><p>jskfoundation29@gmail.com</p></div>
+        <div style="margin-top:20px;"><a href="donate.html" class="btn btn-primary btn-sm"><i class="fa-solid fa-heart"></i> Donate Now</a></div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 Jayasri Kannan Foundation. All Rights Reserved.</p>
+      <div style="display:flex;gap:16px;"><a href="#">Privacy Policy</a><a href="#">Terms of Use</a></div>
+    </div>
+  </div>
+</footer>
+
+<button class="scroll-top" id="scrollTop">↑</button>
+<script>
+  const navToggle=document.getElementById('navToggle');const closeMenu=document.getElementById('closeMenu');const navMenu=document.getElementById('navMenu');
+  navToggle.addEventListener('click',()=>navMenu.classList.add('open'));closeMenu.addEventListener('click',()=>navMenu.classList.remove('open'));
+  const s=document.getElementById('scrollTop');window.addEventListener('scroll',()=>s.classList.toggle('visible',scrollY>400));s.addEventListener('click',()=>scrollTo({top:0,behavior:'smooth'}));
+
+  function filterEvents(cat, btn) {
+    document.querySelectorAll('#eventFilters button').forEach(b => { b.classList.remove('btn-blue'); b.classList.add('btn-outline-blue'); });
+    btn.classList.add('btn-blue'); btn.classList.remove('btn-outline-blue');
+    document.querySelectorAll('.event-full-card').forEach(card => {
+      if (cat === 'all' || card.dataset.cat === cat) { card.style.display = ''; }
+      else { card.style.display = 'none'; }
+    });
+  }
+</script>
+</body>
+</html>

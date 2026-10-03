@@ -1,0 +1,21 @@
+# Dependencies
+node_modules/
+npm-debug.log*
+
+# Helper/refactor scripts (not part of website)
+refactor.js
+refactor_fix.js
+refactor_regex.js
+reorder_sections.js
+update_donate.js
+update_hero_slider.js
+check_files.js
+
+# Lock files (optional to include, excluding here for clean push)
+package-lock.json
+package.json
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
