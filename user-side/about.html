@@ -81,10 +81,10 @@
     </div>
 
     <!-- Leadership Cards Grid -->
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:36px;max-width:960px;margin:0 auto;">
+    <div class="leadership-grid">
 
       <!-- Founder Card -->
-      <div style="background:var(--white);border-radius:var(--radius-lg);box-shadow:var(--shadow-md);border:1px solid var(--border);padding:36px 28px;text-align:center;">
+      <div class="leadership-card">
         <img src="images/founder.jpeg" alt="Dr. Jayasrikannan" style="width:160px;height:160px;border-radius:50%;object-fit:cover;margin:0 auto 18px;display:block;box-shadow:0 10px 40px rgba(26,58,110,0.25);border:4px solid var(--white);outline:3px solid var(--accent-gold);">
         <div style="display:inline-block;background:rgba(201,162,39,0.12);color:#8a6b0f;font-size:.7rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 12px;border-radius:20px;margin-bottom:12px;">Founder &amp; Chairperson</div>
         <h3 style="font-size:1.25rem;font-weight:800;color:var(--deep-blue);margin-bottom:6px;">Dr. Jayasrikannan</h3>
@@ -93,7 +93,7 @@
       </div>
 
       <!-- Co-Founder Card -->
-      <div style="background:var(--white);border-radius:var(--radius-lg);box-shadow:var(--shadow-md);border:1px solid var(--border);padding:36px 28px;text-align:center;">
+      <div class="leadership-card">
         <img src="images/cofounder.jpg" alt="P. Suresh Yadav" style="width:160px;height:160px;border-radius:50%;object-fit:cover;margin:0 auto 18px;display:block;box-shadow:0 10px 40px rgba(26,58,110,0.25);border:4px solid var(--white);outline:3px solid var(--accent-gold);" onerror="this.style.display='none';document.getElementById('cofounderIcon').style.display='flex';">
         <div id="cofounderIcon" style="display:none;width:160px;height:160px;border-radius:50%;background:linear-gradient(135deg,#1a3a6e,#2e6da4);align-items:center;justify-content:center;margin:0 auto 18px;font-size:4rem;color:white;">👤</div>
         <div style="display:inline-block;background:rgba(201,162,39,0.12);color:#8a6b0f;font-size:.7rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 12px;border-radius:20px;margin-bottom:12px;">Co-Founder &amp; Director</div>
@@ -146,7 +146,7 @@
         </p>
       </div>
 
-      <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(230px, 1fr));gap:20px;">
+      <div class="activities-auto-grid">
         <div style="background:var(--white);padding:26px 20px;border-radius:var(--radius-md);box-shadow:0 6px 20px rgba(0,0,0,0.04);border:1px solid rgba(0,0,0,0.06);text-align:center;">
           <div style="width:52px;height:52px;background:rgba(26,58,110,0.1);color:var(--primary-blue);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.4rem;margin:0 auto 16px;">
             <i class="fa-solid fa-hospital"></i>
@@ -190,13 +190,13 @@
 <!-- VISION & MISSION -->
 <section class="stats-section" style="padding:80px 0;">
   <div class="container">
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px;">
-      <div style="background:rgba(255,255,255,0.07);padding:40px;border-radius:var(--radius-lg);border:1px solid rgba(255,255,255,0.15);">
+    <div class="vision-mission-grid">
+      <div class="vision-mission-box">
         <div style="font-size:2.5rem;margin-bottom:16px;">🔭</div>
         <h3 style="font-family:'Montserrat',sans-serif;font-size:1.3rem;font-weight:800;color:var(--accent-gold);margin-bottom:12px;">Our Vision</h3>
         <p style="color:rgba(255,255,255,0.8);line-height:1.85;font-size:0.95rem;">To create a healthy, educated, empowered, and socially developed society by supporting people in need.</p>
       </div>
-      <div style="background:rgba(255,255,255,0.07);padding:40px;border-radius:var(--radius-lg);border:1px solid rgba(255,255,255,0.15);">
+      <div class="vision-mission-box">
         <div style="font-size:2.5rem;margin-bottom:16px;">🎯</div>
         <h3 style="font-family:'Montserrat',sans-serif;font-size:1.3rem;font-weight:800;color:var(--accent-gold);margin-bottom:12px;">Our Mission</h3>
         <p style="color:rgba(255,255,255,0.8);line-height:1.85;font-size:0.95rem;">To provide healthcare, education, social welfare, environmental protection, and development support to poor, rural, vulnerable, and underserved communities.</p>

@@ -139,7 +139,7 @@
 <!-- DONATION CONTENT -->
 <section class="section-pad" style="background:var(--off-white);">
   <div class="container">
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:start;">
+    <div class="donate-layout-grid">
 
       <!-- LEFT: Why Donate -->
       <div>
@@ -151,7 +151,7 @@
         </p>
 
         <h4 style="font-weight:700;color:var(--deep-blue);margin-bottom:16px;">Contributions May Support:</h4>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:30px;">
+        <div class="donate-causes-grid">
           <div style="background:var(--white);padding:16px;border-radius:10px;border-left:3px solid var(--primary-blue);box-shadow:var(--shadow-sm);">
             <span style="font-size:1.4rem;"><i class="fa-solid fa-eye"></i></span>
             <p style="font-size:0.87rem;font-weight:600;color:var(--deep-blue);margin-top:6px;">Eye-Care Programmes</p>
@@ -194,7 +194,7 @@
 
       <!-- RIGHT: Interactive Donation Flow -->
       <div>
-        <div style="background:var(--white);padding:36px;border-radius:var(--radius-lg);box-shadow:var(--shadow-md);border:1px solid var(--border);">
+        <div class="donate-form-card">
           <div style="text-align:center;margin-bottom:24px;">
             <div style="font-size:2.4rem;color:var(--accent-gold);margin-bottom:8px;"><i class="fa-solid fa-heart-pulse"></i></div>
             <h3 style="font-family:'Montserrat',sans-serif;font-size:1.45rem;font-weight:800;color:var(--deep-blue);">Contribute to Jayasri Kannan Foundation</h3>
@@ -223,7 +223,7 @@
             <label style="display:block;font-size:.8rem;font-weight:700;color:var(--deep-blue);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;">
               Select Contribution Amount (&#8377;) *
             </label>
-            <div style="display:grid;grid-template-columns:repeat(4, 1fr);gap:8px;margin-bottom:12px;" id="amtPresets">
+            <div class="amt-presets-grid" id="amtPresets">
               <button type="button" class="btn btn-outline-blue btn-sm amt-chip" onclick="setDonationAmt(500, this)">&#8377;500</button>
               <button type="button" class="btn btn-outline-blue btn-sm amt-chip active" onclick="setDonationAmt(1000, this)" style="background:var(--primary-blue);color:white;">&#8377;1,000</button>
               <button type="button" class="btn btn-outline-blue btn-sm amt-chip" onclick="setDonationAmt(2500, this)">&#8377;2,500</button>
@@ -234,7 +234,7 @@
             </div>
 
             <!-- Donor Details -->
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
+            <div class="donate-form-2col">
               <div>
                 <label style="display:block;font-size:.78rem;font-weight:700;color:var(--text-gray);margin-bottom:4px;">Donor Full Name *</label>
                 <input type="text" id="donorName" required placeholder="e.g. S. Ramakrishnan" style="width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:.88rem;outline:none;" />
@@ -258,7 +258,7 @@
               <div style="background:rgba(26,58,110,0.03);border:1px solid rgba(26,58,110,0.1);border-radius:10px;padding:16px;margin-bottom:14px;">
                 <div style="font-size:.72rem;font-weight:700;color:var(--text-light);text-transform:uppercase;letter-spacing:.8px;margin-bottom:12px;"><i class="fa-solid fa-circle-info" style="color:var(--accent-gold);"></i> Optional Details</div>
 
-                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
+                <div class="donate-form-2col">
                   <div>
                     <label style="display:block;font-size:.78rem;font-weight:700;color:var(--text-gray);margin-bottom:4px;">Email <span style="font-weight:400;color:var(--text-light);">(For Receipt)</span></label>
                     <input type="email" id="donorEmail" placeholder="donor@gmail.com" style="width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:.88rem;outline:none;" />
@@ -324,7 +324,7 @@
               </div>
 
               <!-- QR Code + Bank Details side by side -->
-              <div style="display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap;">
+              <div class="qr-scan-card" style="margin-top:4px;">
                 <!-- QR Scanner Card -->
                 <div class="qr-zoom-trigger" onclick="toggleQrZoom()" title="Click to zoom and scan easily" style="flex:0 0 auto;background:var(--white);border:1.5px solid rgba(26,58,110,0.18);border-radius:12px;padding:12px 14px;text-align:center;box-shadow:var(--shadow-sm);min-width:150px;position:relative;cursor:pointer;">
                   <div style="font-size:.65rem;font-weight:800;color:#003399;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;">🏦 SBI • SCAN &amp; PAY</div>
