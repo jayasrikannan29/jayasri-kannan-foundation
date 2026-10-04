@@ -125,44 +125,6 @@ const DEFAULT_PILLARS = [
   }
 ];
 
-const DEFAULT_DONATIONS = [
-  {
-    name: 'R. Soundararajan',
-    phone: '+91 98410 44321',
-    email: 'soundar.r@gmail.com',
-    pan: 'ABCPS1234K',
-    amount: 10000,
-    txnId: 'UPI-628491028301',
-    cause: 'Eye Care & Spectacles Camp',
-    paymentMethod: 'Google Pay / UPI',
-    status: 'Verified',
-    notes: 'In memory of late mother.'
-  },
-  {
-    name: 'Lakshmi Narayanan',
-    phone: '+91 97908 11223',
-    email: 'lakshmin@yahoo.co.in',
-    pan: 'BCDPN5432M',
-    amount: 5000,
-    txnId: 'UPI-628109827364',
-    cause: 'Healthcare & Medical Outreach',
-    paymentMethod: 'PhonePe / UPI',
-    status: 'Verified',
-    notes: ''
-  },
-  {
-    name: 'Anitha & Friends Group',
-    phone: '+91 94441 87654',
-    email: 'anitha.chennai@gmail.com',
-    pan: 'AAAPT9876R',
-    amount: 25000,
-    txnId: 'NEFT-HDFC262749102',
-    cause: 'Student Scholarships & Education',
-    paymentMethod: 'NEFT Net Banking',
-    status: 'Verified',
-    notes: 'Direct school scholarship contribution.'
-  }
-];
 
 async function seedDatabaseIfEmpty() {
   try {
@@ -187,12 +149,7 @@ async function seedDatabaseIfEmpty() {
       console.log('🌱 Seeded default What We Do pillars into MongoDB Atlas');
     }
 
-    // 4. Donations
-    const donationCount = await Donation.countDocuments();
-    if (donationCount === 0) {
-      await Donation.insertMany(DEFAULT_DONATIONS);
-      console.log('🌱 Seeded sample verified Donations into MongoDB Atlas');
-    }
+    // 4. Donations are left at 0 real records (ready for live payment integration)
   } catch (err) {
     console.warn('⚠️ Seeding note:', err.message);
   }

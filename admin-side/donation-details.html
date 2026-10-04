@@ -254,83 +254,7 @@
 
   <script>
     const DONATIONS_KEY = 'jsk_donations';
-    const DEFAULT_DONATIONS = [
-      {
-        id: 'don-101',
-        name: 'R. Soundararajan',
-        phone: '+91 98410 44321',
-        email: 'soundar.r@gmail.com',
-        pan: 'ABCPS1234K',
-        amount: 10000,
-        txnId: 'UPI-628491028301',
-        cause: 'Eye Care & Spectacles Camp',
-        paymentMethod: 'Google Pay / UPI',
-        date: '2026-10-02',
-        time: '14:25:10',
-        status: 'Verified',
-        notes: 'In memory of late mother.'
-      },
-      {
-        id: 'don-102',
-        name: 'Lakshmi Narayanan',
-        phone: '+91 97908 11223',
-        email: 'lakshmin@yahoo.co.in',
-        pan: 'BCDPN5432M',
-        amount: 5000,
-        txnId: 'UPI-628109827364',
-        cause: 'Healthcare & Medical Outreach',
-        paymentMethod: 'PhonePe / UPI',
-        date: '2026-10-01',
-        time: '11:10:45',
-        status: 'Verified',
-        notes: ''
-      },
-      {
-        id: 'don-103',
-        name: 'Anitha & Friends Group',
-        phone: '+91 94441 87654',
-        email: 'anitha.chennai@gmail.com',
-        pan: 'AAAPT9876R',
-        amount: 25000,
-        txnId: 'NEFT-HDFC262749102',
-        cause: 'Student Scholarships & Education',
-        paymentMethod: 'NEFT Net Banking',
-        date: '2026-09-28',
-        time: '16:42:00',
-        status: 'Verified',
-        notes: 'Quarterly sponsorship for 5 children.'
-      },
-      {
-        id: 'don-104',
-        name: 'K. Venkatesh',
-        phone: '+91 98402 99887',
-        email: 'kvenkat_77@hotmail.com',
-        pan: '',
-        amount: 2500,
-        txnId: 'UPI-627918273645',
-        cause: 'General Foundation Corpus',
-        paymentMethod: 'Paytm UPI',
-        date: '2026-10-03',
-        time: '09:15:33',
-        status: 'Pending',
-        notes: 'Awaiting bank settlement reconciliation.'
-      },
-      {
-        id: 'don-105',
-        name: 'M. S. Swaminathan Foundation Staff',
-        phone: '+91 98840 55667',
-        email: 'swaminathan.m@gmail.com',
-        pan: 'CPSSM2345T',
-        amount: 15000,
-        txnId: 'IMPS-2628471920',
-        cause: 'Emergency Relief & Community Support',
-        paymentMethod: 'IMPS Bank Transfer',
-        date: '2026-09-20',
-        time: '18:05:12',
-        status: 'Verified',
-        notes: 'Flood relief distribution reserve fund.'
-      }
-    ];
+    const DEFAULT_DONATIONS = [];
 
     let currentFilter = 'all';
     let currentViewingId = null;
@@ -367,7 +291,7 @@
         const stored = localStorage.getItem(DONATIONS_KEY);
         if (stored) return JSON.parse(stored);
       } catch (e) {}
-      return DEFAULT_DONATIONS;
+      return [];
     }
 
     async function renderDonations() {
@@ -454,13 +378,23 @@
 
     // Modal Views
     const donorModal = document.getElementById('donorModal');
-    window.viewDonorDetails = function(id) {
-      const donations = loadDonations();
-      const d = donations.find(x => x.id === id);
+    window.viewDonorDetails = async function(id) {
+      const donations = await loadDonations();
+      const d = donations.find(x => (x._id === id || x.id === id));
       if (!d) return;
 
-      currentViewingId = d.id;
+      currentViewingId = d._id || d.id;
       const isVerified = d.status === 'Verified';
+
+      // Format timestamp from MongoDB createdAt
+      let loggedTimestamp = 'N/A';
+      if (d.createdAt) {
+        const dt = new Date(d.createdAt);
+        loggedTimestamp = dt.toLocaleDateString('en-IN', { day:'2-digit', month:'short', year:'numeric' })
+          + ' at ' + dt.toLocaleTimeString('en-IN', { hour:'2-digit', minute:'2-digit', hour12:true });
+      } else if (d.date) {
+        loggedTimestamp = d.date + (d.time ? ' at ' + d.time : '');
+      }
 
       document.getElementById('donorModalContent').innerHTML = `
         <div style="background:var(--off-white);padding:18px;border-radius:var(--radius-sm);border:1px solid var(--border);margin-bottom:16px;">
@@ -472,7 +406,7 @@
             &#8377;${Number(d.amount).toLocaleString('en-IN')}
           </div>
           <div style="font-size:.8rem;color:var(--text-gray);">
-            Transaction Reference: <strong>${escapeHtml(d.txnId)}</strong>
+            Transaction Reference: <strong>${escapeHtml(d.txnId || 'N/A')}</strong>
           </div>
         </div>
 
@@ -499,7 +433,7 @@
           </div>
           <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);">
             <span style="color:var(--text-gray);">Logged Timestamp:</span>
-            <strong>${d.date} at ${d.time || 'N/A'}</strong>
+            <strong>${loggedTimestamp}</strong>
           </div>
           ${d.notes ? `
           <div style="padding:10px;background:var(--warn-light);border-radius:var(--radius-sm);margin-top:6px;font-size:.82rem;color:#7a5f00;">
@@ -660,28 +594,31 @@
     });
 
     // CSV Export
-    document.getElementById('exportCsvBtn').addEventListener('click', () => {
-      const donations = loadDonations();
+    document.getElementById('exportCsvBtn').addEventListener('click', async () => {
+      const donations = await loadDonations();
       if (donations.length === 0) {
         toast('No records to export.', 'error');
         return;
       }
 
-      const headers = ['ID', 'Donor Name', 'Phone', 'Email', 'PAN', 'Amount (INR)', 'Transaction ID', 'Cause', 'Payment Method', 'Date', 'Time', 'Status'];
-      const rows = donations.map(d => [
-        `"${d.id}"`,
-        `"${d.name.replace(/"/g, '""')}"`,
-        `"${(d.phone || '').replace(/"/g, '""')}"`,
-        `"${(d.email || '').replace(/"/g, '""')}"`,
-        `"${(d.pan || '').replace(/"/g, '""')}"`,
-        d.amount,
-        `"${d.txnId.replace(/"/g, '""')}"`,
-        `"${(d.cause || '').replace(/"/g, '""')}"`,
-        `"${(d.paymentMethod || '').replace(/"/g, '""')}"`,
-        `"${d.date}"`,
-        `"${d.time || ''}"`,
-        `"${d.status}"`
-      ]);
+      const headers = ['MongoDB ID', 'Donor Name', 'Phone', 'Email', 'PAN', 'Amount (INR)', 'Transaction ID', 'Cause', 'Payment Method', 'Logged Date', 'Status'];
+      const rows = donations.map(d => {
+        const donId = d._id || d.id || '';
+        const loggedDate = d.createdAt ? new Date(d.createdAt).toISOString().replace('T',' ').split('.')[0] : (d.date || '');
+        return [
+          `"${donId}"`,
+          `"${(d.name || '').replace(/"/g, '""')}"`,
+          `"${(d.phone || '').replace(/"/g, '""')}"`,
+          `"${(d.email || '').replace(/"/g, '""')}"`,
+          `"${(d.pan || '').replace(/"/g, '""')}"`,
+          d.amount,
+          `"${(d.txnId || '').replace(/"/g, '""')}"`,
+          `"${(d.cause || '').replace(/"/g, '""')}"`,
+          `"${(d.paymentMethod || '').replace(/"/g, '""')}"`,
+          `"${loggedDate}"`,
+          `"${d.status || ''}"`
+        ];
+      });
 
       const csvContent = 'data:text/csv;charset=utf-8,' + [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
       const encodedUri = encodeURI(csvContent);

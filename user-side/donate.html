@@ -324,7 +324,15 @@
       }
     });
   });
+</script>
+
 <script>
+  const DONATE_API_BASE = (
+    window.location.protocol === 'file:' ||
+    window.location.hostname === 'localhost' ||
+    window.location.hostname === '127.0.0.1'
+  ) ? 'http://localhost:5000' : '';
+
   function setDonationAmt(val, btn) {
     document.querySelectorAll('.amt-chip').forEach(b => {
       b.classList.remove('active');
@@ -337,27 +345,28 @@
     document.getElementById('customAmount').value = val;
   }
 
-  function handleDonationSubmit(e) {
+  async function handleDonationSubmit(e) {
     e.preventDefault();
+
     const amount = Number(document.getElementById('customAmount').value);
-    const name = document.getElementById('donorName').value.trim();
-    const phone = document.getElementById('donorPhone').value.trim();
-    const email = document.getElementById('donorEmail').value.trim();
-    const pan = document.getElementById('donorPan').value.trim().toUpperCase();
-    const cause = document.getElementById('donationCause').value;
-    const txnId = document.getElementById('donorTxnId').value.trim();
+    const name   = document.getElementById('donorName').value.trim();
+    const phone  = document.getElementById('donorPhone').value.trim();
+    const email  = document.getElementById('donorEmail').value.trim();
+    const pan    = document.getElementById('donorPan').value.trim().toUpperCase();
+    const cause  = document.getElementById('donationCause').value;
+    const txnId  = document.getElementById('donorTxnId').value.trim();
 
     if (!amount || !name || !phone || !txnId) {
       alert('Please fill in all mandatory fields marked with an asterisk (*).');
       return;
     }
 
-    const now = new Date();
-    const dateStr = now.toISOString().split('T')[0];
-    const timeStr = now.toTimeString().split(' ')[0];
+    const submitBtn = document.querySelector('#publicDonationForm button[type="submit"]');
+    const originalBtnHTML = submitBtn.innerHTML;
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Submitting...';
 
-    const newRecord = {
-      id: 'don-' + Date.now(),
+    const payload = {
       name,
       phone,
       email,
@@ -366,49 +375,50 @@
       txnId,
       cause,
       paymentMethod: 'UPI / Direct Bank Transfer',
-      date: dateStr,
-      time: timeStr,
-      status: 'Pending',
       notes: 'Submitted via public website donate portal.'
     };
 
-    // 1. Post to MongoDB Atlas API
-    const API_BASE = (
-      window.location.protocol === 'file:' ||
-      window.location.hostname === 'localhost' ||
-      window.location.hostname === '127.0.0.1'
-    ) ? 'http://localhost:5000' : '';
-
-    fetch(`${API_BASE}/api/donations`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(newRecord)
-    }).then(res => res.json())
-      .then(json => console.log('Donation synced to MongoDB Atlas:', json))
-      .catch(err => console.warn('Could not post to MongoDB, using local fallback:', err));
-
-    // 2. Save to shared localStorage key mapped with admin-side/donation-details.html
     try {
-      const DONATIONS_KEY = 'jsk_donations';
-      const existing = JSON.parse(localStorage.getItem(DONATIONS_KEY) || '[]');
-      existing.unshift(newRecord);
-      localStorage.setItem(DONATIONS_KEY, JSON.stringify(existing));
-    } catch(err) {
-      console.error('Failed to save donation record', err);
-    }
+      const res = await fetch(`${DONATE_API_BASE}/api/donations`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
 
-    // Hide form, show confirmation
-    document.getElementById('publicDonationForm').style.display = 'none';
-    const successCard = document.getElementById('donationSuccessCard');
-    document.getElementById('successTxn').textContent = txnId;
-    successCard.style.display = 'block';
-    successCard.scrollIntoView({ behavior: 'smooth' });
+      const json = await res.json();
+
+      if (res.ok && json.success) {
+        // SUCCESS — record saved to MongoDB Atlas
+        document.getElementById('publicDonationForm').style.display = 'none';
+        const successCard = document.getElementById('donationSuccessCard');
+        document.getElementById('successTxn').textContent = txnId;
+        successCard.style.display = 'block';
+        successCard.scrollIntoView({ behavior: 'smooth' });
+      } else {
+        // Server returned an error
+        alert(json.error || 'Something went wrong. Please try again.');
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalBtnHTML;
+      }
+    } catch (err) {
+      console.error('Network error submitting donation:', err);
+      alert('Unable to connect to the server. Please check your internet connection and try again.');
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = originalBtnHTML;
+    }
   }
 
   function resetDonationForm() {
-    document.getElementById('publicDonationForm').reset();
-    document.getElementById('publicDonationForm').style.display = 'block';
+    const form = document.getElementById('publicDonationForm');
+    form.reset();
+    form.style.display = 'block';
     document.getElementById('donationSuccessCard').style.display = 'none';
+    // Reset amount chip highlights
+    document.querySelectorAll('.amt-chip').forEach(b => {
+      b.classList.remove('active');
+      b.style.background = 'transparent';
+      b.style.color = 'var(--primary-blue)';
+    });
   }
 </script>
 
