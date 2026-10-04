@@ -19,8 +19,8 @@ update_hero_slider.js
 check_files.js
 
 # Lock files (optional to include, excluding here for clean push)
-package-lock.json
-package.json
+# package-lock.json
+# package.json
 
 # OS files
 .DS_Store
