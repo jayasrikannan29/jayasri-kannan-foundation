@@ -1,0 +1,330 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Our Activities | Jayasri Kannan Foundation</title>
+  <meta name="description" content="Explore the activities of Jayasri Kannan Foundation including healthcare, eye care, blood donation, youth welfare, education and community service." />
+  <link rel="icon" type="image/jpeg" href="images/logo.jpg" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<div class="topbar">
+  <div class="container">
+    <div class="topbar-left">
+      <a href="tel:7010964630"><i class="fa-solid fa-phone"></i> 7010964630 / 9941531140 / 9025948033</a>
+      <a href="mailto:jskfoundation29@gmail.com"><i class="fa-solid fa-envelope"></i> jskfoundation29@gmail.com</a>
+    </div>
+    <div class="topbar-right">
+      <a href="admin/login.html" id="adminPortalLink" class="topbar-admin-link" title="Admin Login">
+        <i class="fa-solid fa-lock"></i> Admin
+      </a>
+      <span class="topbar-divider"></span>
+      <div class="topbar-social">
+        <a href="https://www.facebook.com/profile.php?id=61595242913128" target="_blank" rel="noopener noreferrer" title="Facebook" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+        <a href="https://www.instagram.com/jayasrikannan_foundation?utm_source=qr&stkn=MWs3MGRmMnpzdXN1ZA==" target="_blank" rel="noopener noreferrer" title="Instagram" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+        <a href="https://www.youtube.com/@JayasriKannanFoundation" target="_blank" rel="noopener noreferrer" title="YouTube" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<nav class="navbar">
+  <div class="container">
+    <a href="index.html" class="nav-brand">
+      <img src="images/logo.jpg" alt="Logo" class="nav-logo" />
+      <div class="nav-brand-text">
+        <div class="nav-brand-name">Jayasri Kannan<br>Foundation</div>
+        <div class="nav-brand-tag">Serving Humanity</div>
+      </div>
+    </a>
+    <ul class="nav-menu" id="navMenu">
+      <button class="close-menu" id="closeMenu">✕</button>
+      <li><a href="index.html" class="nav-link">Home</a></li>
+      <li><a href="about.html" class="nav-link">About Us</a></li>
+      <li><a href="activities.html" class="nav-link active">Our Activities</a></li>
+      <li><a href="eye-care.html" class="nav-link">Eye Care</a></li>
+      <li><a href="blood-donation.html" class="nav-link">Blood Donation</a></li>
+      <li><a href="events.html" class="nav-link">Events</a></li>
+      <li><a href="gallery.html" class="nav-link">Gallery</a></li>
+      <li><a href="volunteer.html" class="nav-link">Volunteer</a></li>
+      <li><a href="contact.html" class="nav-link">Contact</a></li>
+    </ul>
+    <a href="donate.html" class="btn btn-primary btn-sm nav-donate"><i class="fa-solid fa-heart"></i> Donate Now</a>
+    <button class="nav-toggle" id="navToggle"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<!-- PAGE HERO -->
+<section class="page-hero">
+  <div class="container">
+    <div class="page-hero-content">
+      <div class="breadcrumb"><a href="index.html">Home</a> <span>›</span> Our Activities</div>
+      <h1>Our Activities</h1>
+      <p>Our programmes are focused on improving health, awareness, education and community wellbeing.</p>
+    </div>
+  </div>
+</section>
+
+<!-- HEALTHCARE -->
+<section class="section-pad" style="background:var(--off-white);">
+  <div class="container">
+    <div class="text-center" style="margin-bottom:50px;">
+      <div class="section-tag">Activity Areas</div>
+      <h2 class="section-title">Making a Difference<br><span>Through Service</span></h2>
+      <div class="divider center"></div>
+      <p class="section-subtitle">Each of our programmes is designed around real community needs with a focus on sustainable, accessible impact.</p>
+    </div>
+
+    <!-- ACTIVE NEXT ACTIVITY SLOT BANNER (SYNCED WITH ADMIN) -->
+    <div id="userActiveSlotBanner" style="display:none;background:linear-gradient(135deg,var(--deep-blue) 0%,var(--primary-blue) 100%);color:var(--white);padding:30px;border-radius:var(--radius-lg);margin-bottom:45px;border:1.5px solid rgba(201,162,39,0.4);box-shadow:var(--shadow-md);position:relative;overflow:hidden;">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:12px;">
+        <span class="badge" style="background:rgba(201,162,39,0.2);color:var(--light-gold);padding:4px 12px;border-radius:50px;font-size:.78rem;font-weight:700;"><i class="fa-solid fa-star"></i> Featured Next Activity Slot</span>
+        <span id="userSlotCategory" style="font-size:.85rem;color:rgba(255,255,255,0.85);font-weight:600;"></span>
+      </div>
+      <h3 id="userSlotTitle" style="font-family:'Montserrat',sans-serif;font-size:1.45rem;font-weight:800;color:var(--white);margin-bottom:8px;"></h3>
+      <p id="userSlotDesc" style="color:rgba(255,255,255,0.85);line-height:1.6;font-size:.92rem;max-width:760px;margin-bottom:18px;"></p>
+      <div style="display:flex;gap:24px;flex-wrap:wrap;font-size:.84rem;color:rgba(255,255,255,0.8);align-items:center;">
+        <span><i class="fa-regular fa-calendar" style="color:var(--accent-gold);margin-right:4px;"></i> <strong id="userSlotDate"></strong></span>
+        <span><i class="fa-solid fa-location-dot" style="color:var(--accent-gold);margin-right:4px;"></i> <span id="userSlotLocation"></span></span>
+        <span><i class="fa-solid fa-users" style="color:var(--accent-gold);margin-right:4px;"></i> <span id="userSlotTarget"></span></span>
+        <a href="contact.html" class="btn btn-gold btn-sm" style="margin-left:auto;background:var(--accent-gold);color:var(--deep-blue);font-weight:700;">Join This Activity →</a>
+      </div>
+    </div>
+
+    <!-- Healthcare -->
+    <div id="healthcare" class="activity-detail-card" style="margin-bottom:30px;">
+      <div class="activity-detail-img" style="background:linear-gradient(135deg,#1a3a6e,#0d2548);">
+        <span style="font-size:4rem;"><i class="fa-solid fa-hospital"></i></span>
+      </div>
+      <div class="activity-detail-body">
+        <div class="section-tag">Healthcare</div>
+        <h3>Healthcare Programmes</h3>
+        <p>Health camps, health awareness and community healthcare initiatives for the wellbeing of communities in Tamil Nadu.</p>
+        <ul class="activity-list-items">
+          <li>Free health awareness programmes</li>
+          <li>Health check-up camps</li>
+          <li>Community healthcare initiatives</li>
+          <li>Student health awareness</li>
+          <li>Rural health awareness</li>
+        </ul>
+        <div style="margin-top:18px;"><a href="contact.html" class="btn btn-blue btn-sm">Partner With Us</a></div>
+      </div>
+    </div>
+
+    <!-- Eye Care -->
+    <div id="eyecare" class="activity-detail-card" style="margin-bottom:30px;">
+      <div class="activity-detail-img" style="background:linear-gradient(135deg,#1a5276,#2e86c1);">
+        <span style="font-size:4rem;"><i class="fa-solid fa-eye"></i></span>
+      </div>
+      <div class="activity-detail-body">
+        <div class="section-tag" style="background:rgba(46,134,193,0.12);color:#1a5276;">Eye Care</div>
+        <h3>Free Eye Care Programmes</h3>
+        <p>Free eye screening, basic vision assessment and eye-health awareness for students and community members.</p>
+        <ul class="activity-list-items">
+          <li>Free eye screening</li>
+          <li>Eye-health awareness</li>
+          <li>Student eye-care programmes</li>
+          <li>Community eye-care programmes</li>
+          <li>Referral guidance where appropriate</li>
+        </ul>
+        <div style="margin-top:18px;"><a href="eye-care.html" class="btn btn-blue btn-sm">Learn More</a></div>
+      </div>
+    </div>
+
+    <!-- Blood Donation -->
+    <div id="blood" class="activity-detail-card" style="margin-bottom:30px;">
+      <div class="activity-detail-img" style="background:linear-gradient(135deg,#7f0000,#c62828);">
+        <span style="font-size:4rem;"><i class="fa-solid fa-droplet"></i></span>
+      </div>
+      <div class="activity-detail-body">
+        <div class="section-tag" style="background:rgba(198,40,40,0.1);color:#c62828;">Blood Donation</div>
+        <h3>Blood Donation Camps</h3>
+        <p>Blood donation awareness and community blood donation programmes conducted with appropriate healthcare partners.</p>
+        <ul class="activity-list-items">
+          <li>Blood donation awareness</li>
+          <li>Blood donation camps</li>
+          <li>Volunteer mobilisation</li>
+          <li>Community awareness</li>
+          <li>Donor appreciation</li>
+        </ul>
+        <div style="margin-top:18px;"><a href="blood-donation.html" class="btn btn-red btn-sm">Learn More</a></div>
+      </div>
+    </div>
+
+    <!-- Education -->
+    <div id="education" class="activity-detail-card" style="margin-bottom:30px;">
+      <div class="activity-detail-img" style="background:linear-gradient(135deg,#4a235a,#7d3c98);">
+        <span style="font-size:4rem;"><i class="fa-solid fa-book"></i></span>
+      </div>
+      <div class="activity-detail-body">
+        <div class="section-tag" style="background:rgba(125,60,152,0.1);color:#7d3c98;">Education</div>
+        <h3>Education &amp; Student Welfare</h3>
+        <p>Educational awareness and student welfare initiatives supporting learning and personal development.</p>
+        <ul class="activity-list-items">
+          <li>Student awareness programmes</li>
+          <li>Educational support</li>
+          <li>Career awareness</li>
+          <li>Life-skills awareness</li>
+          <li>Community education</li>
+        </ul>
+        <div style="margin-top:18px;"><a href="contact.html" class="btn btn-outline-blue btn-sm">Get Involved</a></div>
+      </div>
+    </div>
+
+    <!-- Community Welfare -->
+    <div id="community" class="activity-detail-card" style="margin-bottom:30px;">
+      <div class="activity-detail-img" style="background:linear-gradient(135deg,#006064,#00838f);">
+        <span style="font-size:4rem;"><i class="fa-solid fa-handshake"></i></span>
+      </div>
+      <div class="activity-detail-body">
+        <div class="section-tag" style="background:rgba(0,131,143,0.1);color:#00838f;">Community Service</div>
+        <h3>Community Welfare Programmes</h3>
+        <p>Community welfare activities supporting people and families who need assistance.</p>
+        <ul class="activity-list-items">
+          <li>Rural welfare programmes</li>
+          <li>Family welfare initiatives</li>
+          <li>Women's welfare awareness</li>
+          <li>Community support</li>
+          <li>Humanitarian assistance</li>
+        </ul>
+        <div style="margin-top:18px;"><a href="contact.html" class="btn btn-outline-blue btn-sm">Partner With Us</a></div>
+      </div>
+    </div>
+
+    <!-- Rural -->
+    <div id="rural" class="activity-detail-card" style="margin-bottom:30px;">
+      <div class="activity-detail-img" style="background:linear-gradient(135deg,#4e342e,#795548);">
+        <span style="font-size:4rem;"><i class="fa-solid fa-wheat-awn"></i></span>
+      </div>
+      <div class="activity-detail-body">
+        <div class="section-tag" style="background:rgba(121,85,72,0.1);color:#795548;">Rural Development</div>
+        <h3>Rural &amp; Community Development</h3>
+        <p>We believe that community development should reach both urban and rural communities with practical welfare programmes.</p>
+        <ul class="activity-list-items">
+          <li>Rural health awareness</li>
+          <li>Community healthcare</li>
+          <li>Education awareness</li>
+          <li>Women's welfare</li>
+          <li>Youth development</li>
+        </ul>
+        <div style="margin-top:18px;"><a href="contact.html" class="btn btn-outline-blue btn-sm">Contact Us</a></div>
+      </div>
+    </div>
+
+    <!-- Women & Family -->
+    <div id="women" class="activity-detail-card">
+      <div class="activity-detail-img" style="background:linear-gradient(135deg,#880e4f,#c2185b);">
+        <span style="font-size:4rem;"><i class="fa-solid fa-people-roof"></i></span>
+      </div>
+      <div class="activity-detail-body">
+        <div class="section-tag" style="background:rgba(194,24,91,0.1);color:#c2185b;">Women &amp; Family</div>
+        <h3>Women &amp; Family Welfare</h3>
+        <p>Healthy families help create stronger communities. Awareness and welfare initiatives for women and families.</p>
+        <ul class="activity-list-items">
+          <li>Women's health awareness</li>
+          <li>Family welfare</li>
+          <li>Health education</li>
+          <li>Community awareness</li>
+          <li>Support for vulnerable families</li>
+        </ul>
+        <div style="margin-top:18px;"><a href="contact.html" class="btn btn-outline-blue btn-sm">Contact Us</a></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="donate-strip">
+  <div class="container">
+    <div class="donate-strip-content">
+      <div>
+        <h2>Support Our Programmes</h2>
+        <p>Help us reach more communities through healthcare, education and welfare initiatives.</p>
+      </div>
+      <div style="display:flex;gap:14px;flex-wrap:wrap;">
+        <a href="donate.html" class="btn btn-blue"><i class="fa-solid fa-heart"></i> Donate Now</a>
+        <a href="volunteer.html" class="btn btn-outline-blue" style="border-color:var(--deep-blue);">Volunteer</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo-wrap"><img src="images/logo.jpg" alt="Logo" class="footer-logo" /><div class="footer-brand-name">Jayasri Kannan<br>Foundation</div></div>
+        <p>Serving Humanity • Supporting Communities • Creating a Healthier Future</p>
+        <div class="footer-social">
+          <a href="https://www.facebook.com/profile.php?id=61595242913128" target="_blank" rel="noopener noreferrer" aria-label="Facebook" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="https://www.instagram.com/jayasrikannan_foundation?utm_source=qr&stkn=MWs3MGRmMnpzdXN1ZA==" target="_blank" rel="noopener noreferrer" aria-label="Instagram" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+          <a href="https://www.youtube.com/@JayasriKannanFoundation" target="_blank" rel="noopener noreferrer" aria-label="YouTube" title="YouTube"><i class="fa-brands fa-youtube"></i></a>
+        </div>
+      </div>
+      <div class="footer-col"><h4>Quick Links</h4><ul>
+        <li><a href="index.html">Home</a></li><li><a href="about.html">About Us</a></li>
+        <li><a href="activities.html">Our Activities</a></li><li><a href="eye-care.html">Eye Care</a></li>
+        <li><a href="blood-donation.html">Blood Donation</a></li><li><a href="events.html">Events</a></li><li><a href="gallery.html">Gallery</a></li>
+      </ul></div>
+      <div class="footer-col"><h4>Get Involved</h4><ul>
+        <li><a href="volunteer.html">Become a Volunteer</a></li>
+        <li><a href="donate.html">Donate</a></li>
+        <li><a href="contact.html">Partner With Us</a></li>
+      </ul></div>
+      <div class="footer-col"><h4>Contact Us</h4>
+        <div class="footer-contact-item"><div class="footer-contact-icon"><i class="fa-solid fa-phone"></i></div><p>7010964630 / 9941531140 / 9025948033</p></div>
+        <div class="footer-contact-item"><div class="footer-contact-icon"><i class="fa-solid fa-envelope"></i></div><p>jskfoundation29@gmail.com</p></div>
+        <div style="margin-top:20px;"><a href="donate.html" class="btn btn-primary btn-sm"><i class="fa-solid fa-heart"></i> Donate Now</a></div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 Jayasri Kannan Foundation. All Rights Reserved.</p>
+      <div style="display:flex;gap:16px;"><a href="#">Privacy Policy</a><a href="#">Terms of Use</a></div>
+    </div>
+  </div>
+</footer>
+
+<button class="scroll-top" id="scrollTop">↑</button>
+<script>
+  const navToggle=document.getElementById('navToggle');const closeMenu=document.getElementById('closeMenu');const navMenu=document.getElementById('navMenu');
+  navToggle.addEventListener('click',()=>navMenu.classList.add('open'));closeMenu.addEventListener('click',()=>navMenu.classList.remove('open'));
+  const s=document.getElementById('scrollTop');window.addEventListener('scroll',()=>s.classList.toggle('visible',scrollY>400));s.addEventListener('click',()=>scrollTo({top:0,behavior:'smooth'}));
+
+  // Dynamic next activity slot synchronization with MongoDB Atlas
+  async function loadActiveSlotBanner() {
+    const API_BASE = (
+      window.location.protocol === 'file:' ||
+      window.location.hostname === 'localhost' ||
+      window.location.hostname === '127.0.0.1'
+    ) ? 'http://localhost:5000' : 'https://api.jayasrikannanfoundation.org';
+
+    try {
+      const res = await fetch(`${API_BASE}/api/activities/active-slot`);
+      if (res.ok) {
+        const json = await res.json();
+        if (json.success && json.data) {
+          const slot = json.data;
+          const banner = document.getElementById('userActiveSlotBanner');
+          if (banner) {
+            document.getElementById('userSlotCategory').textContent = slot.category || 'Upcoming Drive';
+            document.getElementById('userSlotTitle').textContent = slot.title;
+            document.getElementById('userSlotDesc').textContent = slot.desc;
+            document.getElementById('userSlotDate').textContent = slot.date;
+            document.getElementById('userSlotLocation').textContent = slot.location;
+            document.getElementById('userSlotTarget').textContent = slot.target || 'Community Members';
+            banner.style.display = 'block';
+          }
+        }
+      }
+    } catch (e) {
+      console.warn('Could not fetch active slot from API:', e);
+    }
+  }
+
+  loadActiveSlotBanner();
+</script>
+</body>
+</html>

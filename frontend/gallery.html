@@ -1,0 +1,466 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gallery | Jayasri Kannan Foundation</title>
+  <meta name="description" content="Explore photographs from Jayasri Kannan Foundation's social-service activities including eye camps, blood donation camps, youth programmes and community events." />
+  <link rel="icon" type="image/jpeg" href="images/logo.jpg" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    /* ── Album Filter Tabs ── */
+    .gallery-filter-bar {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 36px;
+      justify-content: center;
+    }
+    .gallery-filter-bar button {
+      background: var(--white);
+      border: 2px solid var(--primary-blue);
+      color: var(--primary-blue);
+      padding: 8px 20px;
+      border-radius: 50px;
+      font-size: .85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background .2s, color .2s;
+    }
+    .gallery-filter-bar button.active,
+    .gallery-filter-bar button:hover {
+      background: var(--primary-blue);
+      color: var(--white);
+    }
+    /* ── Gallery Grid ── */
+    .gallery-full-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 16px;
+    }
+    .gallery-full-item {
+      position: relative;
+      border-radius: 12px;
+      overflow: hidden;
+      cursor: pointer;
+      aspect-ratio: 4/3;
+      background: #e9ecef;
+      box-shadow: var(--shadow-sm);
+      transition: transform .25s, box-shadow .25s;
+    }
+    .gallery-full-item:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+    .gallery-full-item img,
+    .gallery-full-item video {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+    }
+    .gallery-overlay {
+      position: absolute; inset: 0;
+      background: rgba(13,37,72,.55);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; transition: opacity .22s;
+    }
+    .gallery-full-item:hover .gallery-overlay { opacity: 1; }
+    .gallery-overlay-text {
+      color: #fff; font-weight: 700; font-size: .9rem; text-align: center;
+    }
+    .media-type-badge {
+      position: absolute; top: 10px; left: 10px;
+      background: rgba(13,37,72,.8); color: #fff;
+      padding: 3px 10px; border-radius: 50px; font-size: .72rem; font-weight: 700;
+    }
+    .album-badge {
+      position: absolute; bottom: 10px; left: 10px; right: 10px;
+      background: rgba(13,37,72,.78); color: #f0c84a;
+      padding: 4px 10px; border-radius: 6px; font-size: .75rem; font-weight: 600;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      display: none;
+    }
+    .gallery-full-item:hover .album-badge { display: block; }
+    /* ── Loading / Empty state ── */
+    .gallery-loading {
+      grid-column: 1/-1; text-align: center; padding: 60px 20px; color: #888;
+    }
+    .gallery-loading i { font-size: 2.5rem; margin-bottom: 14px; display: block; color: var(--primary-blue); }
+    /* ── Lightbox ── */
+    .lightbox { display:none; position:fixed; inset:0; background:rgba(0,0,0,.95); z-index:9999; align-items:center; justify-content:center; flex-direction:column; }
+    .lightbox.active { display:flex; }
+    .lightbox img { max-width:90vw; max-height:85vh; object-fit:contain; border-radius:12px; box-shadow:0 20px 80px rgba(0,0,0,.8); }
+    .lightbox video { max-width:90vw; max-height:85vh; border-radius:12px; }
+    .lightbox-close { position:absolute; top:20px; right:24px; color:#fff; font-size:2rem; cursor:pointer; background:rgba(255,255,255,.1); width:44px; height:44px; border-radius:50%; display:flex; align-items:center; justify-content:center; transition:background .2s; border:none; }
+    .lightbox-close:hover { background:var(--accent-gold); color:var(--deep-blue); }
+    .lightbox-caption { color:rgba(255,255,255,.8); margin-top:16px; font-size:.9rem; max-width:80vw; text-align:center; }
+  </style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="container">
+    <div class="topbar-left">
+      <a href="tel:7010964630"><i class="fa-solid fa-phone"></i> 7010964630 / 9941531140 / 9025948033</a>
+      <a href="mailto:jskfoundation29@gmail.com"><i class="fa-solid fa-envelope"></i> jskfoundation29@gmail.com</a>
+    </div>
+    <div class="topbar-right">
+      <a href="admin/login.html" id="adminPortalLink" class="topbar-admin-link" title="Admin Login">
+        <i class="fa-solid fa-lock"></i> Admin
+      </a>
+      <span class="topbar-divider"></span>
+      <div class="topbar-social">
+        <a href="https://www.facebook.com/profile.php?id=61595242913128" target="_blank" rel="noopener noreferrer" title="Facebook" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+        <a href="https://www.instagram.com/jayasrikannan_foundation?utm_source=qr&stkn=MWs3MGRmMnpzdXN1ZA==" target="_blank" rel="noopener noreferrer" title="Instagram" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+        <a href="https://www.youtube.com/@JayasriKannanFoundation" target="_blank" rel="noopener noreferrer" title="YouTube" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<nav class="navbar">
+  <div class="container">
+    <a href="index.html" class="nav-brand">
+      <img src="images/logo.jpg" alt="Logo" class="nav-logo" />
+      <div class="nav-brand-text">
+        <div class="nav-brand-name">Jayasri Kannan<br>Foundation</div>
+        <div class="nav-brand-tag">Serving Humanity</div>
+      </div>
+    </a>
+    <ul class="nav-menu" id="navMenu">
+      <button class="close-menu" id="closeMenu">✕</button>
+      <li><a href="index.html" class="nav-link">Home</a></li>
+      <li><a href="about.html" class="nav-link">About Us</a></li>
+      <li><a href="activities.html" class="nav-link">Our Activities</a></li>
+      <li><a href="eye-care.html" class="nav-link">Eye Care</a></li>
+      <li><a href="blood-donation.html" class="nav-link">Blood Donation</a></li>
+      <li><a href="events.html" class="nav-link">Events</a></li>
+      <li><a href="gallery.html" class="nav-link active">Gallery</a></li>
+      <li><a href="volunteer.html" class="nav-link">Volunteer</a></li>
+      <li><a href="contact.html" class="nav-link">Contact</a></li>
+    </ul>
+    <a href="donate.html" class="btn btn-primary btn-sm nav-donate"><i class="fa-solid fa-heart"></i> Donate Now</a>
+    <button class="nav-toggle" id="navToggle"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<!-- PAGE HERO -->
+<section class="page-hero">
+  <div class="container">
+    <div class="page-hero-content">
+      <div class="breadcrumb"><a href="index.html">Home</a> <span>›</span> Gallery</div>
+      <h1>Our Gallery</h1>
+      <p>Explore photographs from our social-service activities and community programmes.</p>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section class="section-pad" style="background:var(--off-white);">
+  <div class="container">
+
+    <!-- Album filter tabs — dynamically built -->
+    <div class="gallery-filter-bar" id="filterBar">
+      <button class="active" data-filter="all" onclick="applyFilter('all',this)">All Media</button>
+    </div>
+
+    <!-- Media grid — fully rendered by JS -->
+    <div class="gallery-full-grid" id="galleryGrid">
+      <div class="gallery-loading">
+        <i class="fa-solid fa-spinner fa-spin"></i>
+        <p>Loading gallery from database…</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+  <img src="" id="lightboxImg" alt="Gallery Image" onclick="event.stopPropagation()" />
+  <video src="" id="lightboxVideo" controls style="display:none;" onclick="event.stopPropagation()"></video>
+  <p class="lightbox-caption" id="lightboxCaption"></p>
+</div>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo-wrap"><img src="images/logo.jpg" alt="Logo" class="footer-logo" /><div class="footer-brand-name">Jayasri Kannan<br>Foundation</div></div>
+        <p>Serving Humanity • Supporting Communities • Creating a Healthier Future</p>
+        <div class="footer-social">
+          <a href="https://www.facebook.com/profile.php?id=61595242913128" target="_blank" rel="noopener noreferrer" aria-label="Facebook" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="https://www.instagram.com/jayasrikannan_foundation?utm_source=qr&stkn=MWs3MGRmMnpzdXN1ZA==" target="_blank" rel="noopener noreferrer" aria-label="Instagram" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+          <a href="https://www.youtube.com/@JayasriKannanFoundation" target="_blank" rel="noopener noreferrer" aria-label="YouTube" title="YouTube"><i class="fa-brands fa-youtube"></i></a>
+        </div>
+      </div>
+      <div class="footer-col"><h4>Quick Links</h4><ul>
+        <li><a href="index.html">Home</a></li><li><a href="about.html">About Us</a></li>
+        <li><a href="activities.html">Our Activities</a></li><li><a href="eye-care.html">Eye Care</a></li>
+        <li><a href="blood-donation.html">Blood Donation</a></li><li><a href="events.html">Events</a></li>
+        <li><a href="gallery.html">Gallery</a></li><li><a href="volunteer.html">Volunteer</a></li>
+      </ul></div>
+      <div class="footer-col"><h4>Get Involved</h4><ul>
+        <li><a href="volunteer.html">Become a Volunteer</a></li>
+        <li><a href="donate.html">Donate</a></li>
+        <li><a href="contact.html">Partner With Us</a></li>
+      </ul></div>
+      <div class="footer-col"><h4>Contact Us</h4>
+        <div class="footer-contact-item"><div class="footer-contact-icon"><i class="fa-solid fa-phone"></i></div><p>7010964630 / 9941531140 / 9025948033</p></div>
+        <div class="footer-contact-item"><div class="footer-contact-icon"><i class="fa-solid fa-envelope"></i></div><p>jskfoundation29@gmail.com</p></div>
+        <div style="margin-top:20px;"><a href="donate.html" class="btn btn-primary btn-sm"><i class="fa-solid fa-heart"></i> Donate Now</a></div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 Jayasri Kannan Foundation. All Rights Reserved.</p>
+      <div style="display:flex;gap:16px;"><a href="#">Privacy Policy</a><a href="#">Terms of Use</a></div>
+    </div>
+  </div>
+</footer>
+
+<button class="scroll-top" id="scrollTop">↑</button>
+
+<script>
+  // ── Nav / Scroll helpers ──────────────────────────────────────────────
+  const navToggle = document.getElementById('navToggle');
+  const closeMenu = document.getElementById('closeMenu');
+  const navMenu   = document.getElementById('navMenu');
+  navToggle.addEventListener('click', () => navMenu.classList.add('open'));
+  closeMenu.addEventListener('click', () => navMenu.classList.remove('open'));
+  const s = document.getElementById('scrollTop');
+  window.addEventListener('scroll', () => s.classList.toggle('visible', scrollY > 400));
+  s.addEventListener('click', () => scrollTo({ top: 0, behavior: 'smooth' }));
+
+  // ── Config ────────────────────────────────────────────────────────────
+  const API_BASE = (
+    window.location.protocol === 'file:' ||
+    window.location.hostname === 'localhost' ||
+    window.location.hostname === '127.0.0.1'
+  ) ? 'http://localhost:5000' : 'https://api.jayasrikannanfoundation.org';
+
+  const GALLERY_KEY = 'jsk_gallery_items';
+
+  // Local seed — matches server SEED_ITEMS so offline users see full gallery
+  const LOCAL_SEED = [
+    { _id:'s1',  type:'image', name:'Community Service & Healthcare – 1', url:'images/Addon Image/Addon Image.jpeg',  album:'Community Service',    date:'2026-09-26' },
+    { _id:'s2',  type:'image', name:'Community Service & Healthcare – 2', url:'images/Addon Image/Addon Image1.jpeg', album:'Community Service',    date:'2026-09-26' },
+    { _id:'s3',  type:'image', name:'Community Service & Healthcare – 3', url:'images/Addon Image/Addon Image2.jpeg', album:'Community Service',    date:'2026-09-26' },
+    { _id:'s4',  type:'image', name:'Community Service & Healthcare – 4', url:'images/Addon Image/Addon Image3.jpeg', album:'Community Service',    date:'2026-09-26' },
+    { _id:'s5',  type:'image', name:'Community Service & Healthcare – 5', url:'images/Addon Image/Addon Image4.jpeg', album:'Community Service',    date:'2026-09-26' },
+    { _id:'s6',  type:'image', name:'Community Service & Healthcare – 6', url:'images/Addon Image/Addon Image5.jpeg', album:'Community Service',    date:'2026-09-26' },
+    { _id:'s7',  type:'image', name:'Community Service & Healthcare – 7', url:'images/Addon Image/Addon Image6.jpeg', album:'Community Service',    date:'2026-09-26' },
+    { _id:'s8',  type:'image', name:'Blood Donation Drive – 1',  url:'images/Blood/Blood1.jpeg',  album:'Blood Donation Drive', date:'2026-09-22' },
+    { _id:'s9',  type:'image', name:'Blood Donation Drive – 2',  url:'images/Blood/Blood2.jpeg',  album:'Blood Donation Drive', date:'2026-09-22' },
+    { _id:'s10', type:'image', name:'Blood Donation Drive – 3',  url:'images/Blood/Blood3.jpeg',  album:'Blood Donation Drive', date:'2026-09-22' },
+    { _id:'s11', type:'image', name:'Blood Donation Drive – 4',  url:'images/Blood/Blood4.jpeg',  album:'Blood Donation Drive', date:'2026-09-22' },
+    { _id:'s12', type:'image', name:'Blood Donation Drive – 5',  url:'images/Blood/Blood5.jpeg',  album:'Blood Donation Drive', date:'2026-09-22' },
+    { _id:'s13', type:'image', name:'Blood Donation Drive – 6',  url:'images/Blood/Blood6.jpeg',  album:'Blood Donation Drive', date:'2026-09-22' },
+    { _id:'s14', type:'image', name:'Blood Donation Drive – 7',  url:'images/Blood/blood7.jpeg',  album:'Blood Donation Drive', date:'2026-09-22' },
+    { _id:'s15', type:'image', name:'Blood Donation Drive – 8',  url:'images/Blood/Blood8.jpeg',  album:'Blood Donation Drive', date:'2026-09-22' },
+    { _id:'s16', type:'image', name:'Blood Donation Drive – 9',  url:'images/Blood/Blood9.jpeg',  album:'Blood Donation Drive', date:'2026-09-22' },
+    { _id:'s17', type:'image', name:'Blood Donation Drive – 11', url:'images/Blood/Blood11.jpeg', album:'Blood Donation Drive', date:'2026-09-22' },
+    { _id:'s18', type:'image', name:'Blood Donation Drive – 12', url:'images/Blood/Blood12.jpeg', album:'Blood Donation Drive', date:'2026-09-22' },
+    { _id:'s19', type:'image', name:'Community Welfare Outreach – 1', url:'images/community/community.jpeg',  album:'Community Welfare', date:'2026-06-20' },
+    { _id:'s20', type:'image', name:'Community Welfare Outreach – 2', url:'images/community/community1.jpeg', album:'Community Welfare', date:'2026-06-20' },
+    { _id:'s21', type:'image', name:'Community Welfare Outreach – 3', url:'images/community/community2.jpeg', album:'Community Welfare', date:'2026-06-20' },
+    { _id:'s22', type:'image', name:'Community Welfare Outreach – 4', url:'images/community/community3.jpeg', album:'Community Welfare', date:'2026-06-20' },
+    { _id:'s23', type:'image', name:'Community Welfare Outreach – 5', url:'images/community/community4.jpeg', album:'Community Welfare', date:'2026-06-20' },
+    { _id:'s24', type:'image', name:'Community Welfare Outreach – 6', url:'images/community/community5.jpeg', album:'Community Welfare', date:'2026-06-20' },
+    { _id:'ec1', type:'image', name:'Free Eye Camp – Awareness Campaign',     url:'images/eye/eye-camp-1.jpg', album:'Free Eye Camp', date:'2026-10-18' },
+    { _id:'ec2', type:'image', name:'Free Eye Camp – Dr. Jayasrikannan Team',  url:'images/eye/eye-camp-2.jpg', album:'Free Eye Camp', date:'2026-10-18' },
+    { _id:'ec3', type:'image', name:'Free Eye Camp – Vision Care Campaign',    url:'images/eye/eye-camp-3.jpg', album:'Free Eye Camp', date:'2026-10-18' },
+    { _id:'ec4', type:'image', name:'Free Eye Camp – Student Vision Hall',     url:'images/eye/eye-camp-4.jpg', album:'Free Eye Camp', date:'2026-10-18' },
+    { _id:'ec5', type:'image', name:'Free Eye Camp – Trial Frame Testing',     url:'images/eye/eye-camp-5.jpg', album:'Free Eye Camp', date:'2026-10-18' },
+    { _id:'ec6', type:'image', name:'Free Eye Camp – Student Vision Check',    url:'images/eye/eye-camp-6.jpg', album:'Free Eye Camp', date:'2026-10-18' },
+    { _id:'ec7', type:'image', name:'Free Eye Camp – Adult Blindness Camp',    url:'images/eye/eye-camp-7.jpg', album:'Free Eye Camp', date:'2026-10-18' },
+    { _id:'s25', type:'image', name:'Free Eye Camp – Examination 1',       url:'images/eye/eye1.jpeg', album:'Free Eye Camp', date:'2026-10-18' },
+    { _id:'s26', type:'image', name:'Free Eye Camp – Examination 2',       url:'images/eye/eye2.jpeg', album:'Free Eye Camp', date:'2026-10-18' },
+    { _id:'s27', type:'image', name:'Free Eye Camp – Examination 3',       url:'images/eye/eye3.jpeg', album:'Free Eye Camp', date:'2026-10-18' },
+    { _id:'s28', type:'image', name:'Free Eye Camp – Glasses Distribution', url:'images/eye/eye5.jpeg', album:'Free Eye Camp', date:'2026-10-18' },
+    { _id:'s29', type:'image', name:'Free Eye Camp – Patient Consultation', url:'images/eye/eye6.jpeg', album:'Free Eye Camp', date:'2026-10-18' },
+    { _id:'s30', type:'image', name:'Free Eye Camp – Vision Testing 1',    url:'images/eye/eye7.jpeg', album:'Free Eye Camp', date:'2026-10-18' },
+    { _id:'s31', type:'image', name:'Free Eye Camp – Vision Testing 2',    url:'images/eye/eye8.jpeg', album:'Free Eye Camp', date:'2026-10-18' },
+    { _id:'s32', type:'image', name:'Free Eye Camp – Camp Highlights',     url:'images/eye/eye9.jpeg', album:'Free Eye Camp', date:'2026-10-18' },
+    { _id:'s33', type:'video', name:'Free Eye Camp – Video 1',             url:'images/eye/eye4.mp4',  album:'Free Eye Camp', date:'2026-10-18' },
+    { _id:'s34', type:'video', name:'Free Eye Camp – Video 2',             url:'images/eye/eye10.mp4', album:'Free Eye Camp', date:'2026-10-18' },
+    { _id:'s35', type:'image', name:'Rural Health Camp – Doctor Consultation',   url:'images/health/Health.jpeg',  album:'Rural Health Outreach', date:'2026-07-10' },
+    { _id:'s36', type:'image', name:'Rural Health Camp – Checkup 1',             url:'images/health/health1.jpeg', album:'Rural Health Outreach', date:'2026-07-10' },
+    { _id:'s37', type:'image', name:'Rural Health Camp – Checkup 2',             url:'images/health/health2.jpeg', album:'Rural Health Outreach', date:'2026-07-10' },
+    { _id:'s38', type:'image', name:'Rural Health Camp – Checkup 3',             url:'images/health/health3.jpeg', album:'Rural Health Outreach', date:'2026-07-10' },
+    { _id:'s39', type:'image', name:'Rural Health Camp – Checkup 4',             url:'images/health/health4.jpeg', album:'Rural Health Outreach', date:'2026-07-10' },
+    { _id:'s40', type:'image', name:'Rural Health Camp – Medicine Distribution', url:'images/health/health5.jpeg', album:'Rural Health Outreach', date:'2026-07-10' },
+    { _id:'s41', type:'image', name:'Eye Examination Camp - Ambattur',   url:'images/event01.jpeg', album:'Foundation Events', date:'2026-10-18' },
+    { _id:'s42', type:'image', name:'Women Welfare & Community Support', url:'images/event2.jpeg',  album:'Foundation Events', date:'2026-06-20' },
+    { _id:'s43', type:'image', name:'Student Notebook & Kit Handover',   url:'images/event3.jpeg',  album:'Foundation Events', date:'2026-08-15' },
+    { _id:'s44', type:'image', name:'Health Camp Doctor Consultation',   url:'images/event4.jpeg',  album:'Foundation Events', date:'2026-07-10' },
+    { _id:'s45', type:'image', name:'Road Safety & Social Welfare – 1', url:'images/road/road1.jpeg',    album:'Road & Social Welfare', date:'2026-05-12' },
+    { _id:'s46', type:'image', name:'Road Safety & Social Welfare – 2', url:'images/road/road2.jpeg',    album:'Road & Social Welfare', date:'2026-05-12' },
+    { _id:'s47', type:'image', name:'Road Safety & Social Welfare – 4', url:'images/road/road4.jpeg',    album:'Road & Social Welfare', date:'2026-05-12' },
+    { _id:'s48', type:'image', name:'Road Safety & Social Welfare – 5', url:'images/road/road5.jpeg',    album:'Road & Social Welfare', date:'2026-05-12' },
+    { _id:'s49', type:'image', name:'News Article Coverage – 1',        url:'images/road/Article1.jpeg', album:'Road & Social Welfare', date:'2026-05-12' },
+    { _id:'s50', type:'image', name:'News Article Coverage – 2',        url:'images/road/Article2.jpeg', album:'Road & Social Welfare', date:'2026-05-12' },
+    { _id:'s51', type:'image', name:'News Article Coverage – 3',        url:'images/road/Article3.jpeg', album:'Road & Social Welfare', date:'2026-05-12' },
+    { _id:'s52', type:'video', name:'Road Outreach Video',              url:'images/road/road3.mp4',    album:'Road & Social Welfare', date:'2026-05-12' },
+    { _id:'s53', type:'video', name:'News Coverage Video',              url:'images/road/Article4.mp4', album:'Road & Social Welfare', date:'2026-05-12' },
+    { _id:'s54', type:'image', name:'Foundation Event Snapshot – 1', url:'images/WhatsApp Image 2026-09-26 at 9.45.21 AM (1).jpeg', album:'Foundation Anniversary', date:'2026-09-26' },
+    { _id:'s55', type:'image', name:'Foundation Event Snapshot – 2', url:'images/WhatsApp Image 2026-09-26 at 9.45.21 AM.jpeg',    album:'Foundation Anniversary', date:'2026-09-26' },
+    { _id:'s56', type:'image', name:'Foundation Event Snapshot – 3', url:'images/WhatsApp Image 2026-09-26 at 9.45.22 AM (1).jpeg', album:'Foundation Anniversary', date:'2026-09-26' },
+    { _id:'s57', type:'image', name:'Foundation Event Snapshot – 4', url:'images/WhatsApp Image 2026-09-26 at 9.45.22 AM.jpeg',    album:'Foundation Anniversary', date:'2026-09-26' },
+    { _id:'s58', type:'image', name:'Foundation Event Snapshot – 5', url:'images/WhatsApp Image 2026-09-26 at 9.45.23 AM (1).jpeg', album:'Foundation Anniversary', date:'2026-09-26' },
+    { _id:'s59', type:'image', name:'Foundation Event Snapshot – 6', url:'images/WhatsApp Image 2026-09-26 at 9.45.23 AM.jpeg',    album:'Foundation Anniversary', date:'2026-09-26' },
+    { _id:'s60', type:'video', name:'Foundation Annual Day Highlights', url:'images/VID-20260926-WA0444.mp4', album:'Foundation Anniversary', date:'2026-09-26' }
+  ];
+
+  // ── State ─────────────────────────────────────────────────────────────
+  let allItems    = [];
+  let activeFilter = 'all';
+
+  // ── URL normaliser (API returns /user-side/... paths) ─────────────────
+  function toDisplayUrl(url) {
+    if (!url) return 'images/event01.jpeg';
+    if (url.startsWith('data:') || url.startsWith('http://') || url.startsWith('https://')) return url;
+    if (url.startsWith('/user-side/')) return url.replace('/user-side/', '');
+    if (url.startsWith('../user-side/')) return url.replace('../user-side/', '');
+    return url;
+  }
+
+  // ── Escape helper ─────────────────────────────────────────────────────
+  function esc(t) {
+    if (!t) return '';
+    return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  // ── Render gallery grid ───────────────────────────────────────────────
+  function renderGallery() {
+    const grid = document.getElementById('galleryGrid');
+    const items = activeFilter === 'all'
+      ? allItems
+      : allItems.filter(i => i.album === activeFilter);
+
+    const uniqueItems = [];
+    const seenUrls = new Set();
+    for (const item of items) {
+      if (!seenUrls.has(item.url)) {
+        seenUrls.add(item.url);
+        uniqueItems.push(item);
+      }
+    }
+
+    if (uniqueItems.length === 0) {
+      grid.innerHTML = `<div class="gallery-loading"><i class="fa-solid fa-photo-film"></i><p>No media found in this album.</p></div>`;
+      return;
+    }
+
+    grid.innerHTML = uniqueItems.map(item => {
+      const url    = toDisplayUrl(item.url);
+      const isVid  = item.type === 'video';
+      const thumb  = isVid
+        ? `<video src="${url}" muted preload="metadata" style="width:100%;height:100%;object-fit:cover;"></video>`
+        : `<img src="${url}" alt="${esc(item.name)}" loading="lazy" onerror="this.src='images/event01.jpeg'" />`;
+      const clickCb = isVid
+        ? `openLightbox('${url.replace(/'/g,"\\'")}','${esc(item.name)}','video')`
+        : `openLightbox('${url.replace(/'/g,"\\'")}','${esc(item.name)}','image')`;
+
+      return `
+        <div class="gallery-full-item" onclick="${clickCb}">
+          ${thumb}
+          <span class="media-type-badge">${isVid ? '<i class="fa-solid fa-video"></i> Video' : '<i class="fa-solid fa-image"></i> Photo'}</span>
+          <div class="gallery-overlay">
+            <div class="gallery-overlay-text">${isVid ? '<i class="fa-solid fa-play"></i> Play' : 'View Image'}</div>
+          </div>
+          <span class="album-badge">${esc(item.album || '')}</span>
+        </div>`;
+    }).join('');
+  }
+
+  // ── Build album filter tabs ───────────────────────────────────────────
+  function buildFilterBar(items) {
+    const bar    = document.getElementById('filterBar');
+    const albums = [...new Set(items.map(i => i.album).filter(Boolean))];
+
+    let html = `<button class="${activeFilter==='all'?'active':''}" data-filter="all" onclick="applyFilter('all',this)">All (${items.length})</button>`;
+    albums.forEach(alb => {
+      const cnt = items.filter(i => i.album === alb).length;
+      html += `<button class="${activeFilter===alb?'active':''}" data-filter="${esc(alb)}" onclick="applyFilter('${esc(alb)}',this)">${esc(alb)} (${cnt})</button>`;
+    });
+    bar.innerHTML = html;
+  }
+
+  // ── Filter apply ─────────────────────────────────────────────────────
+  window.applyFilter = function(filter, btn) {
+    activeFilter = filter;
+    document.querySelectorAll('#filterBar button').forEach(b => b.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+    renderGallery();
+  };
+
+  // ── Load data (API → localStorage → local seed) ───────────────────────
+  async function loadGallery() {
+    // 1. Try backend API
+    try {
+      const res = await fetch(`${API_BASE}/api/gallery`);
+      if (res.ok) {
+        const json = await res.json();
+        if (json.success && Array.isArray(json.data) && json.data.length > 0) {
+          allItems = json.data.map(i => ({ ...i, url: toDisplayUrl(i.url) }));
+          localStorage.setItem(GALLERY_KEY, JSON.stringify(allItems));
+          buildFilterBar(allItems);
+          renderGallery();
+          return;
+        }
+      }
+    } catch (err) {
+      console.warn('Backend offline; checking localStorage:', err);
+    }
+
+    // 2. Try localStorage cache
+    try {
+      const stored = localStorage.getItem(GALLERY_KEY);
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          allItems = parsed.map(i => ({ ...i, url: toDisplayUrl(i.url) }));
+          buildFilterBar(allItems);
+          renderGallery();
+          return;
+        }
+      }
+    } catch (e) {}
+
+    // 3. Local seed fallback
+    allItems = LOCAL_SEED;
+    buildFilterBar(allItems);
+    renderGallery();
+  }
+
+  // ── Lightbox ──────────────────────────────────────────────────────────
+  window.openLightbox = function(src, caption, type) {
+    const img   = document.getElementById('lightboxImg');
+    const vid   = document.getElementById('lightboxVideo');
+    const cap   = document.getElementById('lightboxCaption');
+    if (type === 'video') {
+      img.style.display = 'none';
+      vid.style.display = 'block';
+      vid.src = src;
+      vid.play();
+    } else {
+      vid.style.display = 'none';
+      img.style.display = 'block';
+      vid.pause(); vid.src = '';
+      img.src = src;
+    }
+    cap.textContent = caption;
+    document.getElementById('lightbox').classList.add('active');
+    document.body.style.overflow = 'hidden';
+  };
+
+  window.closeLightbox = function() {
+    document.getElementById('lightbox').classList.remove('active');
+    document.body.style.overflow = '';
+    const vid = document.getElementById('lightboxVideo');
+    vid.pause(); vid.src = '';
+  };
+
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+
+  // ── Boot ──────────────────────────────────────────────────────────────
+  loadGallery();
+</script>
+</body>
+</html>

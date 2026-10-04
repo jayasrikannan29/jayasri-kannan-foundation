@@ -1,0 +1,337 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard | Jayasri Kannan Foundation</title>
+  <link rel="icon" type="image/jpeg" href="../images/logo.jpg" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="admin.css" />
+  <style>
+    .activity-list { display: flex; flex-direction: column; gap: 0; }
+    .activity-item { display: flex; align-items: flex-start; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--border); }
+    .activity-item:last-child { border-bottom: none; }
+    .activity-dot { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: .85rem; flex-shrink: 0; margin-top: 2px; }
+    .activity-dot.blue { background: rgba(26,58,110,0.1); color: var(--primary-blue); }
+    .activity-dot.gold { background: rgba(201,162,39,0.12); color: var(--accent-gold); }
+    .activity-dot.green { background: rgba(46,139,87,0.1); color: var(--accent-green); }
+    .activity-title { font-size: .88rem; font-weight: 600; color: var(--text-dark); }
+    .activity-meta { font-size: .76rem; color: var(--text-light); margin-top: 2px; }
+    .quick-links { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 14px; }
+    .quick-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 20px 12px; text-align: center; transition: var(--transition); text-decoration: none; display: flex; flex-direction: column; align-items: center; gap: 10px; box-shadow: var(--shadow-sm); }
+    .quick-card:hover { box-shadow: var(--shadow-md); transform: translateY(-3px); border-color: var(--accent-gold); }
+    .quick-card-icon { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.15rem; }
+    .quick-card-label { font-size: .8rem; font-weight: 600; color: var(--text-dark); }
+    .content-row { display: grid; grid-template-columns: 2fr 1fr; gap: 22px; }
+    @media (max-width: 900px) { .content-row { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <img src="../images/logo.jpg" alt="Logo" class="sidebar-logo" onerror="this.src='https://placehold.co/36x36/0d2548/c9a227?text=JSK'" />
+      <div class="sidebar-brand-text">
+        <div class="sidebar-brand-name">Jayasri Kannan</div>
+        <div class="sidebar-brand-sub">Admin Console</div>
+      </div>
+      <button class="sidebar-toggle" id="sidebarToggle" title="Collapse sidebar">
+        <i class="fa-solid fa-chevron-left toggle-icon"></i>
+      </button>
+    </div>
+
+    <nav class="sidebar-nav" aria-label="Admin Navigation">
+      <div class="nav-section-label">Main</div>
+      <a href="dashboard.html" class="nav-item active" data-tooltip="Dashboard">
+        <i class="fa-solid fa-gauge nav-item-icon"></i>
+        <span class="nav-item-text">Dashboard Home</span>
+      </a>
+
+      <div class="nav-section-label">Management</div>
+      <a href="what-we-do.html" class="nav-item" data-tooltip="What We Do">
+        <i class="fa-solid fa-hand-holding-heart nav-item-icon"></i>
+        <span class="nav-item-text">1. Update 'What We Do'</span>
+      </a>
+      <a href="activities.html" class="nav-item" data-tooltip="Manage Activities">
+        <i class="fa-solid fa-bolt nav-item-icon"></i>
+        <span class="nav-item-text">2. Manage Activities</span>
+      </a>
+      <a href="events.html" class="nav-item" data-tooltip="Events">
+        <i class="fa-solid fa-calendar-days nav-item-icon"></i>
+        <span class="nav-item-text">3. Events Management</span>
+      </a>
+      <a href="gallery.html" class="nav-item" data-tooltip="Gallery">
+        <i class="fa-solid fa-images nav-item-icon"></i>
+        <span class="nav-item-text">4. Gallery Management</span>
+      </a>
+      <a href="donation-details.html" class="nav-item" data-tooltip="Donations">
+        <i class="fa-solid fa-indian-rupee-sign nav-item-icon"></i>
+        <span class="nav-item-text">5. Donation Details</span>
+      </a>
+
+      <div class="nav-section-label">Utilities</div>
+      <a href="../index.html" class="nav-item" target="_blank" data-tooltip="Public Website">
+        <i class="fa-solid fa-globe nav-item-icon"></i>
+        <span class="nav-item-text">View Public Website</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <button class="btn-logout nav-item" id="logoutBtn" data-tooltip="Logout">
+        <i class="fa-solid fa-right-from-bracket nav-item-icon"></i>
+        <span class="nav-item-text">Logout</span>
+      </button>
+    </div>
+  </aside>
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- MAIN APP -->
+  <div class="app-main" id="appMain">
+    <header class="top-header">
+      <div class="header-left">
+        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu"><i class="fa-solid fa-bars"></i></button>
+        <span class="header-page-title">Dashboard Overview</span>
+      </div>
+      <div class="header-right">
+        <button class="header-icon-btn" title="Notifications"><i class="fa-regular fa-bell"></i></button>
+        <div class="admin-chip">
+          <div class="admin-avatar" id="adminAvatar">JK</div>
+          <span class="admin-chip-name" id="adminName">Admin</span>
+        </div>
+      </div>
+    </header>
+
+    <main class="dashboard-content">
+      <div class="page-header">
+        <div class="page-header-left">
+          <div class="page-header-title">Welcome back 👋</div>
+          <div class="page-header-sub">Here is your live overview of the Jayasri Kannan Foundation administrative operations.</div>
+        </div>
+        <div class="page-header-actions">
+          <a href="../index.html" target="_blank" class="btn btn-outline"><i class="fa-solid fa-globe"></i> View Public Website</a>
+          <a href="events.html" class="btn btn-gold"><i class="fa-solid fa-plus"></i> New Event</a>
+        </div>
+      </div>
+
+      <!-- KEY STATS -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon blue"><i class="fa-solid fa-calendar-days"></i></div>
+          <div>
+            <div class="stat-value" id="statEvents">4</div>
+            <div class="stat-label">Active Events</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon gold"><i class="fa-solid fa-bolt"></i></div>
+          <div>
+            <div class="stat-value" id="statActivities">2</div>
+            <div class="stat-label">Queued Activities</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon green"><i class="fa-solid fa-images"></i></div>
+          <div>
+            <div class="stat-value" id="statGallery">5</div>
+            <div class="stat-label">Media & Albums</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon red"><i class="fa-solid fa-indian-rupee-sign"></i></div>
+          <div>
+            <div class="stat-value" id="statDonations">&#8377;57.5K</div>
+            <div class="stat-label">Logged Donations</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CONTENT SPLIT -->
+      <div class="content-row">
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title"><i class="fa-solid fa-compass"></i> Administrative Management Sections</span>
+          </div>
+          <div class="card-body">
+            <div class="quick-links">
+              <a href="what-we-do.html" class="quick-card">
+                <div class="quick-card-icon" style="background:rgba(26,58,110,0.1);color:var(--primary-blue);"><i class="fa-solid fa-hand-holding-heart"></i></div>
+                <div class="quick-card-label">1. What We Do</div>
+              </a>
+              <a href="activities.html" class="quick-card">
+                <div class="quick-card-icon" style="background:rgba(201,162,39,0.15);color:var(--accent-gold);"><i class="fa-solid fa-bolt"></i></div>
+                <div class="quick-card-label">2. Activities Slot</div>
+              </a>
+              <a href="events.html" class="quick-card">
+                <div class="quick-card-icon" style="background:rgba(46,139,87,0.1);color:var(--accent-green);"><i class="fa-solid fa-calendar-days"></i></div>
+                <div class="quick-card-label">3. Events</div>
+              </a>
+              <a href="gallery.html" class="quick-card">
+                <div class="quick-card-icon" style="background:rgba(26,58,110,0.1);color:var(--primary-blue);"><i class="fa-solid fa-images"></i></div>
+                <div class="quick-card-label">4. Gallery</div>
+              </a>
+              <a href="donation-details.html" class="quick-card">
+                <div class="quick-card-icon" style="background:rgba(229,57,53,0.1);color:var(--danger);"><i class="fa-solid fa-indian-rupee-sign"></i></div>
+                <div class="quick-card-label">5. Donations</div>
+              </a>
+            </div>
+
+            <div style="margin-top:24px;padding:16px;background:var(--off-white);border-radius:var(--radius-sm);border:1px solid var(--border);">
+              <div style="font-weight:700;font-size:.9rem;color:var(--primary-blue);margin-bottom:6px;">
+                <i class="fa-solid fa-shield-halved" style="color:var(--accent-gold);margin-right:6px;"></i> Admin Control Center Ready
+              </div>
+              <p style="font-size:.82rem;color:var(--text-gray);line-height:1.5;">
+                All administrative sections are styled with the foundation's official deep blues, pure whites, and refined gold accents. Data updates across 'What We Do', Activity Slots, Events, Media Albums, and Donor Submissions persist cleanly in client-side storage and backend API endpoints.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title"><i class="fa-solid fa-clock-rotate-left"></i> System Activity Log</span>
+          </div>
+          <div class="card-body" style="padding:8px 22px;">
+            <div class="activity-list">
+              <div class="activity-item">
+                <div class="activity-dot blue"><i class="fa-solid fa-house-chimney"></i></div>
+                <div>
+                  <div class="activity-title">Dashboard Initialized</div>
+                  <div class="activity-meta">5 management sections active</div>
+                </div>
+              </div>
+              <div class="activity-item">
+                <div class="activity-dot gold"><i class="fa-solid fa-user-shield"></i></div>
+                <div>
+                  <div class="activity-title">Admin Authenticated</div>
+                  <div class="activity-meta" id="loginMeta">Logged in</div>
+                </div>
+              </div>
+              <div class="activity-item">
+                <div class="activity-dot green"><i class="fa-solid fa-circle-check"></i></div>
+                <div>
+                  <div class="activity-title">Design Harmonized</div>
+                  <div class="activity-meta">Deep blue, gold, &amp; clean white theme</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <div id="toast"></div>
+
+  <script>
+    const API_BASE = (window.location.protocol==='file:'||window.location.hostname==='localhost'||window.location.hostname==='127.0.0.1') ? 'http://localhost:5000' : '';
+    const token = localStorage.getItem('jsk_admin_token');
+    const adminName = localStorage.getItem('jsk_admin_name') || 'Admin';
+
+    if (!token) {
+      window.location.replace('login.html');
+    } else {
+      fetch(`${API_BASE}/api/admin/verify`, { headers: { Authorization: `Bearer ${token}` } })
+        .then(r => r.json())
+        .then(d => setAdminUI(d.success ? d.admin.name : adminName))
+        .catch(() => setAdminUI(adminName));
+    }
+
+    function setAdminUI(name) {
+      document.getElementById('adminName').textContent = name.split(' ')[0];
+      document.getElementById('adminAvatar').textContent = name.split(' ').map(n => n[0]).slice(0,2).join('').toUpperCase();
+      document.getElementById('loginMeta').textContent = new Date().toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' });
+    }
+
+    // Dynamic stats fetched live from MongoDB Atlas
+    async function loadDashboardStats() {
+      const API_BASE = (
+        window.location.protocol === 'file:' ||
+        window.location.hostname === 'localhost' ||
+        window.location.hostname === '127.0.0.1'
+      ) ? 'http://localhost:5000' : 'https://api.jayasrikannanfoundation.org';
+
+      const token = localStorage.getItem('jsk_admin_token') || '';
+
+      // 1. Events count
+      try {
+        const res = await fetch(`${API_BASE}/api/events`);
+        if (res.ok) {
+          const json = await res.json();
+          if (json.success && Array.isArray(json.data)) {
+            document.getElementById('statEvents').textContent = json.data.length;
+          }
+        }
+      } catch (e) {}
+
+      // 2. Activities count
+      try {
+        const res = await fetch(`${API_BASE}/api/activities`);
+        if (res.ok) {
+          const json = await res.json();
+          if (json.success && Array.isArray(json.data)) {
+            document.getElementById('statActivities').textContent = json.data.length;
+          }
+        }
+      } catch (e) {}
+
+      // 3. Gallery count
+      try {
+        const res = await fetch(`${API_BASE}/api/gallery`);
+        if (res.ok) {
+          const json = await res.json();
+          if (json.success && Array.isArray(json.data)) {
+            document.getElementById('statGallery').textContent = json.data.length;
+          }
+        }
+      } catch (e) {}
+
+      // 4. Donations count & total amount
+      try {
+        const res = await fetch(`${API_BASE}/api/donations`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (res.ok) {
+          const json = await res.json();
+          if (json.success && Array.isArray(json.data)) {
+            const sum = json.data.reduce((acc, d) => acc + Number(d.amount || 0), 0);
+            document.getElementById('statDonations').innerHTML = '&#8377;' + (sum >= 1000 ? (sum/1000).toFixed(1) + 'K' : sum);
+          }
+        }
+      } catch (e) {}
+    }
+
+    loadDashboardStats();
+
+    // Sidebar Toggle
+    const sidebar = document.getElementById('sidebar');
+    const appMain = document.getElementById('appMain');
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    let isCollapsed = localStorage.getItem('jsk_sidebar_collapsed') === 'true';
+    if (isCollapsed) { sidebar.classList.add('collapsed'); appMain.classList.add('shifted'); }
+
+    sidebarToggle.addEventListener('click', () => {
+      isCollapsed = !isCollapsed;
+      sidebar.classList.toggle('collapsed', isCollapsed);
+      appMain.classList.toggle('shifted', isCollapsed);
+      localStorage.setItem('jsk_sidebar_collapsed', isCollapsed);
+    });
+
+    document.getElementById('mobileMenuBtn').addEventListener('click', () => {
+      sidebar.classList.toggle('mobile-open');
+      document.getElementById('sidebarOverlay').classList.toggle('visible');
+    });
+
+    document.getElementById('sidebarOverlay').addEventListener('click', () => {
+      sidebar.classList.remove('mobile-open');
+      document.getElementById('sidebarOverlay').classList.remove('visible');
+    });
+
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      if (confirm('Are you sure you want to sign out?')) {
+        ['jsk_admin_token', 'jsk_admin_name', 'jsk_admin_email', 'jsk_admin_role'].forEach(k => localStorage.removeItem(k));
+        window.location.href = 'login.html';
+      }
+    });
+  </script>
+</body>
+</html>

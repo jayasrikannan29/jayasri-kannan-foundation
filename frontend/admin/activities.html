@@ -1,0 +1,540 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Manage Activities | Admin | Jayasri Kannan Foundation</title>
+  <link rel="icon" type="image/jpeg" href="../images/logo.jpg" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="admin.css" />
+  <style>
+    .slot-banner-preview {
+      background: linear-gradient(135deg, var(--deep-blue) 0%, var(--primary-blue) 100%);
+      color: var(--white);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(201, 162, 39, 0.3);
+      margin-bottom: 24px;
+    }
+    .slot-banner-preview::before {
+      content: '';
+      position: absolute;
+      top: -50px;
+      right: -50px;
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      background: rgba(201, 162, 39, 0.12);
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <img src="../images/logo.jpg" alt="Logo" class="sidebar-logo" onerror="this.src='https://placehold.co/36x36/0d2548/c9a227?text=JSK'" />
+      <div class="sidebar-brand-text">
+        <div class="sidebar-brand-name">Jayasri Kannan</div>
+        <div class="sidebar-brand-sub">Admin Console</div>
+      </div>
+      <button class="sidebar-toggle" id="sidebarToggle" title="Collapse sidebar">
+        <i class="fa-solid fa-chevron-left toggle-icon"></i>
+      </button>
+    </div>
+
+    <nav class="sidebar-nav" aria-label="Admin Navigation">
+      <div class="nav-section-label">Main</div>
+      <a href="dashboard.html" class="nav-item" data-tooltip="Dashboard">
+        <i class="fa-solid fa-gauge nav-item-icon"></i>
+        <span class="nav-item-text">Dashboard Home</span>
+      </a>
+
+      <div class="nav-section-label">Management</div>
+      <a href="what-we-do.html" class="nav-item" data-tooltip="What We Do">
+        <i class="fa-solid fa-hand-holding-heart nav-item-icon"></i>
+        <span class="nav-item-text">1. Update 'What We Do'</span>
+      </a>
+      <a href="activities.html" class="nav-item active" data-tooltip="Manage Activities">
+        <i class="fa-solid fa-bolt nav-item-icon"></i>
+        <span class="nav-item-text">2. Manage Activities</span>
+      </a>
+      <a href="events.html" class="nav-item" data-tooltip="Events">
+        <i class="fa-solid fa-calendar-days nav-item-icon"></i>
+        <span class="nav-item-text">3. Events Management</span>
+      </a>
+      <a href="gallery.html" class="nav-item" data-tooltip="Gallery">
+        <i class="fa-solid fa-images nav-item-icon"></i>
+        <span class="nav-item-text">4. Gallery Management</span>
+      </a>
+      <a href="donation-details.html" class="nav-item" data-tooltip="Donations">
+        <i class="fa-solid fa-indian-rupee-sign nav-item-icon"></i>
+        <span class="nav-item-text">5. Donation Details</span>
+      </a>
+
+      <div class="nav-section-label">Utilities</div>
+      <a href="../index.html" class="nav-item" target="_blank" data-tooltip="Public Website">
+        <i class="fa-solid fa-globe nav-item-icon"></i>
+        <span class="nav-item-text">View Public Website</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <button class="btn-logout nav-item" id="logoutBtn" data-tooltip="Logout">
+        <i class="fa-solid fa-right-from-bracket nav-item-icon"></i>
+        <span class="nav-item-text">Logout</span>
+      </button>
+    </div>
+  </aside>
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- MAIN APP -->
+  <div class="app-main" id="appMain">
+    <header class="top-header">
+      <div class="header-left">
+        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu"><i class="fa-solid fa-bars"></i></button>
+        <span class="header-page-title">2. Manage Activities (Next Activity Slot)</span>
+      </div>
+      <div class="header-right">
+        <button class="header-icon-btn" title="Notifications"><i class="fa-regular fa-bell"></i></button>
+        <div class="admin-chip">
+          <div class="admin-avatar" id="adminAvatar">JK</div>
+          <span class="admin-chip-name" id="adminName">Admin</span>
+        </div>
+      </div>
+    </header>
+
+    <main class="dashboard-content">
+      <div class="page-header">
+        <div class="page-header-left">
+          <div class="page-header-title">Next Activity Slot & Pipeline</div>
+          <div class="page-header-sub">Configure the active upcoming activity slot banner and upcoming schedule queue for community outreach.</div>
+        </div>
+        <div class="page-header-actions">
+          <button class="btn btn-gold" id="openAddSlotBtn"><i class="fa-solid fa-plus"></i> Schedule New Activity</button>
+        </div>
+      </div>
+
+      <!-- ACTIVE SLOT PREVIEW -->
+      <div class="slot-banner-preview" id="activeSlotBanner">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:12px;">
+          <span class="badge badge-gold"><i class="fa-solid fa-circle-dot"></i> Live Highlighted Activity Slot</span>
+          <span style="font-size:.8rem;color:var(--light-gold);" id="activeSlotCategory">Community Welfare</span>
+        </div>
+        <h2 style="font-family:'Montserrat',sans-serif;font-size:1.4rem;font-weight:800;color:var(--white);margin-bottom:8px;" id="activeSlotTitle">
+          Mega Rural Health & Eye Screening Camp
+        </h2>
+        <p style="font-size:.88rem;color:rgba(255,255,255,0.85);max-width:700px;line-height:1.5;margin-bottom:16px;" id="activeSlotDesc">
+          Scheduled community drive providing complimentary general physician consultations, ECG, blood pressure tests, and free cataract triage.
+        </p>
+        <div style="display:flex;gap:20px;flex-wrap:wrap;font-size:.82rem;color:rgba(255,255,255,0.75);">
+          <span><i class="fa-regular fa-calendar" style="color:var(--accent-gold);"></i> <strong id="activeSlotDate">October 28, 2026</strong></span>
+          <span><i class="fa-solid fa-location-dot" style="color:var(--accent-gold);"></i> <span id="activeSlotLocation">Ambattur Community Hall, Chennai</span></span>
+          <span><i class="fa-solid fa-users" style="color:var(--accent-gold);"></i> Target: <span id="activeSlotBeneficiaries">500+ Beneficiaries</span></span>
+        </div>
+      </div>
+
+      <!-- ACTIVITY SLOTS TABLE -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title"><i class="fa-solid fa-list-check"></i> Activity Queue & Next Slot Pipeline</div>
+          <span class="badge badge-blue" id="activityCountBadge">2 Scheduled</span>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Activity Title</th>
+                <th>Category</th>
+                <th>Target Date</th>
+                <th>Location</th>
+                <th>Slot Status</th>
+                <th style="text-align:right;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="activitiesTableBody">
+              <!-- Rendered by JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- ADD / EDIT ACTIVITY MODAL -->
+  <div class="modal-backdrop" id="activityModal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <div class="modal-title" id="activityModalTitle"><i class="fa-solid fa-bolt"></i> Schedule Activity</div>
+        <button class="modal-close" id="closeModalBtn" aria-label="Close modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="activityForm" onsubmit="return false;">
+          <input type="hidden" id="activityId" />
+          <div class="form-grid cols-1" style="gap:16px;">
+            <div class="form-group">
+              <label class="form-label">Activity Title <span class="req">*</span></label>
+              <input class="form-control" type="text" id="actTitle" required placeholder="e.g. Free Cataract Surgery Camp" />
+            </div>
+
+            <div class="form-grid" style="gap:14px;">
+              <div class="form-group">
+                <label class="form-label">Category <span class="req">*</span></label>
+                <select class="form-control" id="actCategory" required>
+                  <option value="Healthcare Outreach">Healthcare Outreach</option>
+                  <option value="Eye Care Camp">Eye Care Camp</option>
+                  <option value="Blood Donation Drive">Blood Donation Drive</option>
+                  <option value="Education Support">Education Support</option>
+                  <option value="Social Welfare">Social Welfare</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Target Date <span class="req">*</span></label>
+                <input class="form-control" type="date" id="actDate" required />
+              </div>
+            </div>
+
+            <div class="form-grid" style="gap:14px;">
+              <div class="form-group">
+                <label class="form-label">Location / Venue <span class="req">*</span></label>
+                <input class="form-control" type="text" id="actLocation" required placeholder="e.g. Ambattur Community Hall, Chennai" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Beneficiary Target</label>
+                <input class="form-control" type="text" id="actTarget" placeholder="e.g. 350+ Individuals" />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Description / Scope <span class="req">*</span></label>
+              <textarea class="form-control" id="actDesc" rows="3" required placeholder="Brief description of the activity objectives and community focus..."></textarea>
+            </div>
+
+            <div class="form-group">
+              <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:.85rem;font-weight:600;color:var(--text-dark);">
+                <input type="checkbox" id="actIsSlot" style="width:18px;height:18px;accent-color:var(--primary-blue);" />
+                Make this the Active "Next Activity Slot" highlight banner
+              </label>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" id="cancelModalBtn">Cancel</button>
+        <button class="btn btn-gold" id="saveActivityBtn"><i class="fa-solid fa-check"></i> Save Activity</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast"></div>
+
+  <script>
+    const ACTIVITIES_KEY = 'jsk_activities';
+    const DEFAULT_ACTIVITIES = [
+      {
+        id: 'act-1',
+        title: 'Mega Rural Health & Eye Screening Camp',
+        category: 'Healthcare Outreach',
+        date: '2026-10-28',
+        location: 'Ambattur Community Hall, Chennai',
+        target: '500+ Beneficiaries',
+        desc: 'Scheduled community drive providing complimentary general physician consultations, ECG, blood pressure tests, and free cataract triage.',
+        isSlot: true
+      },
+      {
+        id: 'act-2',
+        title: 'Education Kit & Uniform Distribution Drive',
+        category: 'Education Support',
+        date: '2026-11-15',
+        location: 'Government High School, Thiruvallur District',
+        target: '250 Students',
+        desc: 'Distributing school kits comprising bags, geometry sets, notebook bundles, and school uniforms for rural students.',
+        isSlot: false
+      }
+    ];
+
+    let activitiesCache = [];
+
+    const API_BASE = (
+      window.location.protocol === 'file:' ||
+      window.location.hostname === 'localhost' ||
+      window.location.hostname === '127.0.0.1'
+    ) ? 'http://localhost:5000' : 'https://api.jayasrikannanfoundation.org';
+
+    function getAuthToken() {
+      return localStorage.getItem('jsk_admin_token') || '';
+    }
+
+    async function loadActivities() {
+      try {
+        const res = await fetch(`${API_BASE}/api/activities`);
+        if (res.ok) {
+          const json = await res.json();
+          if (json.success && Array.isArray(json.data)) {
+            activitiesCache = json.data;
+            localStorage.setItem(ACTIVITIES_KEY, JSON.stringify(activitiesCache));
+            return activitiesCache;
+          }
+        }
+      } catch (e) {
+        console.warn('Could not fetch activities from MongoDB, checking cache:', e);
+      }
+      try {
+        const stored = localStorage.getItem(ACTIVITIES_KEY);
+        if (stored) return JSON.parse(stored);
+      } catch (e) {}
+      return DEFAULT_ACTIVITIES;
+    }
+
+    async function renderActivities() {
+      const activities = await loadActivities();
+      const tbody = document.getElementById('activitiesTableBody');
+      const countBadge = document.getElementById('activityCountBadge');
+
+      countBadge.textContent = `${activities.length} Activities`;
+
+      const activeSlot = activities.find(a => a.isSlot) || activities[0];
+      if (activeSlot) {
+        document.getElementById('activeSlotCategory').textContent = activeSlot.category;
+        document.getElementById('activeSlotTitle').textContent = activeSlot.title;
+        document.getElementById('activeSlotDesc').textContent = activeSlot.desc;
+        document.getElementById('activeSlotDate').textContent = activeSlot.date;
+        document.getElementById('activeSlotLocation').textContent = activeSlot.location;
+        document.getElementById('activeSlotBeneficiaries').textContent = activeSlot.target || 'Community Members';
+      }
+
+      if (activities.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" class="empty-state"><i class="fa-solid fa-bolt"></i><h3>No Activities Scheduled</h3><p>Click "Schedule New Activity" to add one.</p></td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = activities.map(act => {
+        const actId = act._id || act.id;
+        return `
+          <tr>
+            <td>
+              <div style="font-weight:600;color:var(--text-dark);">${escapeHtml(act.title)}</div>
+              <div class="td-muted">${escapeHtml(act.desc ? act.desc.substring(0, 50) : '')}...</div>
+            </td>
+            <td><span class="badge badge-blue">${escapeHtml(act.category)}</span></td>
+            <td><i class="fa-regular fa-calendar" style="color:var(--text-light);margin-right:4px;"></i> ${act.date}</td>
+            <td><i class="fa-solid fa-location-dot" style="color:var(--text-light);margin-right:4px;"></i> ${escapeHtml(act.location)}</td>
+            <td>
+              ${act.isSlot ? '<span class="badge badge-gold"><i class="fa-solid fa-star"></i> Active Slot</span>' : '<span class="badge badge-gray">Queued</span>'}
+            </td>
+            <td style="text-align:right;">
+              <div class="td-actions" style="justify-content:flex-end;">
+                ${!act.isSlot ? `<button class="btn btn-outline btn-sm" onclick="setActiveSlot('${actId}')" title="Set as live slot"><i class="fa-solid fa-star"></i> Set Slot</button>` : ''}
+                <button class="btn btn-outline btn-sm btn-icon" onclick="editActivity('${actId}')" title="Edit activity"><i class="fa-solid fa-pen-to-square"></i></button>
+                <button class="btn btn-danger-outline btn-sm btn-icon" onclick="deleteActivity('${actId}')" title="Delete activity"><i class="fa-solid fa-trash"></i></button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function escapeHtml(text) {
+      if (!text) return '';
+      return String(text).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    const modal = document.getElementById('activityModal');
+    const openAddBtn = document.getElementById('openAddSlotBtn');
+    const closeBtn = document.getElementById('closeModalBtn');
+    const cancelBtn = document.getElementById('cancelModalBtn');
+
+    function openModal(isEdit = false) {
+      document.getElementById('activityModalTitle').innerHTML = isEdit ? '<i class="fa-solid fa-pen-to-square"></i> Edit Activity Slot' : '<i class="fa-solid fa-bolt"></i> Schedule Activity';
+      modal.classList.add('active');
+    }
+
+    function closeModal() {
+      modal.classList.remove('active');
+      document.getElementById('activityForm').reset();
+      document.getElementById('activityId').value = '';
+    }
+
+    openAddBtn.addEventListener('click', () => {
+      document.getElementById('activityForm').reset();
+      document.getElementById('activityId').value = '';
+      openModal(false);
+    });
+
+    closeBtn.addEventListener('click', closeModal);
+    cancelBtn.addEventListener('click', closeModal);
+
+    document.getElementById('saveActivityBtn').addEventListener('click', async () => {
+      const id = document.getElementById('activityId').value;
+      const title = document.getElementById('actTitle').value.trim();
+      const category = document.getElementById('actCategory').value;
+      const date = document.getElementById('actDate').value;
+      const location = document.getElementById('actLocation').value.trim();
+      const target = document.getElementById('actTarget').value.trim();
+      const desc = document.getElementById('actDesc').value.trim();
+      const isSlot = document.getElementById('actIsSlot').checked;
+
+      if (!title || !date || !location || !desc) {
+        toast('Please fill all required fields.', 'error');
+        return;
+      }
+
+      const payload = {
+        title,
+        category,
+        date,
+        location,
+        target: target || 'Community',
+        desc,
+        isSlot
+      };
+
+      const token = getAuthToken();
+      try {
+        if (id) {
+          const res = await fetch(`${API_BASE}/api/activities/${id}`, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(payload)
+          });
+          const data = await res.json();
+          if (data.success) {
+            toast('Activity updated in MongoDB Atlas!', 'success');
+          } else {
+            toast(data.error || 'Failed to update activity', 'error');
+          }
+        } else {
+          const res = await fetch(`${API_BASE}/api/activities`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(payload)
+          });
+          const data = await res.json();
+          if (data.success) {
+            toast('New activity scheduled in MongoDB Atlas!', 'success');
+          } else {
+            toast(data.error || 'Failed to schedule activity', 'error');
+          }
+        }
+      } catch (err) {
+        console.error('Error saving activity:', err);
+        toast('Network error: saved locally.', 'error');
+      }
+
+      closeModal();
+      await renderActivities();
+    });
+
+    window.editActivity = async function(id) {
+      const activities = await loadActivities();
+      const act = activities.find(a => (a._id === id || a.id === id));
+      if (!act) return;
+
+      document.getElementById('activityId').value = act._id || act.id;
+      document.getElementById('actTitle').value = act.title;
+      document.getElementById('actCategory').value = act.category;
+      document.getElementById('actDate').value = act.date;
+      document.getElementById('actLocation').value = act.location;
+      document.getElementById('actTarget').value = act.target || '';
+      document.getElementById('actDesc').value = act.desc;
+      document.getElementById('actIsSlot').checked = !!act.isSlot;
+
+      openModal(true);
+    };
+
+    window.deleteActivity = async function(id) {
+      if (confirm('Delete this scheduled activity from MongoDB Atlas?')) {
+        const token = getAuthToken();
+        try {
+          const res = await fetch(`${API_BASE}/api/activities/${id}`, {
+            method: 'DELETE',
+            headers: { 'Authorization': `Bearer ${token}` }
+          });
+          const data = await res.json();
+          if (data.success) {
+            toast('Activity removed from MongoDB Atlas.', 'success');
+          } else {
+            toast(data.error || 'Failed to remove activity', 'error');
+          }
+        } catch (err) {
+          toast('Network error deleting activity.', 'error');
+        }
+        await renderActivities();
+      }
+    };
+
+    window.setActiveSlot = async function(id) {
+      const token = getAuthToken();
+      try {
+        const res = await fetch(`${API_BASE}/api/activities/${id}/set-slot`, {
+          method: 'PUT',
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const data = await res.json();
+        if (data.success) {
+          toast('Next Activity Slot live in MongoDB Atlas!', 'success');
+        } else {
+          toast(data.error || 'Could not set active slot', 'error');
+        }
+      } catch (err) {
+        toast('Network error setting active slot.', 'error');
+      }
+      await renderActivities();
+    };
+
+    function toast(msg, type = '') {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.className = type ? `show toast-${type}` : 'show';
+      setTimeout(() => t.className = '', 3200);
+    }
+
+    // Auth & Navigation
+    const token = localStorage.getItem('jsk_admin_token');
+    if (!token) window.location.replace('login.html');
+    const name = localStorage.getItem('jsk_admin_name') || 'Admin';
+    document.getElementById('adminName').textContent = name.split(' ')[0];
+    document.getElementById('adminAvatar').textContent = name.split(' ').map(n=>n[0]).slice(0,2).join('').toUpperCase();
+
+    const sidebar = document.getElementById('sidebar');
+    const appMain = document.getElementById('appMain');
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    let isCollapsed = localStorage.getItem('jsk_sidebar_collapsed') === 'true';
+    if (isCollapsed) { sidebar.classList.add('collapsed'); appMain.classList.add('shifted'); }
+
+    sidebarToggle.addEventListener('click', () => {
+      isCollapsed = !isCollapsed;
+      sidebar.classList.toggle('collapsed', isCollapsed);
+      appMain.classList.toggle('shifted', isCollapsed);
+      localStorage.setItem('jsk_sidebar_collapsed', isCollapsed);
+    });
+
+    document.getElementById('mobileMenuBtn').addEventListener('click', () => {
+      sidebar.classList.toggle('mobile-open');
+      document.getElementById('sidebarOverlay').classList.toggle('visible');
+    });
+
+    document.getElementById('sidebarOverlay').addEventListener('click', () => {
+      sidebar.classList.remove('mobile-open');
+      document.getElementById('sidebarOverlay').classList.remove('visible');
+    });
+
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      if (confirm('Are you sure you want to sign out?')) {
+        ['jsk_admin_token', 'jsk_admin_name', 'jsk_admin_email', 'jsk_admin_role'].forEach(k => localStorage.removeItem(k));
+        window.location.href = 'login.html';
+      }
+    });
+
+    renderActivities();
+  </script>
+</body>
+</html>

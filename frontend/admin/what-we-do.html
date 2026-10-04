@@ -1,0 +1,440 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Update 'What We Do' | Admin | Jayasri Kannan Foundation</title>
+  <link rel="icon" type="image/jpeg" href="../images/logo.jpg" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="admin.css" />
+  <style>
+    .service-card-editor {
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 22px;
+      background: var(--white);
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .service-card-editor:hover {
+      border-color: var(--accent-gold);
+      box-shadow: var(--shadow-sm);
+    }
+    .service-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+    .service-icon-preview {
+      width: 44px;
+      height: 44px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      flex-shrink: 0;
+    }
+    .service-card-label {
+      font-family: 'Montserrat', sans-serif;
+      font-size: .92rem;
+      font-weight: 700;
+      color: var(--primary-blue);
+    }
+    .service-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 20px;
+    }
+  </style>
+</head>
+<body>
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <img src="../images/logo.jpg" alt="Logo" class="sidebar-logo" onerror="this.src='https://placehold.co/36x36/0d2548/c9a227?text=JSK'" />
+      <div class="sidebar-brand-text">
+        <div class="sidebar-brand-name">Jayasri Kannan</div>
+        <div class="sidebar-brand-sub">Admin Console</div>
+      </div>
+      <button class="sidebar-toggle" id="sidebarToggle" title="Collapse sidebar">
+        <i class="fa-solid fa-chevron-left toggle-icon"></i>
+      </button>
+    </div>
+
+    <nav class="sidebar-nav" aria-label="Admin Navigation">
+      <div class="nav-section-label">Main</div>
+      <a href="dashboard.html" class="nav-item" data-tooltip="Dashboard">
+        <i class="fa-solid fa-gauge nav-item-icon"></i>
+        <span class="nav-item-text">Dashboard Home</span>
+      </a>
+
+      <div class="nav-section-label">Management</div>
+      <a href="what-we-do.html" class="nav-item active" data-tooltip="What We Do">
+        <i class="fa-solid fa-hand-holding-heart nav-item-icon"></i>
+        <span class="nav-item-text">1. Update 'What We Do'</span>
+      </a>
+      <a href="activities.html" class="nav-item" data-tooltip="Manage Activities">
+        <i class="fa-solid fa-bolt nav-item-icon"></i>
+        <span class="nav-item-text">2. Manage Activities</span>
+      </a>
+      <a href="events.html" class="nav-item" data-tooltip="Events">
+        <i class="fa-solid fa-calendar-days nav-item-icon"></i>
+        <span class="nav-item-text">3. Events Management</span>
+      </a>
+      <a href="gallery.html" class="nav-item" data-tooltip="Gallery">
+        <i class="fa-solid fa-images nav-item-icon"></i>
+        <span class="nav-item-text">4. Gallery Management</span>
+      </a>
+      <a href="donation-details.html" class="nav-item" data-tooltip="Donations">
+        <i class="fa-solid fa-indian-rupee-sign nav-item-icon"></i>
+        <span class="nav-item-text">5. Donation Details</span>
+      </a>
+
+      <div class="nav-section-label">Utilities</div>
+      <a href="../index.html" class="nav-item" target="_blank" data-tooltip="Public Website">
+        <i class="fa-solid fa-globe nav-item-icon"></i>
+        <span class="nav-item-text">View Public Website</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <button class="btn-logout nav-item" id="logoutBtn" data-tooltip="Logout">
+        <i class="fa-solid fa-right-from-bracket nav-item-icon"></i>
+        <span class="nav-item-text">Logout</span>
+      </button>
+    </div>
+  </aside>
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- MAIN APP -->
+  <div class="app-main" id="appMain">
+    <header class="top-header">
+      <div class="header-left">
+        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu"><i class="fa-solid fa-bars"></i></button>
+        <span class="header-page-title">1. Update 'What We Do'</span>
+      </div>
+      <div class="header-right">
+        <button class="header-icon-btn" title="Notifications"><i class="fa-regular fa-bell"></i></button>
+        <div class="admin-chip">
+          <div class="admin-avatar" id="adminAvatar">JK</div>
+          <span class="admin-chip-name" id="adminName">Admin</span>
+        </div>
+      </div>
+    </header>
+
+    <main class="dashboard-content">
+      <div class="page-header">
+        <div class="page-header-left">
+          <div class="page-header-title">Foundation Service Cards</div>
+          <div class="page-header-sub">Configure and update the service pillars (Healthcare, Eye Care, Blood Donation, Education, Social Welfare) displayed across the foundation site.</div>
+        </div>
+        <div class="page-header-actions">
+          <button class="btn btn-outline" id="resetDefaultsBtn"><i class="fa-solid fa-arrow-rotate-left"></i> Reset Defaults</button>
+          <button class="btn btn-gold" id="saveAllBtn"><i class="fa-solid fa-floppy-disk"></i> Save All Changes</button>
+        </div>
+      </div>
+
+      <div class="alert alert-info">
+        <i class="fa-solid fa-circle-info"></i>
+        <span>Updates are synced to local storage and will update any connected public front-end rendering dynamic service items.</span>
+      </div>
+
+      <div class="service-cards-grid" id="serviceCardsGrid">
+        <!-- Rendered by JavaScript -->
+      </div>
+    </main>
+  </div>
+
+  <div id="toast"></div>
+
+  <script>
+    const SERVICES_KEY = 'jsk_services';
+    const DEFAULT_SERVICES = [
+      {
+        id: 'healthcare',
+        icon: 'fa-solid fa-stethoscope',
+        color: '#1a3a6e',
+        bg: 'rgba(26,58,110,0.1)',
+        title: 'Healthcare Outreach',
+        desc: 'Free general health checkups, vitals monitoring, specialist consultations, and essential medicine distribution for underprivileged families in rural and suburban belts.'
+      },
+      {
+        id: 'eyecare',
+        icon: 'fa-solid fa-eye',
+        color: '#c9a227',
+        bg: 'rgba(201,162,39,0.12)',
+        title: 'Free Eye Examination Camps',
+        desc: 'Comprehensive vision tests, free prescription glasses distribution, and cataract identification camps in collaboration with leading ophthalmic hospitals.'
+      },
+      {
+        id: 'blooddonation',
+        icon: 'fa-solid fa-droplet',
+        color: '#e53935',
+        bg: 'rgba(229,57,53,0.1)',
+        title: 'Emergency Blood Donation Drives',
+        desc: 'Voluntary blood donor rallies, immediate donor coordination with government blood banks, and critical blood requirement matching for emergency patient care.'
+      },
+      {
+        id: 'education',
+        icon: 'fa-solid fa-graduation-cap',
+        color: '#2e8b57',
+        bg: 'rgba(46,139,87,0.1)',
+        title: 'Education & Scholarship Support',
+        desc: 'Financial scholarships, school bags, notebooks, uniforms, and mentorship support for bright children from low-income households.'
+      },
+      {
+        id: 'welfare',
+        icon: 'fa-solid fa-people-group',
+        color: '#1a3a6e',
+        bg: 'rgba(26,58,110,0.1)',
+        title: 'Social Welfare & Community Relief',
+        desc: 'Disaster and seasonal ration distribution, women self-help skill empowerment, senior citizen care, and tree plantation drives across Tamil Nadu.'
+      }
+    ];
+
+    let servicesCache = [];
+
+    const API_BASE = (
+      window.location.protocol === 'file:' ||
+      window.location.hostname === 'localhost' ||
+      window.location.hostname === '127.0.0.1'
+    ) ? 'http://localhost:5000' : 'https://api.jayasrikannanfoundation.org';
+
+    function getAuthToken() {
+      return localStorage.getItem('jsk_admin_token') || '';
+    }
+
+    async function loadServices() {
+      try {
+        const res = await fetch(`${API_BASE}/api/what-we-do`);
+        if (res.ok) {
+          const json = await res.json();
+          if (json.success && Array.isArray(json.data) && json.data.length > 0) {
+            servicesCache = json.data;
+            localStorage.setItem(SERVICES_KEY, JSON.stringify(servicesCache));
+            return servicesCache;
+          }
+        }
+      } catch (e) {
+        console.warn('Could not fetch what-we-do from MongoDB, checking cache:', e);
+      }
+      try {
+        const stored = localStorage.getItem(SERVICES_KEY);
+        if (stored) return JSON.parse(stored);
+      } catch (e) {}
+      return DEFAULT_SERVICES;
+    }
+
+    function escapeHtml(text) {
+      if (!text) return '';
+      return String(text).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    async function renderCards() {
+      const services = await loadServices();
+      const grid = document.getElementById('serviceCardsGrid');
+      grid.innerHTML = services.map((s, idx) => `
+        <div class="service-card-editor" data-index="${idx}">
+          <div>
+            <div class="service-card-header">
+              <div style="display:flex;align-items:center;gap:12px;">
+                <div class="service-icon-preview" style="background:${s.bg || 'rgba(26,58,110,0.1)'};color:${s.color || 'var(--primary-blue)'}">
+                  <i class="${s.icon || 'fa-solid fa-heart'}"></i>
+                </div>
+                <div>
+                  <div class="service-card-label">${escapeHtml(s.title)}</div>
+                  <div style="font-size:.73rem;color:var(--text-light);">Key: #${s.slug || s.id}</div>
+                </div>
+              </div>
+              <span class="badge badge-blue">Slot ${idx + 1}</span>
+            </div>
+
+            <div class="form-grid cols-1" style="gap:14px;">
+              <div class="form-group">
+                <label class="form-label">Service Title <span class="req">*</span></label>
+                <input class="form-control svc-title" type="text" value="${escapeHtml(s.title)}" data-idx="${idx}" placeholder="e.g. Healthcare Outreach" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Description <span class="req">*</span></label>
+                <textarea class="form-control svc-desc" rows="3" data-idx="${idx}" placeholder="Detailed explanation">${escapeHtml(s.desc)}</textarea>
+              </div>
+              <div class="form-group">
+                <label class="form-label">FontAwesome Icon Class</label>
+                <input class="form-control svc-icon" type="text" value="${escapeHtml(s.icon)}" data-idx="${idx}" placeholder="e.g. fa-solid fa-stethoscope" />
+                <span class="form-hint">Preview updates immediately upon saving.</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-actions" style="margin-top:16px;justify-content:flex-end;">
+            <button class="btn btn-outline btn-sm" onclick="saveSingleCard(${idx})"><i class="fa-solid fa-check"></i> Update Slot</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    window.saveSingleCard = async function(idx) {
+      const services = await loadServices();
+      const titleInput = document.querySelector(`.svc-title[data-idx="${idx}"]`);
+      const descInput = document.querySelector(`.svc-desc[data-idx="${idx}"]`);
+      const iconInput = document.querySelector(`.svc-icon[data-idx="${idx}"]`);
+
+      if (!titleInput.value.trim() || !descInput.value.trim()) {
+        toast('Title and description cannot be empty!', 'error');
+        return;
+      }
+
+      services[idx].title = titleInput.value.trim();
+      services[idx].desc = descInput.value.trim();
+      services[idx].icon = iconInput.value.trim() || 'fa-solid fa-hand-holding-heart';
+
+      const token = getAuthToken();
+      try {
+        const res = await fetch(`${API_BASE}/api/what-we-do/batch`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({ items: [services[idx]] })
+        });
+        const data = await res.json();
+        if (data.success) {
+          toast(`Service "${services[idx].title}" synced to MongoDB Atlas!`, 'success');
+        } else {
+          toast(data.error || 'Update failed', 'error');
+        }
+      } catch (err) {
+        toast('Network error: saved locally.', 'error');
+      }
+
+      await renderCards();
+    };
+
+    document.getElementById('saveAllBtn').addEventListener('click', async () => {
+      const services = await loadServices();
+      let hasError = false;
+
+      document.querySelectorAll('.svc-title').forEach(el => {
+        const idx = +el.dataset.idx;
+        const val = el.value.trim();
+        if (!val) hasError = true;
+        services[idx].title = val;
+      });
+
+      document.querySelectorAll('.svc-desc').forEach(el => {
+        const idx = +el.dataset.idx;
+        const val = el.value.trim();
+        if (!val) hasError = true;
+        services[idx].desc = val;
+      });
+
+      document.querySelectorAll('.svc-icon').forEach(el => {
+        const idx = +el.dataset.idx;
+        services[idx].icon = el.value.trim() || 'fa-solid fa-hand-holding-heart';
+      });
+
+      if (hasError) {
+        toast('Please fill in all required fields.', 'error');
+        return;
+      }
+
+      const token = getAuthToken();
+      try {
+        const res = await fetch(`${API_BASE}/api/what-we-do/batch`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({ items: services })
+        });
+        const data = await res.json();
+        if (data.success) {
+          toast('All service cards saved to MongoDB Atlas!', 'success');
+        } else {
+          toast(data.error || 'Failed to save', 'error');
+        }
+      } catch (err) {
+        toast('Network error: saved locally.', 'error');
+      }
+
+      await renderCards();
+    });
+
+    document.getElementById('resetDefaultsBtn').addEventListener('click', async () => {
+      if (confirm('Reset all service cards in MongoDB Atlas to foundation defaults?')) {
+        const token = getAuthToken();
+        try {
+          const res = await fetch(`${API_BASE}/api/what-we-do/reset`, {
+            method: 'POST',
+            headers: { 'Authorization': `Bearer ${token}` }
+          });
+          const data = await res.json();
+          if (data.success) {
+            toast('Reset to default services in Atlas.', 'success');
+          } else {
+            toast(data.error || 'Failed to reset.', 'error');
+          }
+        } catch (e) {
+          toast('Network error resetting defaults.', 'error');
+        }
+        await renderCards();
+      }
+    });
+
+    function toast(msg, type = '') {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.className = type ? `show toast-${type}` : 'show';
+      setTimeout(() => t.className = '', 3200);
+    }
+
+    // Sidebar & Auth
+    const token = localStorage.getItem('jsk_admin_token');
+    if (!token) window.location.replace('login.html');
+    const name = localStorage.getItem('jsk_admin_name') || 'Admin';
+    document.getElementById('adminName').textContent = name.split(' ')[0];
+    document.getElementById('adminAvatar').textContent = name.split(' ').map(n=>n[0]).slice(0,2).join('').toUpperCase();
+
+    const sidebar = document.getElementById('sidebar');
+    const appMain = document.getElementById('appMain');
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    let isCollapsed = localStorage.getItem('jsk_sidebar_collapsed') === 'true';
+    if (isCollapsed) { sidebar.classList.add('collapsed'); appMain.classList.add('shifted'); }
+
+    sidebarToggle.addEventListener('click', () => {
+      isCollapsed = !isCollapsed;
+      sidebar.classList.toggle('collapsed', isCollapsed);
+      appMain.classList.toggle('shifted', isCollapsed);
+      localStorage.setItem('jsk_sidebar_collapsed', isCollapsed);
+    });
+
+    document.getElementById('mobileMenuBtn').addEventListener('click', () => {
+      sidebar.classList.toggle('mobile-open');
+      document.getElementById('sidebarOverlay').classList.toggle('visible');
+    });
+
+    document.getElementById('sidebarOverlay').addEventListener('click', () => {
+      sidebar.classList.remove('mobile-open');
+      document.getElementById('sidebarOverlay').classList.remove('visible');
+    });
+
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      if (confirm('Are you sure you want to sign out?')) {
+        ['jsk_admin_token', 'jsk_admin_name', 'jsk_admin_email', 'jsk_admin_role'].forEach(k => localStorage.removeItem(k));
+        window.location.href = 'login.html';
+      }
+    });
+
+    renderCards();
+  </script>
+</body>
+</html>

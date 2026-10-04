@@ -1,0 +1,498 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Login | Jayasri Kannan Foundation</title>
+  <meta name="description" content="Secure administrative login portal for Jayasri Kannan Foundation." />
+  <link rel="icon" type="image/jpeg" href="../images/logo.jpg" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --primary-blue: #1a3a6e;
+      --deep-blue: #0d2548;
+      --accent-gold: #c9a227;
+      --light-gold: #f0c84a;
+      --accent-green: #2e8b57;
+      --white: #ffffff;
+      --off-white: #f8f9fc;
+      --light-gray: #f0f2f7;
+      --mid-gray: #e0e4ef;
+      --text-dark: #1a1a2e;
+      --text-gray: #5a6070;
+      --text-light: #8a8fa8;
+      --danger: #e53935;
+      --shadow-sm: 0 2px 12px rgba(26,58,110,0.08);
+      --shadow-md: 0 8px 30px rgba(26,58,110,0.14);
+      --shadow-lg: 0 20px 60px rgba(26,58,110,0.2);
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 22px;
+      --transition: all 0.3s ease;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--deep-blue);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Animated background blobs */
+    body::before {
+      content: '';
+      position: absolute;
+      top: -120px; left: -120px;
+      width: 500px; height: 500px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(201,162,39,0.12), transparent 70%);
+      pointer-events: none;
+    }
+    body::after {
+      content: '';
+      position: absolute;
+      bottom: -100px; right: -100px;
+      width: 420px; height: 420px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(46,139,87,0.1), transparent 70%);
+      pointer-events: none;
+    }
+
+    .login-wrapper {
+      width: 100%;
+      max-width: 440px;
+      padding: 24px;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Logo + Foundation name header */
+    .login-header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    .login-logo-ring {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      padding: 3px;
+      background: linear-gradient(135deg, var(--accent-gold), #3cb371);
+      box-shadow: 0 8px 30px rgba(201,162,39,0.3);
+      margin: 0 auto 16px;
+    }
+    .login-logo-ring img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      background: var(--white);
+    }
+
+    .login-header h1 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--white);
+      margin-bottom: 4px;
+    }
+
+    .login-header p {
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.5);
+      letter-spacing: 0.5px;
+    }
+
+    /* Card */
+    .login-card {
+      background: rgba(255,255,255,0.04);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: var(--radius-lg);
+      padding: 40px 36px;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .card-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: rgba(201,162,39,0.15);
+      color: var(--light-gold);
+      border: 1px solid rgba(201,162,39,0.35);
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 5px 14px;
+      border-radius: 50px;
+      margin-bottom: 22px;
+    }
+
+    .card-title {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.55rem;
+      font-weight: 800;
+      color: var(--white);
+      margin-bottom: 6px;
+    }
+
+    .card-subtitle {
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.55);
+      margin-bottom: 30px;
+    }
+
+    /* Form */
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: rgba(255,255,255,0.75);
+      margin-bottom: 8px;
+      letter-spacing: 0.3px;
+    }
+
+    .input-wrap {
+      position: relative;
+    }
+
+    .input-icon {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: rgba(255,255,255,0.35);
+      font-size: 0.9rem;
+      pointer-events: none;
+      transition: var(--transition);
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 13px 42px 13px 40px;
+      background: rgba(255,255,255,0.07);
+      border: 1.5px solid rgba(255,255,255,0.12);
+      border-radius: var(--radius-sm);
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.88rem;
+      color: var(--white);
+      outline: none;
+      transition: var(--transition);
+    }
+
+    .form-group input::placeholder {
+      color: rgba(255,255,255,0.3);
+    }
+
+    .form-group input:focus {
+      background: rgba(255,255,255,0.1);
+      border-color: var(--accent-gold);
+      box-shadow: 0 0 0 3px rgba(201,162,39,0.15);
+    }
+
+    .form-group input:focus + .input-focus-border { width: 100%; }
+
+    .pw-toggle {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: rgba(255,255,255,0.4);
+      cursor: pointer;
+      font-size: 0.85rem;
+      padding: 4px;
+      transition: var(--transition);
+    }
+    .pw-toggle:hover {
+      color: var(--accent-gold);
+    }
+
+    /* Submit Button */
+    .btn-login {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, var(--accent-gold), var(--light-gold));
+      color: var(--deep-blue);
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 700;
+      border: none;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: var(--transition);
+      box-shadow: 0 4px 20px rgba(201,162,39,0.3);
+      margin-top: 8px;
+    }
+    .btn-login:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(201,162,39,0.45);
+    }
+    .btn-login:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* Alert Messages */
+    .alert {
+      padding: 12px 16px;
+      border-radius: var(--radius-sm);
+      font-size: 0.82rem;
+      font-weight: 500;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-top: 16px;
+      display: none;
+    }
+
+    .alert-error {
+      background: rgba(229,57,53,0.15);
+      color: #ff8a80;
+      border: 1px solid rgba(229,57,53,0.3);
+    }
+
+    .alert-success {
+      background: rgba(46,139,87,0.15);
+      color: #69f0ae;
+      border: 1px solid rgba(46,139,87,0.3);
+    }
+
+    /* Back to website */
+    .back-link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      margin-top: 24px;
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.4);
+      transition: color 0.2s;
+      text-decoration: none;
+    }
+    .back-link:hover {
+      color: var(--accent-gold);
+    }
+
+    .divider {
+      height: 1px;
+      background: rgba(255,255,255,0.08);
+      margin: 24px 0 20px;
+    }
+
+    .security-note {
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.35);
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="login-wrapper">
+
+    <!-- Header with foundation logo + name -->
+    <div class="login-header">
+      <div class="login-logo-ring">
+        <img src="../images/logo.jpg" alt="Foundation Logo" onerror="this.src='https://placehold.co/80x80/0d2548/c9a227?text=JSK'" />
+      </div>
+      <h1>Jayasri Kannan Foundation</h1>
+      <p>Admin Management Console</p>
+    </div>
+
+    <!-- Login Card -->
+    <div class="login-card">
+      <div class="card-label"><i class="fa-solid fa-shield-halved"></i> Secure Access</div>
+      <div class="card-title">Welcome back</div>
+      <div class="card-subtitle">Sign in to manage the foundation portal</div>
+
+      <form id="adminLoginForm" onsubmit="handleLogin(event)">
+        <!-- Email -->
+        <div class="form-group">
+          <label for="adminEmail">Email Address</label>
+          <div class="input-wrap">
+            <i class="fa-regular fa-envelope input-icon"></i>
+            <input
+              type="email"
+              id="adminEmail"
+              name="email"
+              placeholder="admin@jskfoundation.org"
+              required
+              autocomplete="email"
+            />
+          </div>
+        </div>
+
+        <!-- Password -->
+        <div class="form-group">
+          <label for="adminPassword">Password</label>
+          <div class="input-wrap">
+            <i class="fa-solid fa-lock input-icon"></i>
+            <input
+              type="password"
+              id="adminPassword"
+              name="password"
+              placeholder="Enter your password"
+              required
+              autocomplete="current-password"
+            />
+            <button type="button" class="pw-toggle" id="pwToggle" aria-label="Toggle password visibility">
+              <i class="fa-regular fa-eye" id="pwIcon"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Submit -->
+        <button type="submit" class="btn-login" id="loginBtn">
+          <i class="fa-solid fa-arrow-right-to-bracket" id="loginBtnIcon"></i>
+          <span id="loginBtnText">Sign In to Console</span>
+        </button>
+
+        <!-- Alerts -->
+        <div class="alert alert-error" id="alertError" role="alert">
+          <i class="fa-solid fa-circle-exclamation"></i>
+          <span id="alertErrorMsg">Invalid credentials</span>
+        </div>
+        <div class="alert alert-success" id="alertSuccess" role="status">
+          <i class="fa-solid fa-circle-check"></i>
+          <span>Authentication successful! Redirecting…</span>
+        </div>
+      </form>
+
+      <div class="divider"></div>
+      <div class="security-note">
+        <i class="fa-solid fa-lock" style="font-size:0.7rem;"></i>
+        Encrypted connection · Authorised personnel only
+      </div>
+    </div>
+
+    <!-- Back to website -->
+    <a href="../index.html" class="back-link">
+      <i class="fa-solid fa-arrow-left"></i> Return to Public Website
+    </a>
+
+  </div>
+
+  <script>
+    const API_BASE = (window.location.protocol === 'file:' ||
+      window.location.hostname === 'localhost' ||
+      window.location.hostname === '127.0.0.1')
+      ? 'http://localhost:5000'
+      : 'https://api.jayasrikannanfoundation.org';
+
+    // Password toggle
+    document.getElementById('pwToggle').addEventListener('click', () => {
+      const pw = document.getElementById('adminPassword');
+      const ic = document.getElementById('pwIcon');
+      const show = pw.type === 'password';
+      pw.type = show ? 'text' : 'password';
+      ic.className = show ? 'fa-regular fa-eye-slash' : 'fa-regular fa-eye';
+    });
+
+    // If already logged in, redirect to dashboard
+    const existingToken = localStorage.getItem('jsk_admin_token');
+    if (existingToken) {
+      // Quick verify
+      fetch(`${API_BASE}/api/admin/verify`, {
+        headers: { Authorization: `Bearer ${existingToken}` }
+      })
+        .then(r => r.json())
+        .then(data => {
+          if (data.success) window.location.replace('dashboard.html');
+        })
+        .catch(() => {});
+    }
+
+    async function handleLogin(e) {
+      e.preventDefault();
+
+      const btn = document.getElementById('loginBtn');
+      const btnIcon = document.getElementById('loginBtnIcon');
+      const btnText = document.getElementById('loginBtnText');
+      const alertError = document.getElementById('alertError');
+      const alertSuccess = document.getElementById('alertSuccess');
+      const errorMsg = document.getElementById('alertErrorMsg');
+
+      // Reset state
+      alertError.style.display = 'none';
+      alertSuccess.style.display = 'none';
+      btn.disabled = true;
+      btnIcon.className = 'fa-solid fa-spinner fa-spin';
+      btnText.textContent = 'Verifying credentials…';
+
+      const email = document.getElementById('adminEmail').value.trim();
+      const password = document.getElementById('adminPassword').value;
+
+      try {
+        const res = await fetch(`${API_BASE}/api/admin/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password }),
+        });
+
+        const data = await res.json();
+
+        if (res.ok && data.success) {
+          // Store JWT and admin info
+          localStorage.setItem('jsk_admin_token', data.token);
+          localStorage.setItem('jsk_admin_name', data.admin.name);
+          localStorage.setItem('jsk_admin_email', data.admin.email);
+          localStorage.setItem('jsk_admin_role', data.admin.role);
+
+          alertSuccess.style.display = 'flex';
+          btnIcon.className = 'fa-solid fa-check';
+          btnText.textContent = 'Redirecting…';
+
+          setTimeout(() => {
+            window.location.href = 'dashboard.html';
+          }, 800);
+        } else {
+          errorMsg.textContent = data.error || 'Invalid email or password.';
+          alertError.style.display = 'flex';
+          btn.disabled = false;
+          btnIcon.className = 'fa-solid fa-arrow-right-to-bracket';
+          btnText.textContent = 'Sign In to Console';
+        }
+      } catch (err) {
+        console.error('Login error:', err);
+        if (err.message.includes('fetch')) {
+          errorMsg.textContent = 'Cannot reach server. Make sure the backend is running on port 5000.';
+        } else {
+          errorMsg.textContent = 'Network error. Please try again.';
+        }
+        alertError.style.display = 'flex';
+        btn.disabled = false;
+        btnIcon.className = 'fa-solid fa-arrow-right-to-bracket';
+        btnText.textContent = 'Sign In to Console';
+      }
+    }
+  </script>
+
+</body>
+</html>

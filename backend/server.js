@@ -18,18 +18,37 @@ const seedDatabaseIfEmpty = require('./seeds/seedAll');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Middleware
+// CORS — allow Vercel production frontend + localhost for development
+const ALLOWED_ORIGINS = [
+  'https://www.jayasrikannanfoundation.org',
+  'https://jayasrikannanfoundation.org',
+  'http://localhost:3000',
+  'http://localhost:5000',
+  'http://localhost:5500',
+  'http://127.0.0.1:5500',
+  'http://127.0.0.1:5000',
+];
+
 app.use(cors({
-  origin: '*', // Allow requests from frontend (adjust in production as needed)
+  origin: function (origin, callback) {
+    // Allow requests with no origin (e.g. Postman, curl, direct server calls)
+    if (!origin) return callback(null, true);
+    if (ALLOWED_ORIGINS.indexOf(origin) !== -1) {
+      return callback(null, true);
+    }
+    // Also allow any Vercel preview deployment URLs
+    if (origin && origin.endsWith('.vercel.app')) {
+      return callback(null, true);
+    }
+    return callback(new Error('CORS policy: origin not allowed — ' + origin));
+  },
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Serve frontend static files if backend and frontend are hosted together
-app.use(express.static(path.join(__dirname, '..', 'user-side')));
-app.use(express.static(path.join(__dirname, '..')));
+// NOTE: Static file serving removed — frontend is now deployed on Vercel.
 
 // MongoDB Atlas Connection
 const MONGODB_URI = process.env.MONGODB_URI;
@@ -108,14 +127,6 @@ app.get('/api/test-resend', async (req, res) => {
   } catch (err) {
     return res.status(500).json({ success: false, error: err.message });
   }
-});
-
-// Fallback to index.html for non-API GET routes (Express 5 compatible)
-app.use((req, res, next) => {
-  if (req.method === 'GET' && !req.path.startsWith('/api')) {
-    return res.sendFile(path.join(__dirname, '..', 'index.html'));
-  }
-  next();
 });
 
 // Global Error Handler

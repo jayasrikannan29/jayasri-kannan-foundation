@@ -1,0 +1,826 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Donate | Jayasri Kannan Foundation</title>
+  <meta name="description" content="Support Jayasri Kannan Foundation's healthcare, eye care, blood donation, youth and community welfare programmes through your generous donation." />
+  <link rel="icon" type="image/jpeg" href="images/logo.jpg" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    .qr-zoom-trigger {
+      cursor: pointer;
+      transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.25s ease, border-color 0.25s ease;
+      user-select: none;
+    }
+    .qr-zoom-trigger:hover {
+      transform: translateY(-3px) scale(1.02);
+      border-color: var(--primary-blue) !important;
+      box-shadow: 0 10px 25px rgba(26,58,110,0.18) !important;
+    }
+    .qr-zoom-trigger:active {
+      transform: scale(0.98);
+    }
+    @keyframes qrBackdropIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes qrCardFloatIn {
+      0% {
+        opacity: 0;
+        transform: scale(0.45) translateY(40px);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+    .qr-floating-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(12, 28, 56, 0.82);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 999999;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      cursor: zoom-out;
+      animation: qrBackdropIn 0.22s ease-out forwards;
+    }
+    .qr-floating-card {
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 26px 24px;
+      max-width: 380px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 30px 70px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(255, 255, 255, 0.25);
+      border: 2px solid var(--accent-gold);
+      position: relative;
+      cursor: zoom-out;
+      animation: qrCardFloatIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.25) forwards;
+    }
+    .qr-floating-card .qr-big-img {
+      width: 250px;
+      max-width: 80vw;
+      height: auto;
+      object-fit: contain;
+      border-radius: 12px;
+      display: block;
+      margin: 0 auto;
+      box-shadow: 0 4px 18px rgba(26,58,110,0.12);
+    }
+  </style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="container">
+    <div class="topbar-left">
+      <a href="tel:7010964630"><i class="fa-solid fa-phone"></i> 7010964630 / 9941531140 / 9025948033</a>
+      <a href="mailto:jskfoundation29@gmail.com"><i class="fa-solid fa-envelope"></i> jskfoundation29@gmail.com</a>
+    </div>
+    <div class="topbar-right">
+      <a href="admin/login.html" id="adminPortalLink" class="topbar-admin-link" title="Admin Login">
+        <i class="fa-solid fa-lock"></i> Admin
+      </a>
+      <span class="topbar-divider"></span>
+      <div class="topbar-social">
+        <a href="https://www.facebook.com/profile.php?id=61595242913128" target="_blank" rel="noopener noreferrer" title="Facebook" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+        <a href="https://www.instagram.com/jayasrikannan_foundation?utm_source=qr&stkn=MWs3MGRmMnpzdXN1ZA==" target="_blank" rel="noopener noreferrer" title="Instagram" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+        <a href="https://www.youtube.com/@JayasriKannanFoundation" target="_blank" rel="noopener noreferrer" title="YouTube" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<nav class="navbar">
+  <div class="container">
+    <a href="index.html#home" class="nav-brand">
+      <img src="images/logo.jpg" alt="Logo" class="nav-logo" />
+      <div class="nav-brand-text">
+        <div class="nav-brand-name">Jayasri Kannan<br>Foundation</div>
+        <div class="nav-brand-tag">Serving Humanity</div>
+      </div>
+    </a>
+    <ul class="nav-menu" id="navMenu">
+      <button class="close-menu" id="closeMenu">✕</button>
+      <li><a href="index.html#home" class="nav-link">Home</a></li>
+      <li><a href="index.html#about-us" class="nav-link">About Us</a></li>
+      <li><a href="index.html#activities" class="nav-link">Our Activities</a></li>
+      <li><a href="index.html#eye-care" class="nav-link">Eye Care</a></li>
+      <li><a href="index.html#blood-donation" class="nav-link">Blood Donation</a></li>
+      <li><a href="index.html#events" class="nav-link">Events</a></li>
+      <li><a href="index.html#gallery" class="nav-link">Gallery</a></li>
+      <li><a href="index.html#volunteer" class="nav-link">Volunteer</a></li>
+      <li><a href="index.html#contact" class="nav-link">Contact</a></li>
+    </ul>
+    <a href="donate.html" class="btn btn-primary btn-sm nav-donate active" id="donateBtn"><i class="fa-solid fa-heart"></i> Donate Now</a>
+    <button class="nav-toggle" id="navToggle"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<!-- PAGE HERO -->
+<section class="page-hero" style="background:linear-gradient(135deg,#c8960a 0%,#c9a227 50%,#1a3a6e 100%);">
+  <div class="container">
+    <div class="page-hero-content">
+      <div class="breadcrumb"><a href="index.html#home">Home</a> <span>›</span> Donate</div>
+      <h1>Support Our Mission</h1>
+      <p>Your support can help us conduct more community welfare programmes and reach people who need assistance.</p>
+    </div>
+  </div>
+</section>
+
+<!-- DONATION CONTENT -->
+<section class="section-pad" style="background:var(--off-white);">
+  <div class="container">
+    <div class="donate-layout-grid">
+
+      <!-- LEFT: Why Donate -->
+      <div>
+        <div class="section-tag">Make a Difference</div>
+        <h2 class="section-title">Every Contribution<br><span>Matters</span></h2>
+        <div class="divider"></div>
+        <p style="color:var(--text-gray);margin-bottom:24px;line-height:1.8;">
+          Your support helps Jayasri Kannan Foundation reach communities and people who need assistance through healthcare, education and welfare programmes.
+        </p>
+
+        <h4 style="font-weight:700;color:var(--deep-blue);margin-bottom:16px;">Contributions May Support:</h4>
+        <div class="donate-causes-grid">
+          <div style="background:var(--white);padding:16px;border-radius:10px;border-left:3px solid var(--primary-blue);box-shadow:var(--shadow-sm);">
+            <span style="font-size:1.4rem;"><i class="fa-solid fa-eye"></i></span>
+            <p style="font-size:0.87rem;font-weight:600;color:var(--deep-blue);margin-top:6px;">Eye-Care Programmes</p>
+          </div>
+          <div style="background:var(--white);padding:16px;border-radius:10px;border-left:3px solid var(--red-accent);box-shadow:var(--shadow-sm);">
+            <span style="font-size:1.4rem;"><i class="fa-solid fa-droplet"></i></span>
+            <p style="font-size:0.87rem;font-weight:600;color:var(--deep-blue);margin-top:6px;">Blood Donation Activities</p>
+          </div>
+          <div style="background:var(--white);padding:16px;border-radius:10px;border-left:3px solid var(--accent-gold);box-shadow:var(--shadow-sm);">
+            <span style="font-size:1.4rem;"><i class="fa-solid fa-hospital"></i></span>
+            <p style="font-size:0.87rem;font-weight:600;color:var(--deep-blue);margin-top:6px;">Healthcare Camps</p>
+          </div>
+          <div style="background:var(--white);padding:16px;border-radius:10px;border-left:3px solid var(--accent-green);box-shadow:var(--shadow-sm);">
+            <span style="font-size:1.4rem;"><i class="fa-solid fa-user-graduate"></i></span>
+            <p style="font-size:0.87rem;font-weight:600;color:var(--deep-blue);margin-top:6px;">Youth Programmes</p>
+          </div>
+          <div style="background:var(--white);padding:16px;border-radius:10px;border-left:3px solid purple;box-shadow:var(--shadow-sm);">
+            <span style="font-size:1.4rem;"><i class="fa-solid fa-book"></i></span>
+            <p style="font-size:0.87rem;font-weight:600;color:var(--deep-blue);margin-top:6px;">Student Welfare</p>
+          </div>
+          <div style="background:var(--white);padding:16px;border-radius:10px;border-left:3px solid teal;box-shadow:var(--shadow-sm);">
+            <span style="font-size:1.4rem;"><i class="fa-solid fa-handshake"></i></span>
+            <p style="font-size:0.87rem;font-weight:600;color:var(--deep-blue);margin-top:6px;">Community Initiatives</p>
+          </div>
+          <div style="background:var(--white);padding:16px;border-radius:10px;border-left:3px solid var(--accent-gold);box-shadow:var(--shadow-sm);">
+            <span style="font-size:1.4rem;"><i class="fa-solid fa-wheat-awn"></i></span>
+            <p style="font-size:0.87rem;font-weight:600;color:var(--deep-blue);margin-top:6px;">Rural Development</p>
+          </div>
+          <div style="background:var(--white);padding:16px;border-radius:10px;border-left:3px solid var(--primary-blue);box-shadow:var(--shadow-sm);">
+            <span style="font-size:1.4rem;"><i class="fa-solid fa-life-ring"></i></span>
+            <p style="font-size:0.87rem;font-weight:600;color:var(--deep-blue);margin-top:6px;">Humanitarian Support</p>
+          </div>
+        </div>
+
+        <div style="background:linear-gradient(135deg,rgba(201,162,39,0.1),rgba(26,58,110,0.05));padding:24px;border-radius:var(--radius-md);border:1px solid rgba(201,162,39,0.3);">
+          <p style="font-style:italic;color:var(--deep-blue);font-size:1.1rem;font-weight:700;margin-bottom:8px;">"Together, We Can Reach More People."</p>
+          <p style="font-size:0.88rem;color:var(--text-gray);">– Jayasri Kannan Foundation</p>
+        </div>
+      </div>
+
+      <!-- RIGHT: Interactive Donation Flow -->
+      <div>
+        <div class="donate-form-card">
+          <div style="text-align:center;margin-bottom:24px;">
+            <div style="font-size:2.4rem;color:var(--accent-gold);margin-bottom:8px;"><i class="fa-solid fa-heart-pulse"></i></div>
+            <h3 style="font-family:'Montserrat',sans-serif;font-size:1.45rem;font-weight:800;color:var(--deep-blue);">Contribute to Jayasri Kannan Foundation</h3>
+            <p style="color:var(--text-gray);font-size:0.85rem;margin-top:4px;">Direct UPI &amp; Bank Transfer</p>
+          </div>
+
+          <!-- STEP PROGRESS INDICATOR -->
+          <div style="display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid var(--border);">
+            <div id="step1Indicator" style="display:flex;align-items:center;gap:8px;font-size:.82rem;font-weight:700;color:var(--primary-blue);">
+              <span id="step1Badge" style="width:24px;height:24px;border-radius:50%;background:var(--primary-blue);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:.72rem;">1</span>
+              <span>1. Enter Details</span>
+            </div>
+            <div style="width:36px;height:2px;background:rgba(26,58,110,0.2);"></div>
+            <div id="step2Indicator" style="display:flex;align-items:center;gap:8px;font-size:.82rem;font-weight:600;color:var(--text-light);">
+              <span id="step2Badge" style="width:24px;height:24px;border-radius:50%;background:rgba(26,58,110,0.15);color:var(--text-gray);display:inline-flex;align-items:center;justify-content:center;font-size:.72rem;">2</span>
+              <span>2. Scan QR &amp; Pay</span>
+            </div>
+          </div>
+
+          <!-- ================= STEP 1: DONOR FORM ================= -->
+          <div id="donationStep1">
+
+          <!-- DONATION FORM -->
+          <form id="publicDonationForm" onsubmit="handleStep1Submit(event);">
+            <!-- Amount Selection -->
+            <label style="display:block;font-size:.8rem;font-weight:700;color:var(--deep-blue);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;">
+              Select Contribution Amount (&#8377;) *
+            </label>
+            <div class="amt-presets-grid" id="amtPresets">
+              <button type="button" class="btn btn-outline-blue btn-sm amt-chip" onclick="setDonationAmt(500, this)">&#8377;500</button>
+              <button type="button" class="btn btn-outline-blue btn-sm amt-chip active" onclick="setDonationAmt(1000, this)" style="background:var(--primary-blue);color:white;">&#8377;1,000</button>
+              <button type="button" class="btn btn-outline-blue btn-sm amt-chip" onclick="setDonationAmt(2500, this)">&#8377;2,500</button>
+              <button type="button" class="btn btn-outline-blue btn-sm amt-chip" onclick="setDonationAmt(5000, this)">&#8377;5,000</button>
+            </div>
+            <div style="margin-bottom:18px;">
+              <input type="number" id="customAmount" class="form-control" placeholder="Or enter custom amount in &#8377;" value="1000" min="10" required style="width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:.9rem;outline:none;" />
+            </div>
+
+            <!-- Donor Details -->
+            <div class="donate-form-2col">
+              <div>
+                <label style="display:block;font-size:.78rem;font-weight:700;color:var(--text-gray);margin-bottom:4px;">Donor Full Name *</label>
+                <input type="text" id="donorName" required placeholder="e.g. S. Ramakrishnan" style="width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:.88rem;outline:none;" />
+              </div>
+              <div>
+                <label style="display:block;font-size:.78rem;font-weight:700;color:var(--text-gray);margin-bottom:4px;">Phone Number *</label>
+                <input type="tel" id="donorPhone" required placeholder="+91 98400 12345" style="width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:.88rem;outline:none;" />
+              </div>
+            </div>
+
+            <!-- Optional / Secondary Details Toggle -->
+            <div style="margin-bottom:14px;">
+              <button type="button" id="toggleOptional" onclick="toggleOptionalFields()" style="background:none;border:1.5px dashed rgba(26,58,110,0.3);border-radius:8px;width:100%;padding:9px 14px;font-size:.82rem;font-weight:700;color:var(--primary-blue);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--primary-blue)';" onmouseout="this.style.borderColor='rgba(26,58,110,0.3)';">
+                <i class="fa-solid fa-circle-plus" id="toggleOptionalIcon"></i>
+                <span id="toggleOptionalLabel">Add more details (optional)</span>
+              </button>
+            </div>
+
+            <!-- Optional Fields (hidden by default) -->
+            <div id="optionalFields" style="display:none;">
+              <div style="background:rgba(26,58,110,0.03);border:1px solid rgba(26,58,110,0.1);border-radius:10px;padding:16px;margin-bottom:14px;">
+                <div style="font-size:.72rem;font-weight:700;color:var(--text-light);text-transform:uppercase;letter-spacing:.8px;margin-bottom:12px;"><i class="fa-solid fa-circle-info" style="color:var(--accent-gold);"></i> Optional Details</div>
+
+                <div class="donate-form-2col">
+                  <div>
+                    <label style="display:block;font-size:.78rem;font-weight:700;color:var(--text-gray);margin-bottom:4px;">Email <span style="font-weight:400;color:var(--text-light);">(For Receipt)</span></label>
+                    <input type="email" id="donorEmail" placeholder="donor@gmail.com" style="width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:.88rem;outline:none;" />
+                  </div>
+                  <div>
+                    <label style="display:block;font-size:.78rem;font-weight:700;color:var(--text-gray);margin-bottom:4px;">PAN <span style="font-weight:400;color:var(--text-light);">(Optional)</span></label>
+                    <input type="text" id="donorPan" placeholder="ABCDE1234F" style="width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:.88rem;text-transform:uppercase;outline:none;" />
+                  </div>
+                </div>
+
+                <div>
+                  <label style="display:block;font-size:.78rem;font-weight:700;color:var(--text-gray);margin-bottom:4px;">Purpose of Donation <span style="font-weight:400;color:var(--text-light);">(optional)</span></label>
+                  <select id="donationCause" style="width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:.88rem;outline:none;background:white;">
+                    <option value="General Foundation Corpus">General Foundation Corpus</option>
+                    <option value="Healthcare & Medical Outreach">Healthcare & Medical Outreach</option>
+                    <option value="Eye Care Camps & Spectacles">Eye Care Camps & Spectacles</option>
+                    <option value="Blood Donation Drive Support">Blood Donation Drive Support</option>
+                    <option value="Education & Student Scholarships">Education & Student Scholarships</option>
+                    <option value="Social Welfare & Disaster Relief">Social Welfare & Disaster Relief</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+              <button type="submit" id="proceedBtn" class="btn btn-primary btn-lg" style="width:100%;justify-content:center;background:var(--primary-blue);padding:13px 20px;font-size:.98rem;font-weight:700;border-radius:10px;box-shadow:0 4px 14px rgba(26,58,110,0.25);">
+                <span>Proceed to Pay &amp; Get QR Code</span> <i class="fa-solid fa-arrow-right" style="margin-left:8px;"></i>
+              </button>
+              
+              <div style="margin-top:12px;text-align:center;font-size:.74rem;color:var(--text-light);">
+                <i class="fa-solid fa-lock" style="color:var(--accent-gold);"></i> Details are securely stored in the foundation database before payment.
+              </div>
+            </form>
+          </div>
+
+          <!-- ================= STEP 2: SCAN QR & PAY ================= -->
+          <div id="donationStep2" style="display:none;">
+            <!-- Donor Summary Header -->
+            <div style="background:linear-gradient(135deg,rgba(26,58,110,0.06),rgba(201,162,39,0.08));border:1.5px solid rgba(201,162,39,0.3);border-radius:12px;padding:14px 16px;margin-bottom:18px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+                <div>
+                  <div style="font-size:.7rem;font-weight:700;color:var(--text-light);text-transform:uppercase;letter-spacing:.5px;">Donor Information</div>
+                  <div style="font-size:1.05rem;font-weight:800;color:var(--deep-blue);" id="summaryDonorName">S. Ramakrishnan</div>
+                  <div style="font-size:.78rem;color:var(--text-gray);" id="summaryDonorPhone">+91 98400 12345</div>
+                </div>
+                <div style="text-align:right;">
+                  <div style="font-size:.7rem;font-weight:700;color:var(--text-light);text-transform:uppercase;letter-spacing:.5px;">Amount to Pay</div>
+                  <div style="font-size:1.45rem;font-weight:800;color:var(--accent-gold);" id="summaryAmount">&#8377;1,000</div>
+                </div>
+              </div>
+              <div style="margin-top:8px;padding-top:8px;border-top:1px dashed rgba(26,58,110,0.15);display:flex;justify-content:space-between;align-items:center;font-size:.75rem;color:var(--text-gray);flex-wrap:wrap;gap:6px;">
+                <span><i class="fa-solid fa-tag" style="color:var(--accent-gold);"></i> <strong id="summaryCause">General Foundation Corpus</strong></span>
+                <button type="button" onclick="editDonorDetails()" style="background:none;border:none;color:var(--primary-blue);font-weight:700;cursor:pointer;font-size:.75rem;display:inline-flex;align-items:center;gap:4px;">
+                  <i class="fa-solid fa-pen-to-square"></i> Edit Details
+                </button>
+              </div>
+            </div>
+
+            <!-- BANK & UPI SCANNER SECTION -->
+            <div style="background:rgba(26,58,110,0.04);border:1.5px solid rgba(26,58,110,0.15);border-radius:var(--radius-md);padding:18px;margin-bottom:20px;">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px;">
+                <span style="font-size:.82rem;font-weight:700;color:var(--primary-blue);text-transform:uppercase;letter-spacing:1px;"><i class="fa-solid fa-qrcode"></i> Official Payment Details</span>
+                <span style="background:rgba(201,162,39,0.15);color:#8a6b0f;padding:2px 8px;border-radius:4px;font-size:.72rem;font-weight:700;">Verified NGO Account</span>
+              </div>
+
+              <!-- QR Code + Bank Details side by side -->
+              <div class="qr-scan-card" style="margin-top:4px;">
+                <!-- QR Scanner Card -->
+                <div class="qr-zoom-trigger" onclick="toggleQrZoom()" title="Click to zoom and scan easily" style="flex:0 0 auto;background:var(--white);border:1.5px solid rgba(26,58,110,0.18);border-radius:12px;padding:12px 14px;text-align:center;box-shadow:var(--shadow-sm);min-width:150px;position:relative;cursor:pointer;">
+                  <div style="font-size:.65rem;font-weight:800;color:#003399;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;">🏦 SBI • SCAN &amp; PAY</div>
+                  <div style="position:relative;display:inline-block;">
+                    <img id="sbiQrThumb" src="" alt="SBI QR Scanner - Jayasri Kannan Foundation - UPI 7010964630@sbi" style="width:140px;height:140px;object-fit:contain;border-radius:8px;display:none;margin:0 auto 6px;" onerror="this.style.display='none';document.getElementById('qrFallback').style.display='flex';" onload="this.style.display='block';document.getElementById('qrFallback').style.display='none';" />
+                    <div id="qrFallback" style="display:flex;width:140px;height:140px;background:linear-gradient(135deg,#e8f0fe,#c9d8f7);border-radius:8px;align-items:center;justify-content:center;margin:0 auto 8px;font-size:3rem;">📱</div>
+                    <span style="position:absolute;bottom:10px;right:4px;background:rgba(26,58,110,0.85);color:#fff;border-radius:20px;padding:2px 7px;font-size:0.58rem;font-weight:700;display:flex;align-items:center;gap:3px;box-shadow:0 2px 6px rgba(0,0,0,0.3);pointer-events:none;">
+                      <i class="fa-solid fa-magnifying-glass-plus"></i> Zoom
+                    </span>
+                  </div>
+                  <div style="font-size:.7rem;font-weight:700;color:var(--deep-blue);">
+                    UPI ID: <span style="color:var(--primary-blue);">7010964630@sbi</span>
+                  </div>
+                  <div style="font-size:.62rem;color:var(--text-light);margin-top:3px;">GPay · PhonePe · Paytm · BHIM</div>
+                  <div style="margin-top:7px;display:inline-flex;align-items:center;gap:4px;background:rgba(26,58,110,0.06);color:var(--primary-blue);font-size:.62rem;font-weight:700;padding:3px 9px;border-radius:12px;">
+                    <i class="fa-solid fa-expand"></i> Click to enlarge
+                  </div>
+                </div>
+
+                <!-- Bank Details Grid -->
+                <div style="flex:1;display:grid;grid-template-columns:1fr;gap:8px;font-size:.84rem;min-width:160px;">
+                  <div style="background:var(--white);padding:10px 14px;border-radius:8px;border:1px solid var(--border);">
+                    <div style="color:var(--text-light);font-size:.7rem;font-weight:600;text-transform:uppercase;">UPI ID / VPA</div>
+                    <div style="display:flex;align-items:center;justify-content:space-between;margin-top:2px;">
+                      <span style="font-weight:700;color:var(--deep-blue);font-size:.85rem;" id="copyUpiText">7010964630@sbi</span>
+                      <button type="button" onclick="copyUpiId()" id="copyUpiBtn" style="background:rgba(26,58,110,0.08);border:none;padding:3px 8px;border-radius:4px;font-size:.7rem;font-weight:700;color:var(--primary-blue);cursor:pointer;display:inline-flex;align-items:center;gap:4px;">
+                        <i class="fa-regular fa-copy"></i> Copy
+                      </button>
+                    </div>
+                  </div>
+                  <div style="background:var(--white);padding:10px 14px;border-radius:8px;border:1px solid var(--border);">
+                    <div style="color:var(--text-light);font-size:.7rem;font-weight:600;text-transform:uppercase;">Bank Name</div>
+                    <div style="font-weight:700;color:var(--deep-blue);margin-top:2px;">State Bank of India (SBI)</div>
+                  </div>
+                  <div style="background:var(--white);padding:10px 14px;border-radius:8px;border:1px solid var(--border);">
+                    <div style="color:var(--text-light);font-size:.7rem;font-weight:600;text-transform:uppercase;">Account Name</div>
+                    <div style="font-weight:700;color:var(--deep-blue);margin-top:2px;">Jayasri Kannan Foundation</div>
+                  </div>
+                </div>
+              </div>
+
+              <div style="margin-top:10px;text-align:center;font-size:.72rem;color:var(--text-light);"><i class="fa-solid fa-shield-halved" style="color:var(--accent-gold);"></i> Secure • Verified NGO Account</div>
+            </div>
+
+            <!-- UTR / TRANSACTION ID CONFIRMATION FORM -->
+            <form id="utrSubmissionForm" onsubmit="handleUtrSubmit(event);">
+              <div style="background:var(--off-white);padding:18px;border-radius:12px;border:1px solid var(--border);margin-bottom:16px;">
+                <label style="display:block;font-size:.82rem;font-weight:700;color:var(--deep-blue);margin-bottom:6px;">
+                  <i class="fa-solid fa-receipt" style="color:var(--accent-gold);"></i> Enter Payment UTR / Transaction ID <span style="color:#d93025;">*</span>
+                </label>
+                <input type="text" id="donorTxnId" required placeholder="12-digit UPI Ref / Bank Txn ID from GPay, PhonePe, Paytm, etc." style="width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:.88rem;outline:none;" />
+                <span style="font-size:.74rem;color:var(--text-light);margin-top:5px;display:block;">
+                  Complete your payment via SBI QR or UPI, then paste your Transaction Ref / UTR above to receive your receipt.
+                </span>
+              </div>
+
+              <button type="submit" id="confirmUtrBtn" class="btn btn-primary btn-lg" style="width:100%;justify-content:center;background:#1b7340;border-color:#1b7340;color:white;font-weight:700;padding:13px 20px;border-radius:10px;box-shadow:0 4px 14px rgba(27,115,64,0.3);">
+                <i class="fa-solid fa-circle-check"></i> Confirm Payment &amp; Get Receipt
+              </button>
+            </form>
+          </div>
+
+          <!-- SUCCESS POPUP CONFIRMATION -->
+          <div id="donationSuccessCard" style="display:none;margin-top:20px;padding:24px;background:#edf7f1;border:1.5px solid #2e8b57;border-radius:12px;text-align:center;">
+            <div style="font-size:2.8rem;color:#2e8b57;margin-bottom:8px;"><i class="fa-solid fa-circle-check"></i></div>
+            <h4 style="color:#1b5e20;font-weight:800;font-size:1.25rem;margin-bottom:6px;">Thank You for Your Generosity!</h4>
+            <p style="font-size:.9rem;color:#2e7d32;line-height:1.6;margin-bottom:12px;" id="successMsg">
+              Your contribution has been logged under Transaction ID: <strong id="successTxn"></strong>.
+            </p>
+            <div style="font-size:.82rem;color:#555;margin-bottom:16px;">Our accounts team will verify the payment and email the official receipt to you.</div>
+            <button type="button" class="btn btn-outline-blue btn-sm" onclick="resetDonationForm()">Submit Another Contribution</button>
+          </div>
+        </div>
+
+        <!-- Other ways to help -->
+        <div style="background:linear-gradient(135deg,var(--primary-blue),var(--deep-blue));border-radius:var(--radius-lg);padding:24px;margin-top:24px;">
+          <h4 style="color:var(--white);font-weight:700;margin-bottom:12px;font-size:.95rem;">Other Ways to Support</h4>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <a href="index.html#volunteer" class="btn btn-primary btn-sm" style="text-align:center;"><i class="fa-solid fa-handshake"></i> Become a Volunteer</a>
+            <a href="index.html#contact" class="btn btn-secondary btn-sm" style="text-align:center;"><i class="fa-solid fa-building"></i> Partner With Us</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- IMPACT -->
+<section class="stats-section">
+  <div class="container">
+    <div class="text-center" style="margin-bottom:40px;">
+      <h2 style="font-family:'Montserrat',sans-serif;font-size:1.8rem;font-weight:800;color:var(--white);">Your Support Creates Impact</h2>
+    </div>
+    <div class="stats-grid">
+      <div class="stat-item">
+        <div style="font-size:2.5rem;margin-bottom:10px;"><i class="fa-solid fa-eye"></i></div>
+        <div class="stat-label" style="font-size:1rem;font-weight:600;color:var(--accent-gold);">Eye Camps</div>
+        <div class="stat-label">Free eye screening for communities</div>
+      </div>
+      <div class="stat-item">
+        <div style="font-size:2.5rem;margin-bottom:10px;"><i class="fa-solid fa-droplet"></i></div>
+        <div class="stat-label" style="font-size:1rem;font-weight:600;color:var(--accent-gold);">Blood Donation</div>
+        <div class="stat-label">Life-saving donation camps</div>
+      </div>
+      <div class="stat-item">
+        <div style="font-size:2.5rem;margin-bottom:10px;"><i class="fa-solid fa-user-graduate"></i></div>
+        <div class="stat-label" style="font-size:1rem;font-weight:600;color:var(--accent-gold);">Youth</div>
+        <div class="stat-label">Awareness for young people</div>
+      </div>
+      <div class="stat-item">
+        <div style="font-size:2.5rem;margin-bottom:10px;"><i class="fa-solid fa-house"></i></div>
+        <div class="stat-label" style="font-size:1rem;font-weight:600;color:var(--accent-gold);">Communities</div>
+        <div class="stat-label">Rural & urban welfare programmes</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo-wrap"><img src="images/logo.jpg" alt="Logo" class="footer-logo" /><div class="footer-brand-name">Jayasri Kannan<br>Foundation</div></div>
+        <p>Serving Humanity • Supporting Communities • Creating a Healthier Future</p>
+        <div class="footer-social">
+          <a href="https://www.facebook.com/profile.php?id=61595242913128" target="_blank" rel="noopener noreferrer" aria-label="Facebook" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="https://www.instagram.com/jayasrikannan_foundation?utm_source=qr&stkn=MWs3MGRmMnpzdXN1ZA==" target="_blank" rel="noopener noreferrer" aria-label="Instagram" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+          <a href="https://www.youtube.com/@JayasriKannanFoundation" target="_blank" rel="noopener noreferrer" aria-label="YouTube" title="YouTube"><i class="fa-brands fa-youtube"></i></a>
+        </div>
+      </div>
+      <div class="footer-col"><h4>Quick Links</h4><ul>
+        <li><a href="index.html#home">Home</a></li><li><a href="index.html#about-us">About Us</a></li>
+        <li><a href="index.html#activities">Our Activities</a></li><li><a href="index.html#eye-care">Eye Care</a></li>
+        <li><a href="index.html#blood-donation">Blood Donation</a></li><li><a href="index.html#events">Events</a></li>
+        <li><a href="index.html#gallery">Gallery</a></li><li><a href="index.html#volunteer">Volunteer</a></li>
+      </ul></div>
+      <div class="footer-col"><h4>Get Involved</h4><ul>
+        <li><a href="index.html#volunteer">Become a Volunteer</a></li>
+        <li><a href="donate.html">Donate</a></li>
+        <li><a href="index.html#contact">Partner With Us</a></li>
+      </ul></div>
+      <div class="footer-col"><h4>Contact Us</h4>
+        <div class="footer-contact-item"><div class="footer-contact-icon"><i class="fa-solid fa-phone"></i></div><p>7010964630 / 9941531140 / 9025948033</p></div>
+        <div class="footer-contact-item"><div class="footer-contact-icon"><i class="fa-solid fa-envelope"></i></div><p>jskfoundation29@gmail.com</p></div>
+        <div style="margin-top:20px;"><a href="donate.html" class="btn btn-primary btn-sm"><i class="fa-solid fa-heart"></i> Donate Now</a></div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 Jayasri Kannan Foundation. All Rights Reserved.</p>
+      <div style="display:flex;gap:16px;"><a href="#">Privacy Policy</a><a href="#">Terms of Use</a></div>
+    </div>
+  </div>
+</footer>
+
+<style>
+  @keyframes fadeInDown {
+    from { opacity:0; transform:translateY(-8px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+</style>
+<button class="scroll-top" id="scrollTop">↑</button>
+<script>
+  const navToggle=document.getElementById('navToggle');const closeMenu=document.getElementById('closeMenu');const navMenu=document.getElementById('navMenu');
+  navToggle.addEventListener('click',()=>navMenu.classList.add('open'));closeMenu.addEventListener('click',()=>navMenu.classList.remove('open'));
+  const s=document.getElementById('scrollTop');window.addEventListener('scroll',()=>s.classList.toggle('visible',scrollY>400));s.addEventListener('click',()=>scrollTo({top:0,behavior:'smooth'}));
+
+  function toggleOptionalFields() {
+    const panel = document.getElementById('optionalFields');
+    const icon  = document.getElementById('toggleOptionalIcon');
+    const label = document.getElementById('toggleOptionalLabel');
+    const isOpen = panel.style.display !== 'none';
+    panel.style.display = isOpen ? 'none' : 'block';
+    icon.className  = isOpen ? 'fa-solid fa-circle-plus' : 'fa-solid fa-circle-minus';
+    label.textContent = isOpen ? 'Add more details (optional)' : 'Hide optional details';
+  }
+</script>
+
+<script>
+  // Ensure smooth scroll only intercepts links starting with '#'
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+      const targetId = this.getAttribute('href');
+      if (targetId && targetId.startsWith('#') && targetId.length > 1) {
+        const targetElem = document.querySelector(targetId);
+        if (targetElem) {
+          e.preventDefault();
+          targetElem.scrollIntoView({ behavior: 'smooth' });
+          // Close mobile menu if open
+          const navMenu = document.getElementById('navMenu');
+          if (navMenu) navMenu.classList.remove('open');
+        }
+      }
+    });
+  });
+</script>
+
+<script>
+  const DONATE_API_BASE = (
+    window.location.protocol === 'file:' ||
+    window.location.hostname === 'localhost' ||
+    window.location.hostname === '127.0.0.1'
+  ) ? 'http://localhost:5000' : 'https://api.jayasrikannanfoundation.org';
+
+  function setDonationAmt(val, btn) {
+    document.querySelectorAll('.amt-chip').forEach(b => {
+      b.classList.remove('active');
+      b.style.background = 'transparent';
+      b.style.color = 'var(--primary-blue)';
+    });
+    btn.classList.add('active');
+    btn.style.background = 'var(--primary-blue)';
+    btn.style.color = '#ffffff';
+    document.getElementById('customAmount').value = val;
+  }
+
+  let currentDonationId = null;
+
+  // STEP 1 SUBMIT: Save donor details in MongoDB Atlas first, then show QR
+  async function handleStep1Submit(e) {
+    if (e && e.preventDefault) e.preventDefault();
+
+    const amount = Number(document.getElementById('customAmount').value);
+    const name   = document.getElementById('donorName').value.trim();
+    const phone  = document.getElementById('donorPhone').value.trim();
+    const email  = document.getElementById('donorEmail').value.trim();
+    const pan    = document.getElementById('donorPan').value.trim().toUpperCase();
+    const cause  = document.getElementById('donationCause').value;
+
+    if (!amount || amount <= 0 || !name || !phone) {
+      alert('Please fill in your Name, Phone Number, and a valid Donation Amount.');
+      return;
+    }
+
+    const proceedBtn = document.getElementById('proceedBtn');
+    const originalBtnHTML = proceedBtn.innerHTML;
+    proceedBtn.disabled = true;
+    proceedBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving Details...';
+
+    const payload = {
+      name,
+      phone,
+      email,
+      pan,
+      amount,
+      cause,
+      paymentMethod: 'UPI / SBI QR',
+      notes: 'Initial donor registration - awaiting payment confirmation.'
+    };
+
+    try {
+      const res = await fetch(`${DONATE_API_BASE}/api/donations`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      const json = await res.json();
+
+      if (res.ok && json.success) {
+        currentDonationId = json.data._id;
+
+        // Populate Step 2 Summary
+        document.getElementById('summaryDonorName').textContent = name;
+        document.getElementById('summaryDonorPhone').textContent = phone;
+        document.getElementById('summaryAmount').innerHTML = `&#8377;${amount.toLocaleString('en-IN')}`;
+        document.getElementById('summaryCause').textContent = cause;
+
+        // Transition from Step 1 to Step 2
+        document.getElementById('donationStep1').style.display = 'none';
+        document.getElementById('donationStep2').style.display = 'block';
+
+        // Update Step Indicators
+        const s1 = document.getElementById('step1Indicator');
+        const s2 = document.getElementById('step2Indicator');
+        s1.style.color = 'var(--accent-green)';
+        s1.innerHTML = '<span style="width:24px;height:24px;border-radius:50%;background:var(--accent-green);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:.72rem;"><i class="fa-solid fa-check"></i></span><span>1. Details Saved</span>';
+        
+        s2.style.color = 'var(--primary-blue)';
+        s2.innerHTML = '<span style="width:24px;height:24px;border-radius:50%;background:var(--primary-blue);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:.72rem;">2</span><span>2. Scan QR &amp; Pay</span>';
+
+        // Load QR image from DB if not already loaded
+        loadDatabaseQr();
+
+        // Smooth scroll to step 2
+        document.getElementById('donationStep2').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      } else {
+        alert(json.error || 'Failed to save donor details. Please try again.');
+        proceedBtn.disabled = false;
+        proceedBtn.innerHTML = originalBtnHTML;
+      }
+    } catch (err) {
+      console.error('Network error saving donation details:', err);
+      alert('Unable to connect to the server. Please check your internet connection.');
+      proceedBtn.disabled = false;
+      proceedBtn.innerHTML = originalBtnHTML;
+    }
+  }
+  window.handleDonationSubmit = handleStep1Submit;
+
+  // STEP 2: Return to Step 1 to edit
+  function editDonorDetails() {
+    document.getElementById('donationStep2').style.display = 'none';
+    document.getElementById('donationStep1').style.display = 'block';
+    const proceedBtn = document.getElementById('proceedBtn');
+    proceedBtn.disabled = false;
+    proceedBtn.innerHTML = '<span>Proceed to Pay &amp; Get QR Code</span> <i class="fa-solid fa-arrow-right" style="margin-left:8px;"></i>';
+  }
+
+  // STEP 2 SUBMIT: Confirm UTR / Transaction ID
+  async function handleUtrSubmit(e) {
+    e.preventDefault();
+
+    const txnId = document.getElementById('donorTxnId').value.trim();
+    if (!txnId) {
+      alert('Please enter your Payment UTR or Transaction ID.');
+      return;
+    }
+
+    if (!currentDonationId) {
+      alert('Session expired. Please re-enter your details.');
+      resetDonationForm();
+      return;
+    }
+
+    const confirmBtn = document.getElementById('confirmUtrBtn');
+    const originalBtnHTML = confirmBtn.innerHTML;
+    confirmBtn.disabled = true;
+    confirmBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Confirming Payment...';
+
+    try {
+      const res = await fetch(`${DONATE_API_BASE}/api/donations/${currentDonationId}/transaction`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ txnId, notes: 'Payment completed via SBI QR / UPI.' })
+      });
+
+      const json = await res.json();
+
+      if (res.ok && json.success) {
+        document.getElementById('donationStep2').style.display = 'none';
+        const successCard = document.getElementById('donationSuccessCard');
+        document.getElementById('successTxn').textContent = txnId;
+        const name = document.getElementById('donorName').value.trim();
+        const amt = document.getElementById('customAmount').value;
+        document.getElementById('successMsg').innerHTML = `Dear <strong>${name}</strong>, your generous contribution of <strong>&#8377;${Number(amt).toLocaleString('en-IN')}</strong> has been logged under Transaction ID: <strong>${txnId}</strong>.`;
+        successCard.style.display = 'block';
+        successCard.scrollIntoView({ behavior: 'smooth' });
+      } else {
+        alert(json.error || 'Failed to update transaction ID.');
+        confirmBtn.disabled = false;
+        confirmBtn.innerHTML = originalBtnHTML;
+      }
+    } catch (err) {
+      console.error('Network error confirming UTR:', err);
+      alert('Unable to connect to the server. Please check your internet connection.');
+      confirmBtn.disabled = false;
+      confirmBtn.innerHTML = originalBtnHTML;
+    }
+  }
+
+  // Copy UPI ID helper
+  function copyUpiId() {
+    const text = '7010964630@sbi';
+    navigator.clipboard.writeText(text).then(() => {
+      const btn = document.getElementById('copyUpiBtn');
+      btn.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
+      setTimeout(() => {
+        btn.innerHTML = '<i class="fa-regular fa-copy"></i> Copy';
+      }, 2500);
+    });
+  }
+
+  function resetDonationForm() {
+    currentDonationId = null;
+    document.getElementById('publicDonationForm').reset();
+    document.getElementById('utrSubmissionForm').reset();
+    document.getElementById('donationStep1').style.display = 'block';
+    document.getElementById('donationStep2').style.display = 'none';
+    document.getElementById('donationSuccessCard').style.display = 'none';
+
+    const s1 = document.getElementById('step1Indicator');
+    const s2 = document.getElementById('step2Indicator');
+    s1.style.color = 'var(--primary-blue)';
+    s1.innerHTML = '<span style="width:24px;height:24px;border-radius:50%;background:var(--primary-blue);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:.72rem;">1</span><span>1. Enter Details</span>';
+    s2.style.color = 'var(--text-light)';
+    s2.innerHTML = '<span style="width:24px;height:24px;border-radius:50%;background:rgba(26,58,110,0.15);color:var(--text-gray);display:inline-flex;align-items:center;justify-content:center;font-size:.72rem;">2</span><span>2. Scan QR &amp; Pay</span>';
+
+    // Reset amount chip
+    document.querySelectorAll('.amt-chip').forEach((b, i) => {
+      if (i === 1) {
+        b.classList.add('active');
+        b.style.background = 'var(--primary-blue)';
+        b.style.color = '#ffffff';
+      } else {
+        b.classList.remove('active');
+        b.style.background = 'transparent';
+        b.style.color = 'var(--primary-blue)';
+      }
+    });
+    document.getElementById('customAmount').value = 1000;
+  }
+
+  // FLOATING QR ZOOM CONTROLLER
+  function toggleQrZoom() {
+    const overlay = document.getElementById('qrFloatingBackdrop');
+    if (!overlay) return;
+    if (overlay.style.display === 'flex') {
+      overlay.style.display = 'none';
+      document.body.style.overflow = '';
+    } else {
+      overlay.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    }
+  }
+
+  // Keyboard accessibility: ESC key closes the floating QR code
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      const overlay = document.getElementById('qrFloatingBackdrop');
+      if (overlay && overlay.style.display === 'flex') {
+        overlay.style.display = 'none';
+        document.body.style.overflow = '';
+      }
+    }
+  });
+
+  // Dynamic QR Code Loader directly from MongoDB Atlas Database
+  async function loadDatabaseQr() {
+    const thumbImg = document.getElementById('sbiQrThumb');
+    const modalImg = document.getElementById('sbiQrModal');
+    const fallback = document.getElementById('qrFallback');
+
+    try {
+      const res = await fetch(`${DONATE_API_BASE}/api/donations/qr?format=json`);
+      if (res.ok) {
+        const json = await res.json();
+        if (json.success && json.data && json.data.qrImageData) {
+          if (thumbImg) {
+            thumbImg.src = json.data.qrImageData;
+            thumbImg.style.display = 'block';
+          }
+          if (modalImg) {
+            modalImg.src = json.data.qrImageData;
+            modalImg.style.display = 'block';
+          }
+          if (fallback) fallback.style.display = 'none';
+          return;
+        }
+      }
+    } catch (err) {
+      console.warn('Direct API load fallback note:', err);
+    }
+
+    // Direct endpoint fallback:
+    const directUrl = `${DONATE_API_BASE}/api/donations/qr`;
+    if (thumbImg) {
+      thumbImg.src = directUrl;
+    }
+    if (modalImg) {
+      modalImg.src = directUrl;
+    }
+  }
+
+  // Load database QR code immediately
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', loadDatabaseQr);
+  } else {
+    loadDatabaseQr();
+  }
+</script>
+
+<!-- FLOATING ZOOM MODAL FOR QR SCANNER -->
+<div id="qrFloatingBackdrop" class="qr-floating-backdrop" onclick="toggleQrZoom()" title="Click anywhere to close">
+  <div class="qr-floating-card" onclick="toggleQrZoom()">
+    <button type="button" onclick="toggleQrZoom(); event.stopPropagation();" aria-label="Close" style="position:absolute;top:12px;right:14px;background:rgba(26,58,110,0.08);border:none;border-radius:50%;width:34px;height:34px;font-size:16px;color:var(--deep-blue);cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700;transition:background 0.2s;" onmouseover="this.style.background='rgba(26,58,110,0.18)';" onmouseout="this.style.background='rgba(26,58,110,0.08)';">✕</button>
+    
+    <div style="font-size:.75rem;font-weight:800;color:#003399;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;">
+      🏦 SBI • OFFICIAL SCAN &amp; PAY
+    </div>
+    
+    <div style="background:#ffffff;padding:12px;border-radius:14px;border:1.5px solid rgba(26,58,110,0.12);display:inline-block;margin-bottom:14px;">
+      <img id="sbiQrModal" src="" alt="Enlarged SBI QR Scanner" class="qr-big-img" onerror="this.style.display='none';" />
+    </div>
+
+    <div style="font-size:1.05rem;font-weight:800;color:var(--deep-blue);margin-bottom:4px;">
+      UPI ID: <span style="color:var(--primary-blue);">7010964630@sbi</span>
+    </div>
+    <div style="font-size:.82rem;color:var(--text-gray);margin-bottom:12px;">
+      Jayasri Kannan Foundation • State Bank of India
+    </div>
+
+    <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(26,58,110,0.07);color:var(--primary-blue);font-size:.76rem;font-weight:700;padding:6px 16px;border-radius:20px;">
+      <i class="fa-solid fa-compress"></i> Click anywhere to zoom back
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
