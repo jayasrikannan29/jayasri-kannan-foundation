@@ -97,7 +97,7 @@
 <div class="topbar">
   <div class="container">
     <div class="topbar-left">
-      <a href="tel:9677232041"><i class="fa-solid fa-phone"></i> 9677232041 / 9941531140 / 9025948033</a>
+      <a href="tel:7010964630"><i class="fa-solid fa-phone"></i> 7010964630 / 9941531140 / 9025948033</a>
       <a href="mailto:jskfoundation29@gmail.com"><i class="fa-solid fa-envelope"></i> jskfoundation29@gmail.com</a>
     </div>
     <div class="topbar-right">
@@ -202,7 +202,7 @@
         <li><a href="contact.html">Partner With Us</a></li>
       </ul></div>
       <div class="footer-col"><h4>Contact Us</h4>
-        <div class="footer-contact-item"><div class="footer-contact-icon"><i class="fa-solid fa-phone"></i></div><p>9677232041 / 9941531140 / 9025948033</p></div>
+        <div class="footer-contact-item"><div class="footer-contact-icon"><i class="fa-solid fa-phone"></i></div><p>7010964630 / 9941531140 / 9025948033</p></div>
         <div class="footer-contact-item"><div class="footer-contact-icon"><i class="fa-solid fa-envelope"></i></div><p>jskfoundation29@gmail.com</p></div>
         <div style="margin-top:20px;"><a href="donate.html" class="btn btn-primary btn-sm"><i class="fa-solid fa-heart"></i> Donate Now</a></div>
       </div>
@@ -333,12 +333,21 @@
       ? allItems
       : allItems.filter(i => i.album === activeFilter);
 
-    if (items.length === 0) {
+    const uniqueItems = [];
+    const seenUrls = new Set();
+    for (const item of items) {
+      if (!seenUrls.has(item.url)) {
+        seenUrls.add(item.url);
+        uniqueItems.push(item);
+      }
+    }
+
+    if (uniqueItems.length === 0) {
       grid.innerHTML = `<div class="gallery-loading"><i class="fa-solid fa-photo-film"></i><p>No media found in this album.</p></div>`;
       return;
     }
 
-    grid.innerHTML = items.map(item => {
+    grid.innerHTML = uniqueItems.map(item => {
       const url    = toDisplayUrl(item.url);
       const isVid  = item.type === 'video';
       const thumb  = isVid

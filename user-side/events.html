@@ -37,7 +37,7 @@
 <div class="topbar">
   <div class="container">
     <div class="topbar-left">
-      <a href="tel:9677232041"><i class="fa-solid fa-phone"></i> 9677232041 / 9941531140 / 9025948033</a>
+      <a href="tel:7010964630"><i class="fa-solid fa-phone"></i> 7010964630 / 9941531140 / 9025948033</a>
       <a href="mailto:jskfoundation29@gmail.com"><i class="fa-solid fa-envelope"></i> jskfoundation29@gmail.com</a>
     </div>
     <div class="topbar-right">
@@ -108,7 +108,7 @@
       <!-- Event 1 -->
       <div class="event-full-card" data-cat="eye">
         <div class="event-full-header">
-          <img src="images/eye/eye1.jpeg" alt="Free Eye Check-Up Camp" class="event-full-img" />
+          <img src="images/eye/eye-main.jpeg" alt="Free Eye Check-Up Camp" class="event-full-img" />
           <div class="event-full-body">
             <span class="event-badge" style="position:static;display:inline-block;margin-bottom:12px;">Eye Care</span>
             <h2 style="font-family:'Montserrat',sans-serif;font-size:1.4rem;font-weight:800;color:var(--deep-blue);margin-bottom:10px;">Free Eye Check-Up Camp</h2>
@@ -131,7 +131,7 @@
       <!-- Event 2 -->
       <div class="event-full-card" data-cat="blood">
         <div class="event-full-header">
-          <img src="images/Blood/Blood1.jpeg" alt="Blood Donation Camp" class="event-full-img" />
+          <img src="images/Blood/Blood12.jpeg" alt="Blood Donation Camp" class="event-full-img" />
           <div class="event-full-body">
             <span class="event-badge" style="position:static;display:inline-block;margin-bottom:12px;background:#c62828;color:white;">Blood Donation</span>
             <h2 style="font-family:'Montserrat',sans-serif;font-size:1.4rem;font-weight:800;color:var(--deep-blue);margin-bottom:10px;">Blood Donation Camp</h2>
@@ -216,7 +216,7 @@
         <li><a href="contact.html">Partner With Us</a></li>
       </ul></div>
       <div class="footer-col"><h4>Contact Us</h4>
-        <div class="footer-contact-item"><div class="footer-contact-icon"><i class="fa-solid fa-phone"></i></div><p>9677232041 / 9941531140 / 9025948033</p></div>
+        <div class="footer-contact-item"><div class="footer-contact-icon"><i class="fa-solid fa-phone"></i></div><p>7010964630 / 9941531140 / 9025948033</p></div>
         <div class="footer-contact-item"><div class="footer-contact-icon"><i class="fa-solid fa-envelope"></i></div><p>jskfoundation29@gmail.com</p></div>
         <div style="margin-top:20px;"><a href="donate.html" class="btn btn-primary btn-sm"><i class="fa-solid fa-heart"></i> Donate Now</a></div>
       </div>
@@ -291,7 +291,7 @@
     container.innerHTML = events.map(ev => {
       const catKey = categoryMap[ev.category] || 'health';
       const badgeColor = catKey === 'blood' ? '#c62828' : (catKey === 'eye' ? 'var(--primary-blue)' : 'var(--accent-green)');
-      const imgSrc = ev.image || (catKey === 'blood' ? 'images/Blood/Blood1.jpeg' : (catKey === 'eye' ? 'images/eye/eye1.jpeg' : 'images/health/Health.jpeg'));
+      const imgSrc = ev.image || (catKey === 'blood' ? 'images/Blood/Blood12.jpeg' : (catKey === 'eye' ? 'images/eye/eye-main.jpeg' : 'images/health/Health.jpeg'));
 
       return `
         <div class="event-full-card" data-cat="${catKey}">
