@@ -2,10 +2,14 @@ const mongoose = require('mongoose');
 const Volunteer = require('../models/Volunteer');
 const { Resend } = require('resend');
 
-// Initialize Resend if API key is provided
-const resend = process.env.RESEND_API_KEY && process.env.RESEND_API_KEY !== 're_your_resend_api_key_here'
-  ? new Resend(process.env.RESEND_API_KEY)
-  : null;
+// Helper to get Resend instance dynamically
+const getResendClient = () => {
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey || apiKey === 're_your_resend_api_key_here' || apiKey.trim() === '') {
+    return null;
+  }
+  return new Resend(apiKey.trim());
+};
 
 /**
  * Handle new volunteer application form submission
@@ -52,8 +56,12 @@ exports.createVolunteer = async (req, res) => {
     // 2. Send Email Notification to Admin via Resend
     let emailSent = false;
     const adminEmail = process.env.ADMIN_EMAIL || 'jskfoundation29@gmail.com';
+    const fromEmail = process.env.FROM_EMAIL || 'onboarding@resend.dev';
+    const resend = getResendClient();
 
-    if (resend) {
+    if (!resend) {
+      console.warn('⚠️ Resend email skipped: RESEND_API_KEY is not configured in backend/.env');
+    } else {
       try {
         const submissionDate = new Date(savedVolunteer.createdAt).toLocaleString('en-IN', {
           timeZone: 'Asia/Kolkata',
@@ -119,16 +127,21 @@ exports.createVolunteer = async (req, res) => {
           </div>
         `;
 
-        await resend.emails.send({
-          from: 'Jayasri Kannan Foundation <onboarding@resend.dev>',
+        const { data, error } = await resend.emails.send({
+          from: `Jayasri Kannan Foundation <${fromEmail}>`,
           to: [adminEmail],
           subject: `[Volunteer Reg] ${savedVolunteer.areaOfInterest} - ${savedVolunteer.fullName} (${savedVolunteer.location})`,
           html: htmlContent
         });
 
-        emailSent = true;
+        if (error) {
+          console.error('❌ Resend API Error:', error);
+        } else {
+          console.log('✅ Volunteer notification email sent via Resend:', data);
+          emailSent = true;
+        }
       } catch (emailErr) {
-        console.error('Error sending volunteer email via Resend:', emailErr.message);
+        console.error('❌ Error sending volunteer email via Resend:', emailErr.message);
       }
     }
 
