@@ -156,32 +156,100 @@
 </section>
 
 <!-- GALLERY -->
-<section class="section-pad" style="background:var(--off-white);">
+<section id="bloodGallerySection" class="section-pad" style="background:var(--off-white);">
   <div class="container">
     <div class="text-center" style="margin-bottom:40px;">
       <div class="section-tag">Gallery</div>
       <h2 class="section-title">Blood Donation<br><span>Photographs</span></h2>
       <div class="divider center"></div>
     </div>
+
+    <!-- Top 3 Featured Photos -->
     <div class="gallery-full-grid">
       <div class="gallery-full-item">
-        <img src="images/Blood/Blood2.jpeg" alt="Blood Donation" />
+        <img src="images/Blood/Blood1.jpeg" alt="Blood Donation" loading="lazy" />
         <div class="gallery-overlay"><div class="gallery-overlay-text">Blood Donation Camp</div></div>
       </div>
       <div class="gallery-full-item">
-        <img src="images/Blood/Blood3.jpeg" alt="Donors" />
+        <img src="images/Blood/Blood2.jpeg" alt="Donors" loading="lazy" />
         <div class="gallery-overlay"><div class="gallery-overlay-text">Volunteers & Donors</div></div>
       </div>
       <div class="gallery-full-item">
-        <img src="images/Blood/Blood4.jpeg" alt="Camp Activities" />
+        <img src="images/Blood/Blood3.jpeg" alt="Camp Activities" loading="lazy" />
         <div class="gallery-overlay"><div class="gallery-overlay-text">Camp Activities</div></div>
       </div>
     </div>
-    <div class="text-center" style="margin-top:30px;">
-      <a href="gallery.html" class="btn btn-blue">View Full Gallery</a>
+
+    <!-- Collapsible Rest of Photos -->
+    <div id="bloodGalleryMore" class="gallery-full-grid" style="display:none;margin-top:20px;">
+      <div class="gallery-full-item">
+        <img src="images/Blood/Blood4.jpeg" alt="Blood Donation Camp" loading="lazy" />
+        <div class="gallery-overlay"><div class="gallery-overlay-text">Blood Donation Camp</div></div>
+      </div>
+      <div class="gallery-full-item">
+        <img src="images/Blood/Blood5.jpeg" alt="Blood Donation Camp" loading="lazy" />
+        <div class="gallery-overlay"><div class="gallery-overlay-text">Blood Donation Camp</div></div>
+      </div>
+      <div class="gallery-full-item">
+        <img src="images/Blood/Blood6.jpeg" alt="Blood Donation Camp" loading="lazy" />
+        <div class="gallery-overlay"><div class="gallery-overlay-text">Blood Donation Camp</div></div>
+      </div>
+      <div class="gallery-full-item">
+        <img src="images/Blood/blood7.jpeg" alt="Blood Donation Camp" loading="lazy" />
+        <div class="gallery-overlay"><div class="gallery-overlay-text">Blood Donation Camp</div></div>
+      </div>
+      <div class="gallery-full-item">
+        <img src="images/Blood/Blood8.jpeg" alt="Blood Donation Camp" loading="lazy" />
+        <div class="gallery-overlay"><div class="gallery-overlay-text">Blood Donation Camp</div></div>
+      </div>
+      <div class="gallery-full-item">
+        <img src="images/Blood/Blood9.jpeg" alt="Blood Donation Camp" loading="lazy" />
+        <div class="gallery-overlay"><div class="gallery-overlay-text">Blood Donation Camp</div></div>
+      </div>
+      <div class="gallery-full-item">
+        <img src="images/Blood/Blood11.jpeg" alt="Blood Donation Camp" loading="lazy" />
+        <div class="gallery-overlay"><div class="gallery-overlay-text">Blood Donation Camp</div></div>
+      </div>
+      <div class="gallery-full-item">
+        <img src="images/Blood/Blood12.jpeg" alt="Blood Donation Camp" loading="lazy" />
+        <div class="gallery-overlay"><div class="gallery-overlay-text">Blood Donation Camp</div></div>
+      </div>
+    </div>
+
+    <div class="text-center" style="margin-top:32px;">
+      <button id="bloodGalleryToggleBtn" type="button" onclick="toggleBloodGallery()" class="btn btn-blue" style="cursor:pointer;display:inline-flex;align-items:center;gap:8px;">
+        <i class="fa-solid fa-images"></i> <span id="bloodGalleryToggleText">Show More Photos (8 More)</span> <i class="fa-solid fa-chevron-down" id="bloodGalleryToggleIcon"></i>
+      </button>
     </div>
   </div>
 </section>
+
+<script>
+  function toggleBloodGallery() {
+    const moreGrid = document.getElementById('bloodGalleryMore');
+    const btnText = document.getElementById('bloodGalleryToggleText');
+    const icon = document.getElementById('bloodGalleryToggleIcon');
+    if (!moreGrid) return;
+
+    if (moreGrid.style.display === 'none' || !moreGrid.style.display) {
+      moreGrid.style.display = 'grid';
+      if (btnText) btnText.textContent = 'Show Less';
+      if (icon) {
+        icon.classList.remove('fa-chevron-down');
+        icon.classList.add('fa-chevron-up');
+      }
+    } else {
+      moreGrid.style.display = 'none';
+      if (btnText) btnText.textContent = 'Show More Photos (8 More)';
+      if (icon) {
+        icon.classList.remove('fa-chevron-up');
+        icon.classList.add('fa-chevron-down');
+      }
+      const section = document.getElementById('bloodGallerySection');
+      if (section) section.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
+</script>
 
 <section class="donate-strip">
   <div class="container">
