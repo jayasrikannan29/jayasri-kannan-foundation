@@ -159,32 +159,98 @@
 </section>
 
 <!-- GALLERY PREVIEW -->
-<section class="section-pad" style="background:var(--off-white);">
+<!-- GALLERY PREVIEW -->
+<section id="eyeCampGallerySection" class="section-pad" style="background:var(--off-white);">
   <div class="container">
     <div class="text-center" style="margin-bottom:40px;">
       <div class="section-tag">Gallery</div>
       <h2 class="section-title">Eye Camp<br><span>Photographs</span></h2>
       <div class="divider center"></div>
     </div>
+
+    <!-- Top 3 Featured Photos -->
     <div class="gallery-full-grid">
       <div class="gallery-full-item">
-        <img src="images/eye/eye2.jpeg" alt="Eye Camp 1" />
-        <div class="gallery-overlay"><div class="gallery-overlay-text">Eye Care Camp</div></div>
+        <img src="images/eye/eye-camp-1.jpg" alt="Child Blindness Awareness & Eye Camp" loading="lazy" />
+        <div class="gallery-overlay"><div class="gallery-overlay-text">Free Eye Camp Awareness</div></div>
       </div>
       <div class="gallery-full-item">
-        <img src="images/eye/eye3.jpeg" alt="Eye Camp 2" />
-        <div class="gallery-overlay"><div class="gallery-overlay-text">Vision Screening</div></div>
+        <img src="images/eye/eye-camp-2.jpg" alt="Dr. Jayasrikannan & Foundation Team Eye Screening" loading="lazy" />
+        <div class="gallery-overlay"><div class="gallery-overlay-text">Computerized Eye Testing</div></div>
       </div>
       <div class="gallery-full-item">
-        <img src="images/eye/eye5.jpeg" alt="Eye Camp 3" />
+        <img src="images/eye/eye-camp-3.jpg" alt="Vision Care & Sight Protection Campaign" loading="lazy" />
+        <div class="gallery-overlay"><div class="gallery-overlay-text">Protect Your Sight Campaign</div></div>
+      </div>
+    </div>
+
+    <!-- Collapsible Rest of Photos (Revealed when Show More is clicked) -->
+    <div id="eyeGalleryMore" class="gallery-full-grid" style="display:none;margin-top:20px;">
+      <div class="gallery-full-item">
+        <img src="images/eye/eye-camp-4.jpg" alt="Student Vision Assessment Hall" loading="lazy" />
+        <div class="gallery-overlay"><div class="gallery-overlay-text">Student Vision Screening</div></div>
+      </div>
+      <div class="gallery-full-item">
+        <img src="images/eye/eye-camp-5.jpg" alt="Optometrist Trial Lens Consultation" loading="lazy" />
+        <div class="gallery-overlay"><div class="gallery-overlay-text">Trial Frame Testing</div></div>
+      </div>
+      <div class="gallery-full-item">
+        <img src="images/eye/eye-camp-6.jpg" alt="Student Visual Acuity Testing" loading="lazy" />
+        <div class="gallery-overlay"><div class="gallery-overlay-text">Visual Acuity Test</div></div>
+      </div>
+      <div class="gallery-full-item">
+        <img src="images/eye/eye-camp-7.jpg" alt="Adult Blindness Awareness & Eye Camp" loading="lazy" />
+        <div class="gallery-overlay"><div class="gallery-overlay-text">Adult Eye Camp Consultation</div></div>
+      </div>
+      <div class="gallery-full-item">
+        <img src="images/eye/eye2.jpeg" alt="Eye Care Camp Felicitation" loading="lazy" />
+        <div class="gallery-overlay"><div class="gallery-overlay-text">Camp Felicitation</div></div>
+      </div>
+      <div class="gallery-full-item">
+        <img src="images/eye/eye3.jpeg" alt="Eye Camp Newspaper Coverage" loading="lazy" />
+        <div class="gallery-overlay"><div class="gallery-overlay-text">Media & Press Coverage</div></div>
+      </div>
+      <div class="gallery-full-item">
+        <img src="images/eye/eye5.jpeg" alt="Community Eye Care Recognition" loading="lazy" />
         <div class="gallery-overlay"><div class="gallery-overlay-text">Community Outreach</div></div>
       </div>
     </div>
-    <div class="text-center" style="margin-top:30px;">
-      <a href="gallery.html" class="btn btn-blue">View Full Gallery</a>
+
+    <div class="text-center" style="margin-top:32px;display:flex;gap:14px;justify-content:center;flex-wrap:wrap;">
+      <button id="eyeGalleryToggleBtn" type="button" onclick="toggleEyeGallery()" class="btn btn-blue" style="cursor:pointer;display:inline-flex;align-items:center;gap:8px;">
+        <i class="fa-solid fa-images"></i> <span id="eyeGalleryToggleText">Show More Photos (7 More)</span> <i class="fa-solid fa-chevron-down" id="eyeGalleryToggleIcon"></i>
+      </button>
+      <a href="gallery.html" class="btn btn-outline-blue">View Full Gallery</a>
     </div>
   </div>
 </section>
+
+<script>
+  function toggleEyeGallery() {
+    const moreGrid = document.getElementById('eyeGalleryMore');
+    const btnText = document.getElementById('eyeGalleryToggleText');
+    const icon = document.getElementById('eyeGalleryToggleIcon');
+    if (!moreGrid) return;
+
+    if (moreGrid.style.display === 'none' || !moreGrid.style.display) {
+      moreGrid.style.display = 'grid';
+      if (btnText) btnText.textContent = 'Show Less';
+      if (icon) {
+        icon.classList.remove('fa-chevron-down');
+        icon.classList.add('fa-chevron-up');
+      }
+    } else {
+      moreGrid.style.display = 'none';
+      if (btnText) btnText.textContent = 'Show More Photos (7 More)';
+      if (icon) {
+        icon.classList.remove('fa-chevron-up');
+        icon.classList.add('fa-chevron-down');
+      }
+      const section = document.getElementById('eyeCampGallerySection');
+      if (section) section.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
+</script>
 
 <!-- CTA -->
 <section class="donate-strip">
