@@ -218,7 +218,7 @@
           <div id="donationStep1">
 
           <!-- DONATION FORM -->
-          <form id="publicDonationForm" onsubmit="handleDonationSubmit(event);">
+          <form id="publicDonationForm" onsubmit="handleStep1Submit(event);">
             <!-- Amount Selection -->
             <label style="display:block;font-size:.8rem;font-weight:700;color:var(--deep-blue);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;">
               Select Contribution Amount (&#8377;) *
@@ -544,7 +544,7 @@
 
   // STEP 1 SUBMIT: Save donor details in MongoDB Atlas first, then show QR
   async function handleStep1Submit(e) {
-    e.preventDefault();
+    if (e && e.preventDefault) e.preventDefault();
 
     const amount = Number(document.getElementById('customAmount').value);
     const name   = document.getElementById('donorName').value.trim();
@@ -622,6 +622,7 @@
       proceedBtn.innerHTML = originalBtnHTML;
     }
   }
+  window.handleDonationSubmit = handleStep1Submit;
 
   // STEP 2: Return to Step 1 to edit
   function editDonorDetails() {
