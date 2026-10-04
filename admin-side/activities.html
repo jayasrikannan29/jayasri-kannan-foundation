@@ -255,22 +255,41 @@
       }
     ];
 
-    function loadActivities() {
+    let activitiesCache = [];
+
+    const API_BASE = (
+      window.location.protocol === 'file:' ||
+      window.location.hostname === 'localhost' ||
+      window.location.hostname === '127.0.0.1'
+    ) ? 'http://localhost:5000' : '';
+
+    function getAuthToken() {
+      return localStorage.getItem('jsk_admin_token') || '';
+    }
+
+    async function loadActivities() {
+      try {
+        const res = await fetch(`${API_BASE}/api/activities`);
+        if (res.ok) {
+          const json = await res.json();
+          if (json.success && Array.isArray(json.data)) {
+            activitiesCache = json.data;
+            localStorage.setItem(ACTIVITIES_KEY, JSON.stringify(activitiesCache));
+            return activitiesCache;
+          }
+        }
+      } catch (e) {
+        console.warn('Could not fetch activities from MongoDB, checking cache:', e);
+      }
       try {
         const stored = localStorage.getItem(ACTIVITIES_KEY);
         if (stored) return JSON.parse(stored);
-      } catch (e) {
-        console.error(e);
-      }
+      } catch (e) {}
       return DEFAULT_ACTIVITIES;
     }
 
-    function saveActivities(data) {
-      localStorage.setItem(ACTIVITIES_KEY, JSON.stringify(data));
-    }
-
-    function renderActivities() {
-      const activities = loadActivities();
+    async function renderActivities() {
+      const activities = await loadActivities();
       const tbody = document.getElementById('activitiesTableBody');
       const countBadge = document.getElementById('activityCountBadge');
 
@@ -291,27 +310,30 @@
         return;
       }
 
-      tbody.innerHTML = activities.map(act => `
-        <tr>
-          <td>
-            <div style="font-weight:600;color:var(--text-dark);">${escapeHtml(act.title)}</div>
-            <div class="td-muted">${escapeHtml(act.desc.substring(0, 50))}...</div>
-          </td>
-          <td><span class="badge badge-blue">${escapeHtml(act.category)}</span></td>
-          <td><i class="fa-regular fa-calendar" style="color:var(--text-light);margin-right:4px;"></i> ${act.date}</td>
-          <td><i class="fa-solid fa-location-dot" style="color:var(--text-light);margin-right:4px;"></i> ${escapeHtml(act.location)}</td>
-          <td>
-            ${act.isSlot ? '<span class="badge badge-gold"><i class="fa-solid fa-star"></i> Active Slot</span>' : '<span class="badge badge-gray">Queued</span>'}
-          </td>
-          <td style="text-align:right;">
-            <div class="td-actions" style="justify-content:flex-end;">
-              ${!act.isSlot ? `<button class="btn btn-outline btn-sm" onclick="setActiveSlot('${act.id}')" title="Set as live slot"><i class="fa-solid fa-star"></i> Set Slot</button>` : ''}
-              <button class="btn btn-outline btn-sm btn-icon" onclick="editActivity('${act.id}')" title="Edit activity"><i class="fa-solid fa-pen-to-square"></i></button>
-              <button class="btn btn-danger-outline btn-sm btn-icon" onclick="deleteActivity('${act.id}')" title="Delete activity"><i class="fa-solid fa-trash"></i></button>
-            </div>
-          </td>
-        </tr>
-      `).join('');
+      tbody.innerHTML = activities.map(act => {
+        const actId = act._id || act.id;
+        return `
+          <tr>
+            <td>
+              <div style="font-weight:600;color:var(--text-dark);">${escapeHtml(act.title)}</div>
+              <div class="td-muted">${escapeHtml(act.desc ? act.desc.substring(0, 50) : '')}...</div>
+            </td>
+            <td><span class="badge badge-blue">${escapeHtml(act.category)}</span></td>
+            <td><i class="fa-regular fa-calendar" style="color:var(--text-light);margin-right:4px;"></i> ${act.date}</td>
+            <td><i class="fa-solid fa-location-dot" style="color:var(--text-light);margin-right:4px;"></i> ${escapeHtml(act.location)}</td>
+            <td>
+              ${act.isSlot ? '<span class="badge badge-gold"><i class="fa-solid fa-star"></i> Active Slot</span>' : '<span class="badge badge-gray">Queued</span>'}
+            </td>
+            <td style="text-align:right;">
+              <div class="td-actions" style="justify-content:flex-end;">
+                ${!act.isSlot ? `<button class="btn btn-outline btn-sm" onclick="setActiveSlot('${actId}')" title="Set as live slot"><i class="fa-solid fa-star"></i> Set Slot</button>` : ''}
+                <button class="btn btn-outline btn-sm btn-icon" onclick="editActivity('${actId}')" title="Edit activity"><i class="fa-solid fa-pen-to-square"></i></button>
+                <button class="btn btn-danger-outline btn-sm btn-icon" onclick="deleteActivity('${actId}')" title="Delete activity"><i class="fa-solid fa-trash"></i></button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
     }
 
     function escapeHtml(text) {
@@ -344,7 +366,7 @@
     closeBtn.addEventListener('click', closeModal);
     cancelBtn.addEventListener('click', closeModal);
 
-    document.getElementById('saveActivityBtn').addEventListener('click', () => {
+    document.getElementById('saveActivityBtn').addEventListener('click', async () => {
       const id = document.getElementById('activityId').value;
       const title = document.getElementById('actTitle').value.trim();
       const category = document.getElementById('actCategory').value;
@@ -359,44 +381,64 @@
         return;
       }
 
-      let activities = loadActivities();
+      const payload = {
+        title,
+        category,
+        date,
+        location,
+        target: target || 'Community',
+        desc,
+        isSlot
+      };
 
-      if (isSlot) {
-        activities.forEach(a => a.isSlot = false);
-      }
-
-      if (id) {
-        const idx = activities.findIndex(a => a.id === id);
-        if (idx !== -1) {
-          activities[idx] = { ...activities[idx], title, category, date, location, target, desc, isSlot: isSlot || activities[idx].isSlot };
+      const token = getAuthToken();
+      try {
+        if (id) {
+          const res = await fetch(`${API_BASE}/api/activities/${id}`, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(payload)
+          });
+          const data = await res.json();
+          if (data.success) {
+            toast('Activity updated in MongoDB Atlas!', 'success');
+          } else {
+            toast(data.error || 'Failed to update activity', 'error');
+          }
+        } else {
+          const res = await fetch(`${API_BASE}/api/activities`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(payload)
+          });
+          const data = await res.json();
+          if (data.success) {
+            toast('New activity scheduled in MongoDB Atlas!', 'success');
+          } else {
+            toast(data.error || 'Failed to schedule activity', 'error');
+          }
         }
-        toast('Activity updated successfully!', 'success');
-      } else {
-        const newAct = {
-          id: 'act-' + Date.now(),
-          title,
-          category,
-          date,
-          location,
-          target: target || 'Community',
-          desc,
-          isSlot: isSlot || activities.length === 0
-        };
-        activities.push(newAct);
-        toast('New activity added to queue!', 'success');
+      } catch (err) {
+        console.error('Error saving activity:', err);
+        toast('Network error: saved locally.', 'error');
       }
 
-      saveActivities(activities);
       closeModal();
-      renderActivities();
+      await renderActivities();
     });
 
-    window.editActivity = function(id) {
-      const activities = loadActivities();
-      const act = activities.find(a => a.id === id);
+    window.editActivity = async function(id) {
+      const activities = await loadActivities();
+      const act = activities.find(a => (a._id === id || a.id === id));
       if (!act) return;
 
-      document.getElementById('activityId').value = act.id;
+      document.getElementById('activityId').value = act._id || act.id;
       document.getElementById('actTitle').value = act.title;
       document.getElementById('actCategory').value = act.category;
       document.getElementById('actDate').value = act.date;
@@ -408,25 +450,44 @@
       openModal(true);
     };
 
-    window.deleteActivity = function(id) {
-      if (confirm('Delete this scheduled activity?')) {
-        let activities = loadActivities();
-        activities = activities.filter(a => a.id !== id);
-        if (activities.length > 0 && !activities.some(a => a.isSlot)) {
-          activities[0].isSlot = true;
+    window.deleteActivity = async function(id) {
+      if (confirm('Delete this scheduled activity from MongoDB Atlas?')) {
+        const token = getAuthToken();
+        try {
+          const res = await fetch(`${API_BASE}/api/activities/${id}`, {
+            method: 'DELETE',
+            headers: { 'Authorization': `Bearer ${token}` }
+          });
+          const data = await res.json();
+          if (data.success) {
+            toast('Activity removed from MongoDB Atlas.', 'success');
+          } else {
+            toast(data.error || 'Failed to remove activity', 'error');
+          }
+        } catch (err) {
+          toast('Network error deleting activity.', 'error');
         }
-        saveActivities(activities);
-        renderActivities();
-        toast('Activity removed.', 'success');
+        await renderActivities();
       }
     };
 
-    window.setActiveSlot = function(id) {
-      let activities = loadActivities();
-      activities.forEach(a => a.isSlot = (a.id === id));
-      saveActivities(activities);
-      renderActivities();
-      toast('Next Activity Slot updated!', 'success');
+    window.setActiveSlot = async function(id) {
+      const token = getAuthToken();
+      try {
+        const res = await fetch(`${API_BASE}/api/activities/${id}/set-slot`, {
+          method: 'PUT',
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const data = await res.json();
+        if (data.success) {
+          toast('Next Activity Slot live in MongoDB Atlas!', 'success');
+        } else {
+          toast(data.error || 'Could not set active slot', 'error');
+        }
+      } catch (err) {
+        toast('Network error setting active slot.', 'error');
+      }
+      await renderActivities();
     };
 
     function toast(msg, type = '') {

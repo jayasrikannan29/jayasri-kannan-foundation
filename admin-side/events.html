@@ -263,8 +263,32 @@
     ];
 
     let currentFilter = 'all';
+    let eventsCache = [];
 
-    function loadEvents() {
+    const API_BASE = (
+      window.location.protocol === 'file:' ||
+      window.location.hostname === 'localhost' ||
+      window.location.hostname === '127.0.0.1'
+    ) ? 'http://localhost:5000' : '';
+
+    function getAuthToken() {
+      return localStorage.getItem('jsk_admin_token') || '';
+    }
+
+    async function loadEvents() {
+      try {
+        const res = await fetch(`${API_BASE}/api/events`);
+        if (res.ok) {
+          const json = await res.json();
+          if (json.success && Array.isArray(json.data)) {
+            eventsCache = json.data;
+            localStorage.setItem(EVENTS_KEY, JSON.stringify(eventsCache));
+            return eventsCache;
+          }
+        }
+      } catch (e) {
+        console.warn('Could not fetch events from MongoDB, using local cache:', e);
+      }
       try {
         const stored = localStorage.getItem(EVENTS_KEY);
         if (stored) return JSON.parse(stored);
@@ -274,19 +298,15 @@
       return DEFAULT_EVENTS;
     }
 
-    function saveEvents(data) {
-      localStorage.setItem(EVENTS_KEY, JSON.stringify(data));
-    }
-
-    function renderEvents() {
-      const events = loadEvents();
+    async function renderEvents() {
+      const events = await loadEvents();
       const tbody = document.getElementById('eventsTableBody');
       const badge = document.getElementById('eventsCountBadge');
       const query = document.getElementById('searchEventsInput').value.toLowerCase().trim();
 
       const filtered = events.filter(e => {
         const matchesFilter = (currentFilter === 'all' || e.status === currentFilter);
-        const matchesSearch = !query || e.title.toLowerCase().includes(query) || e.venue.toLowerCase().includes(query) || e.category.toLowerCase().includes(query);
+        const matchesSearch = !query || (e.title && e.title.toLowerCase().includes(query)) || (e.venue && e.venue.toLowerCase().includes(query)) || (e.category && e.category.toLowerCase().includes(query));
         return matchesFilter && matchesSearch;
       });
 
@@ -298,6 +318,7 @@
       }
 
       tbody.innerHTML = filtered.map(ev => {
+        const evId = ev._id || ev.id;
         const statusBadge = ev.status === 'Upcoming' ? 'badge-gold' : (ev.status === 'Completed' ? 'badge-green' : 'badge-blue');
         return `
           <tr>
@@ -318,8 +339,8 @@
             </td>
             <td style="text-align:right;">
               <div class="td-actions" style="justify-content:flex-end;">
-                <button class="btn btn-outline btn-sm" onclick="editEvent('${ev.id}')" title="Update Event"><i class="fa-solid fa-pen-to-square"></i> Update</button>
-                <button class="btn btn-danger-outline btn-sm btn-icon" onclick="deleteEvent('${ev.id}')" title="Delete Event"><i class="fa-solid fa-trash"></i></button>
+                <button class="btn btn-outline btn-sm" onclick="editEvent('${evId}')" title="Update Event"><i class="fa-solid fa-pen-to-square"></i> Update</button>
+                <button class="btn btn-danger-outline btn-sm btn-icon" onclick="deleteEvent('${evId}')" title="Delete Event"><i class="fa-solid fa-trash"></i></button>
               </div>
             </td>
           </tr>
@@ -359,7 +380,7 @@
     cancelTopBtn.addEventListener('click', closeForm);
     cancelBtmBtn.addEventListener('click', closeForm);
 
-    document.getElementById('saveEventBtn').addEventListener('click', () => {
+    document.getElementById('saveEventBtn').addEventListener('click', async () => {
       const id = document.getElementById('editEventId').value;
       const title = document.getElementById('evTitle').value.trim();
       const category = document.getElementById('evCategory').value;
@@ -375,41 +396,65 @@
         return;
       }
 
-      let events = loadEvents();
+      const payload = {
+        title,
+        category,
+        status,
+        date,
+        time,
+        venue,
+        desc,
+        image: image || 'images/event01.jpeg'
+      };
 
-      if (id) {
-        const idx = events.findIndex(e => e.id === id);
-        if (idx !== -1) {
-          events[idx] = { ...events[idx], title, category, status, date, time, venue, desc, image };
+      const token = getAuthToken();
+      try {
+        if (id) {
+          const res = await fetch(`${API_BASE}/api/events/${id}`, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(payload)
+          });
+          const data = await res.json();
+          if (data.success) {
+            toast(`Event "${title}" updated in MongoDB Atlas!`, 'success');
+          } else {
+            toast(data.error || 'Failed to update event', 'error');
+          }
+        } else {
+          const res = await fetch(`${API_BASE}/api/events`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(payload)
+          });
+          const data = await res.json();
+          if (data.success) {
+            toast(`Event "${title}" saved to MongoDB Atlas!`, 'success');
+          } else {
+            toast(data.error || 'Failed to create event', 'error');
+          }
         }
-        toast(`Event "${title}" updated successfully!`, 'success');
-      } else {
-        const newEvent = {
-          id: 'ev-' + Date.now(),
-          title,
-          category,
-          status,
-          date,
-          time,
-          venue,
-          desc,
-          image: image || '../user-side/images/events/event1.jpg'
-        };
-        events.unshift(newEvent);
-        toast(`Event "${title}" added successfully!`, 'success');
+      } catch (err) {
+        console.error('Error saving event:', err);
+        toast('Network error: saved locally.', 'error');
       }
 
-      saveEvents(events);
       closeForm();
-      renderEvents();
+      await renderEvents();
     });
 
-    window.editEvent = function(id) {
-      const events = loadEvents();
-      const ev = events.find(e => e.id === id);
+    window.editEvent = async function(id) {
+      const events = await loadEvents();
+      const ev = events.find(e => (e._id === id || e.id === id));
       if (!ev) return;
 
-      document.getElementById('editEventId').value = ev.id;
+      document.getElementById('editEventId').value = ev._id || ev.id;
       document.getElementById('evTitle').value = ev.title;
       document.getElementById('evCategory').value = ev.category;
       document.getElementById('evStatus').value = ev.status;
@@ -422,13 +467,24 @@
       openForm(true);
     };
 
-    window.deleteEvent = function(id) {
-      if (confirm('Are you sure you want to delete this event? This action cannot be undone.')) {
-        let events = loadEvents();
-        events = events.filter(e => e.id !== id);
-        saveEvents(events);
-        renderEvents();
-        toast('Event deleted successfully.', 'success');
+    window.deleteEvent = async function(id) {
+      if (confirm('Are you sure you want to delete this event from MongoDB Atlas?')) {
+        const token = getAuthToken();
+        try {
+          const res = await fetch(`${API_BASE}/api/events/${id}`, {
+            method: 'DELETE',
+            headers: { 'Authorization': `Bearer ${token}` }
+          });
+          const data = await res.json();
+          if (data.success) {
+            toast('Event deleted from MongoDB Atlas.', 'success');
+          } else {
+            toast(data.error || 'Could not delete event.', 'error');
+          }
+        } catch (err) {
+          toast('Network error deleting event.', 'error');
+        }
+        await renderEvents();
       }
     };
 

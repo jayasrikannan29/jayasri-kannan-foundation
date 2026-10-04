@@ -372,7 +372,22 @@
       notes: 'Submitted via public website donate portal.'
     };
 
-    // Save to shared localStorage key mapped with admin-side/donation-details.html
+    // 1. Post to MongoDB Atlas API
+    const API_BASE = (
+      window.location.protocol === 'file:' ||
+      window.location.hostname === 'localhost' ||
+      window.location.hostname === '127.0.0.1'
+    ) ? 'http://localhost:5000' : '';
+
+    fetch(`${API_BASE}/api/donations`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(newRecord)
+    }).then(res => res.json())
+      .then(json => console.log('Donation synced to MongoDB Atlas:', json))
+      .catch(err => console.warn('Could not post to MongoDB, using local fallback:', err));
+
+    // 2. Save to shared localStorage key mapped with admin-side/donation-details.html
     try {
       const DONATIONS_KEY = 'jsk_donations';
       const existing = JSON.parse(localStorage.getItem(DONATIONS_KEY) || '[]');

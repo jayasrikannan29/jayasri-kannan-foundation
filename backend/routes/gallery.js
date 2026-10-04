@@ -2,11 +2,13 @@ const express = require('express');
 const router = express.Router();
 const galleryController = require('../controllers/galleryController');
 
+const auth = require('../middleware/auth');
+
 // Routes
 router.get('/', galleryController.getGalleryItems);
-router.post('/', galleryController.createGalleryItem);
-router.put('/group', galleryController.groupGalleryItems);
-router.post('/bulk-delete', galleryController.bulkDeleteGalleryItems);
-router.delete('/:id', galleryController.deleteGalleryItem);
+router.post('/', auth, galleryController.createGalleryItem);
+router.put('/group', auth, galleryController.groupGalleryItems);
+router.post('/bulk-delete', auth, galleryController.bulkDeleteGalleryItems);
+router.delete('/:id', auth, galleryController.deleteGalleryItem);
 
 module.exports = router;

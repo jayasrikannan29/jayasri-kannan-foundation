@@ -334,23 +334,44 @@
 
     let currentFilter = 'all';
     let currentViewingId = null;
+    let donationsCache = [];
 
-    function loadDonations() {
+    const API_BASE = (
+      window.location.protocol === 'file:' ||
+      window.location.hostname === 'localhost' ||
+      window.location.hostname === '127.0.0.1'
+    ) ? 'http://localhost:5000' : '';
+
+    function getAuthToken() {
+      return localStorage.getItem('jsk_admin_token') || '';
+    }
+
+    async function loadDonations() {
+      const token = getAuthToken();
+      try {
+        const res = await fetch(`${API_BASE}/api/donations`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (res.ok) {
+          const json = await res.json();
+          if (json.success && Array.isArray(json.data)) {
+            donationsCache = json.data;
+            localStorage.setItem(DONATIONS_KEY, JSON.stringify(donationsCache));
+            return donationsCache;
+          }
+        }
+      } catch (e) {
+        console.warn('Could not fetch donations from MongoDB, using local cache:', e);
+      }
       try {
         const stored = localStorage.getItem(DONATIONS_KEY);
         if (stored) return JSON.parse(stored);
-      } catch (e) {
-        console.error(e);
-      }
+      } catch (e) {}
       return DEFAULT_DONATIONS;
     }
 
-    function saveDonations(data) {
-      localStorage.setItem(DONATIONS_KEY, JSON.stringify(data));
-    }
-
-    function renderDonations() {
-      const donations = loadDonations();
+    async function renderDonations() {
+      const donations = await loadDonations();
       const tbody = document.getElementById('donationsTableBody');
       const badge = document.getElementById('donationCountBadge');
       const query = document.getElementById('searchDonationsInput').value.toLowerCase().trim();
@@ -359,7 +380,7 @@
       const totalAmt = donations.reduce((sum, d) => sum + Number(d.amount || 0), 0);
       const verifiedList = donations.filter(d => d.status === 'Verified');
       const pendingList = donations.filter(d => d.status === 'Pending');
-      const uniqueDonors = new Set(donations.map(d => d.name.toLowerCase().trim())).size;
+      const uniqueDonors = new Set(donations.map(d => (d.name || '').toLowerCase().trim())).size;
 
       document.getElementById('statTotalAmount').innerHTML = `&#8377;${totalAmt.toLocaleString('en-IN')}`;
       document.getElementById('statVerifiedCount').textContent = verifiedList.length;
@@ -369,8 +390,8 @@
       const filtered = donations.filter(d => {
         const matchesFilter = (currentFilter === 'all' || d.status === currentFilter);
         const matchesQuery = !query ||
-          d.name.toLowerCase().includes(query) ||
-          d.txnId.toLowerCase().includes(query) ||
+          (d.name && d.name.toLowerCase().includes(query)) ||
+          (d.txnId && d.txnId.toLowerCase().includes(query)) ||
           (d.phone && d.phone.toLowerCase().includes(query)) ||
           (d.email && d.email.toLowerCase().includes(query)) ||
           (d.cause && d.cause.toLowerCase().includes(query));
@@ -385,7 +406,9 @@
       }
 
       tbody.innerHTML = filtered.map(d => {
+        const donId = d._id || d.id;
         const isVerified = d.status === 'Verified';
+        const formattedDate = d.createdAt ? new Date(d.createdAt).toISOString().split('T')[0] : (d.date || 'N/A');
         return `
           <tr>
             <td>
@@ -398,14 +421,14 @@
               </div>
             </td>
             <td>
-              <code style="background:var(--light-gray);padding:3px 8px;border-radius:4px;font-size:.78rem;font-weight:600;color:var(--deep-blue);">${escapeHtml(d.txnId)}</code>
+              <code style="background:var(--light-gray);padding:3px 8px;border-radius:4px;font-size:.78rem;font-weight:600;color:var(--deep-blue);">${escapeHtml(d.txnId || 'N/A')}</code>
             </td>
             <td>
               <span class="badge badge-blue">${escapeHtml(d.cause || 'General Support')}</span>
             </td>
             <td>
-              <div><i class="fa-regular fa-calendar" style="color:var(--text-light);margin-right:4px;"></i> ${d.date}</div>
-              <div class="td-muted"><i class="fa-regular fa-clock" style="margin-right:4px;"></i> ${d.time || 'N/A'}</div>
+              <div><i class="fa-regular fa-calendar" style="color:var(--text-light);margin-right:4px;"></i> ${formattedDate}</div>
+              <div class="td-muted"><i class="fa-regular fa-clock" style="margin-right:4px;"></i> ${d.time || ''}</div>
             </td>
             <td>
               <span class="badge ${isVerified ? 'badge-green' : 'badge-gold'}">
@@ -415,8 +438,8 @@
             </td>
             <td style="text-align:right;">
               <div class="td-actions" style="justify-content:flex-end;">
-                <button class="btn btn-outline btn-sm" onclick="viewDonorDetails('${d.id}')" title="View Details"><i class="fa-solid fa-eye"></i> View</button>
-                <button class="btn btn-danger-outline btn-sm btn-icon" onclick="deleteDonation('${d.id}')" title="Delete record"><i class="fa-solid fa-trash"></i></button>
+                <button class="btn btn-outline btn-sm" onclick="viewDonorDetails('${donId}')" title="View Details"><i class="fa-solid fa-eye"></i> View</button>
+                <button class="btn btn-danger-outline btn-sm btn-icon" onclick="deleteDonation('${donId}')" title="Delete record"><i class="fa-solid fa-trash"></i></button>
               </div>
             </td>
           </tr>
@@ -499,26 +522,58 @@
     document.getElementById('closeDonorModalBtn').addEventListener('click', closeDonorModal);
     document.getElementById('closeDonorModalBtn2').addEventListener('click', closeDonorModal);
 
-    document.getElementById('toggleVerifyBtn').addEventListener('click', () => {
+    document.getElementById('toggleVerifyBtn').addEventListener('click', async () => {
       if (!currentViewingId) return;
-      let donations = loadDonations();
-      const d = donations.find(x => x.id === currentViewingId);
-      if (d) {
-        d.status = d.status === 'Verified' ? 'Pending' : 'Verified';
-        saveDonations(donations);
-        toast(`Transaction status toggled to "${d.status}".`, 'success');
-        viewDonorDetails(d.id);
-        renderDonations();
+      const donations = await loadDonations();
+      const d = donations.find(x => (x._id === currentViewingId || x.id === currentViewingId));
+      if (!d) return;
+
+      const newStatus = d.status === 'Verified' ? 'Pending' : 'Verified';
+      const donId = d._id || d.id;
+      const token = getAuthToken();
+
+      try {
+        const res = await fetch(`${API_BASE}/api/donations/${donId}/status`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({ status: newStatus })
+        });
+        const data = await res.json();
+        if (data.success) {
+          toast(`Status updated to "${newStatus}" in MongoDB Atlas!`, 'success');
+          d.status = newStatus;
+          viewDonorDetails(donId);
+        } else {
+          toast(data.error || 'Failed to update status', 'error');
+        }
+      } catch (err) {
+        toast('Network error updating status.', 'error');
       }
+
+      await renderDonations();
     });
 
-    window.deleteDonation = function(id) {
-      if (confirm('Delete this donation record? This should only be done for erroneous test entries.')) {
-        let donations = loadDonations();
-        donations = donations.filter(x => x.id !== id);
-        saveDonations(donations);
-        renderDonations();
-        toast('Donation record removed.', 'success');
+    window.deleteDonation = async function(id) {
+      if (confirm('Delete this donation record from MongoDB Atlas?')) {
+        const token = getAuthToken();
+        try {
+          const res = await fetch(`${API_BASE}/api/donations/${id}`, {
+            method: 'DELETE',
+            headers: { 'Authorization': `Bearer ${token}` }
+          });
+          const data = await res.json();
+          if (data.success) {
+            toast('Donation record deleted from MongoDB Atlas.', 'success');
+          } else {
+            toast(data.error || 'Failed to delete record.', 'error');
+          }
+        } catch (err) {
+          toast('Network error deleting donation.', 'error');
+        }
+        await renderDonations();
       }
     };
 
@@ -547,7 +602,7 @@
     document.getElementById('closeManualModalBtn').addEventListener('click', closeManualModal);
     document.getElementById('cancelManualModalBtn').addEventListener('click', closeManualModal);
 
-    document.getElementById('saveManualDonationBtn').addEventListener('click', () => {
+    document.getElementById('saveManualDonationBtn').addEventListener('click', async () => {
       const name = document.getElementById('mName').value.trim();
       const phone = document.getElementById('mPhone').value.trim();
       const email = document.getElementById('mEmail').value.trim();
@@ -561,12 +616,7 @@
         return;
       }
 
-      const now = new Date();
-      const dateStr = now.toISOString().split('T')[0];
-      const timeStr = now.toTimeString().split(' ')[0];
-
-      const newRec = {
-        id: 'don-' + Date.now(),
+      const payload = {
         name,
         phone,
         email,
@@ -575,18 +625,38 @@
         txnId,
         cause,
         paymentMethod: 'Direct / Offline Entry',
-        date: dateStr,
-        time: timeStr,
-        status: 'Verified',
         notes: 'Manually logged by admin.'
       };
 
-      let donations = loadDonations();
-      donations.unshift(newRec);
-      saveDonations(donations);
+      try {
+        const res = await fetch(`${API_BASE}/api/donations`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (data.success) {
+          // If created, automatically mark verified
+          const donId = data.data._id;
+          const token = getAuthToken();
+          await fetch(`${API_BASE}/api/donations/${donId}/status`, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({ status: 'Verified' })
+          });
+          toast('Offline donation recorded to MongoDB Atlas and verified!', 'success');
+        } else {
+          toast(data.error || 'Failed to record donation', 'error');
+        }
+      } catch (err) {
+        toast('Network error recording donation.', 'error');
+      }
+
       closeManualModal();
-      renderDonations();
-      toast('Offline donation recorded and verified!', 'success');
+      await renderDonations();
     });
 
     // CSV Export

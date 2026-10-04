@@ -242,23 +242,65 @@
       document.getElementById('loginMeta').textContent = new Date().toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' });
     }
 
-    // Dynamic stats
-    try {
-      const evs = JSON.parse(localStorage.getItem('jsk_events') || '[]');
-      if (evs.length) document.getElementById('statEvents').textContent = evs.length;
-      
-      const acts = JSON.parse(localStorage.getItem('jsk_activities') || '[]');
-      if (acts.length) document.getElementById('statActivities').textContent = acts.length;
+    // Dynamic stats fetched live from MongoDB Atlas
+    async function loadDashboardStats() {
+      const API_BASE = (
+        window.location.protocol === 'file:' ||
+        window.location.hostname === 'localhost' ||
+        window.location.hostname === '127.0.0.1'
+      ) ? 'http://localhost:5000' : '';
 
-      const media = JSON.parse(localStorage.getItem('jsk_gallery_items') || '[]');
-      if (media.length) document.getElementById('statGallery').textContent = media.length;
+      const token = localStorage.getItem('jsk_admin_token') || '';
 
-      const dons = JSON.parse(localStorage.getItem('jsk_donations') || '[]');
-      if (dons.length) {
-        const sum = dons.reduce((acc, d) => acc + Number(d.amount || 0), 0);
-        document.getElementById('statDonations').innerHTML = '&#8377;' + (sum >= 1000 ? (sum/1000).toFixed(1) + 'K' : sum);
-      }
-    } catch(e) {}
+      // 1. Events count
+      try {
+        const res = await fetch(`${API_BASE}/api/events`);
+        if (res.ok) {
+          const json = await res.json();
+          if (json.success && Array.isArray(json.data)) {
+            document.getElementById('statEvents').textContent = json.data.length;
+          }
+        }
+      } catch (e) {}
+
+      // 2. Activities count
+      try {
+        const res = await fetch(`${API_BASE}/api/activities`);
+        if (res.ok) {
+          const json = await res.json();
+          if (json.success && Array.isArray(json.data)) {
+            document.getElementById('statActivities').textContent = json.data.length;
+          }
+        }
+      } catch (e) {}
+
+      // 3. Gallery count
+      try {
+        const res = await fetch(`${API_BASE}/api/gallery`);
+        if (res.ok) {
+          const json = await res.json();
+          if (json.success && Array.isArray(json.data)) {
+            document.getElementById('statGallery').textContent = json.data.length;
+          }
+        }
+      } catch (e) {}
+
+      // 4. Donations count & total amount
+      try {
+        const res = await fetch(`${API_BASE}/api/donations`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (res.ok) {
+          const json = await res.json();
+          if (json.success && Array.isArray(json.data)) {
+            const sum = json.data.reduce((acc, d) => acc + Number(d.amount || 0), 0);
+            document.getElementById('statDonations').innerHTML = '&#8377;' + (sum >= 1000 ? (sum/1000).toFixed(1) + 'K' : sum);
+          }
+        }
+      } catch (e) {}
+    }
+
+    loadDashboardStats();
 
     // Sidebar Toggle
     const sidebar = document.getElementById('sidebar');

@@ -232,60 +232,85 @@
     });
   }
 
-  // Dynamic mapping with Admin Side jsk_events
-  (function initEventsFromAdmin() {
+  // Dynamic mapping with MongoDB Atlas /api/events
+  async function initEventsFromAPI() {
+    const API_BASE = (
+      window.location.protocol === 'file:' ||
+      window.location.hostname === 'localhost' ||
+      window.location.hostname === '127.0.0.1'
+    ) ? 'http://localhost:5000' : '';
+
+    let events = [];
+
+    // 1. Fetch live from MongoDB Atlas
     try {
-      const stored = localStorage.getItem('jsk_events');
-      if (!stored) return;
-      const events = JSON.parse(stored);
-      if (!Array.isArray(events) || events.length === 0) return;
+      const res = await fetch(`${API_BASE}/api/events`);
+      if (res.ok) {
+        const json = await res.json();
+        if (json.success && Array.isArray(json.data) && json.data.length > 0) {
+          events = json.data;
+          localStorage.setItem('jsk_events', JSON.stringify(events));
+        }
+      }
+    } catch(err) {
+      console.warn('Could not fetch events from MongoDB API:', err);
+    }
 
-      const container = document.getElementById('eventsListWrapper');
-      if (!container) return;
+    // 2. Fallback to localStorage
+    if (events.length === 0) {
+      try {
+        const stored = localStorage.getItem('jsk_events');
+        if (stored) events = JSON.parse(stored);
+      } catch (e) {}
+    }
 
-      const categoryMap = {
-        'Eye Care': 'eye',
-        'Blood Donation': 'blood',
-        'Health & Medical': 'health',
-        'Education': 'health',
-        'Social Welfare': 'health'
-      };
+    if (!Array.isArray(events) || events.length === 0) return;
 
-      container.innerHTML = events.map(ev => {
-        const catKey = categoryMap[ev.category] || 'health';
-        const badgeColor = catKey === 'blood' ? '#c62828' : (catKey === 'eye' ? 'var(--primary-blue)' : 'var(--accent-green)');
-        const imgSrc = ev.image || (catKey === 'blood' ? 'images/Blood/Blood1.jpeg' : (catKey === 'eye' ? 'images/eye/eye1.jpeg' : 'images/health/Health.jpeg'));
+    const container = document.getElementById('eventsListWrapper');
+    if (!container) return;
 
-        return `
-          <div class="event-full-card" data-cat="${catKey}">
-            <div class="event-full-header">
-              <img src="${imgSrc}" alt="${ev.title}" class="event-full-img" onerror="this.src='images/health/Health.jpeg'" />
-              <div class="event-full-body">
-                <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
-                  <span class="event-badge" style="position:static;display:inline-block;background:${badgeColor};color:white;">${ev.category || 'Foundation Initiative'}</span>
-                  <span style="font-size:.78rem;font-weight:700;color:var(--accent-gold);text-transform:uppercase;">${ev.status || 'Active'}</span>
-                </div>
-                <h2 style="font-family:'Montserrat',sans-serif;font-size:1.4rem;font-weight:800;color:var(--deep-blue);margin-bottom:10px;">${ev.title}</h2>
-                <p style="font-size:0.9rem;color:var(--text-gray);margin-bottom:6px;">${ev.desc}</p>
-                <div class="event-detail-grid">
-                  <div class="event-detail-item"><span>Date</span><p>${ev.date}</p></div>
-                  <div class="event-detail-item"><span>Time</span><p>${ev.time || 'As Scheduled'}</p></div>
-                  <div class="event-detail-item"><span>Venue</span><p>${ev.venue}</p></div>
-                  <div class="event-detail-item"><span>Organised By</span><p>Jayasri Kannan Foundation</p></div>
-                </div>
-                <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:16px;">
-                  <a href="contact.html" class="btn btn-blue btn-sm">Register Interest</a>
-                  <a href="donate.html" class="btn btn-outline-blue btn-sm">Support This Event</a>
-                </div>
+    const categoryMap = {
+      'Eye Care': 'eye',
+      'Blood Donation': 'blood',
+      'Health & Medical': 'health',
+      'Education': 'health',
+      'Social Welfare': 'health'
+    };
+
+    container.innerHTML = events.map(ev => {
+      const catKey = categoryMap[ev.category] || 'health';
+      const badgeColor = catKey === 'blood' ? '#c62828' : (catKey === 'eye' ? 'var(--primary-blue)' : 'var(--accent-green)');
+      const imgSrc = ev.image || (catKey === 'blood' ? 'images/Blood/Blood1.jpeg' : (catKey === 'eye' ? 'images/eye/eye1.jpeg' : 'images/health/Health.jpeg'));
+
+      return `
+        <div class="event-full-card" data-cat="${catKey}">
+          <div class="event-full-header">
+            <img src="${imgSrc}" alt="${ev.title}" class="event-full-img" onerror="this.src='images/health/Health.jpeg'" />
+            <div class="event-full-body">
+              <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+                <span class="event-badge" style="position:static;display:inline-block;background:${badgeColor};color:white;">${ev.category || 'Foundation Initiative'}</span>
+                <span style="font-size:.78rem;font-weight:700;color:var(--accent-gold);text-transform:uppercase;">${ev.status || 'Active'}</span>
+              </div>
+              <h2 style="font-family:'Montserrat',sans-serif;font-size:1.4rem;font-weight:800;color:var(--deep-blue);margin-bottom:10px;">${ev.title}</h2>
+              <p style="font-size:0.9rem;color:var(--text-gray);margin-bottom:6px;">${ev.desc}</p>
+              <div class="event-detail-grid">
+                <div class="event-detail-item"><span>Date</span><p>${ev.date}</p></div>
+                <div class="event-detail-item"><span>Time</span><p>${ev.time || 'As Scheduled'}</p></div>
+                <div class="event-detail-item"><span>Venue</span><p>${ev.venue}</p></div>
+                <div class="event-detail-item"><span>Organised By</span><p>Jayasri Kannan Foundation</p></div>
+              </div>
+              <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:16px;">
+                <a href="contact.html" class="btn btn-blue btn-sm">Register Interest</a>
+                <a href="donate.html" class="btn btn-outline-blue btn-sm">Support This Event</a>
               </div>
             </div>
           </div>
-        `;
-      }).join('');
-    } catch(err) {
-      console.warn('Could not hydrate events from admin store:', err);
-    }
-  })();
+        </div>
+      `;
+    }).join('');
+  }
+
+  initEventsFromAPI();
 </script>
 </body>
 </html>

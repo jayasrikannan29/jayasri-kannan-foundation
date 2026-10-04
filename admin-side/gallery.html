@@ -514,11 +514,19 @@
       renderGallery();
     });
 
+    function getAuthToken() {
+      return localStorage.getItem('jsk_admin_token') || '';
+    }
+
     // Delete single & bulk with backend API
     window.deleteSingleMedia = async function(id) {
       if (confirm('Delete this media item from the database?')) {
+        const token = getAuthToken();
         try {
-          await fetch(`${API_BASE}/api/gallery/${id}`, { method: 'DELETE' });
+          await fetch(`${API_BASE}/api/gallery/${id}`, {
+            method: 'DELETE',
+            headers: { 'Authorization': `Bearer ${token}` }
+          });
         } catch(e) {}
         mediaItems = mediaItems.filter(i => String(i._id || i.id) !== String(id));
         selectedIds.delete(String(id));
@@ -531,10 +539,14 @@
     document.getElementById('deleteSelectedBtn').addEventListener('click', async () => {
       if (confirm(`Delete ${selectedIds.size} selected media item(s) from database?`)) {
         const idsArray = Array.from(selectedIds);
+        const token = getAuthToken();
         try {
           await fetch(`${API_BASE}/api/gallery/bulk-delete`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            },
             body: JSON.stringify({ ids: idsArray })
           });
         } catch(e) {}
@@ -578,11 +590,15 @@
       }
 
       const idsArray = Array.from(selectedIds);
+      const token = getAuthToken();
 
       try {
         await fetch(`${API_BASE}/api/gallery/group`, {
           method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
           body: JSON.stringify({
             ids: idsArray,
             album: title,
@@ -701,10 +717,14 @@
         date: today
       };
 
+      const token = getAuthToken();
       try {
         const res = await fetch(`${API_BASE}/api/gallery`, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
           body: JSON.stringify(payload)
         });
         if (res.ok) {

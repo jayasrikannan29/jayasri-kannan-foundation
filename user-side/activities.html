@@ -281,6 +281,39 @@
   const navToggle=document.getElementById('navToggle');const closeMenu=document.getElementById('closeMenu');const navMenu=document.getElementById('navMenu');
   navToggle.addEventListener('click',()=>navMenu.classList.add('open'));closeMenu.addEventListener('click',()=>navMenu.classList.remove('open'));
   const s=document.getElementById('scrollTop');window.addEventListener('scroll',()=>s.classList.toggle('visible',scrollY>400));s.addEventListener('click',()=>scrollTo({top:0,behavior:'smooth'}));
+
+  // Dynamic next activity slot synchronization with MongoDB Atlas
+  async function loadActiveSlotBanner() {
+    const API_BASE = (
+      window.location.protocol === 'file:' ||
+      window.location.hostname === 'localhost' ||
+      window.location.hostname === '127.0.0.1'
+    ) ? 'http://localhost:5000' : '';
+
+    try {
+      const res = await fetch(`${API_BASE}/api/activities/active-slot`);
+      if (res.ok) {
+        const json = await res.json();
+        if (json.success && json.data) {
+          const slot = json.data;
+          const banner = document.getElementById('userActiveSlotBanner');
+          if (banner) {
+            document.getElementById('userSlotCategory').textContent = slot.category || 'Upcoming Drive';
+            document.getElementById('userSlotTitle').textContent = slot.title;
+            document.getElementById('userSlotDesc').textContent = slot.desc;
+            document.getElementById('userSlotDate').textContent = slot.date;
+            document.getElementById('userSlotLocation').textContent = slot.location;
+            document.getElementById('userSlotTarget').textContent = slot.target || 'Community Members';
+            banner.style.display = 'block';
+          }
+        }
+      }
+    } catch (e) {
+      console.warn('Could not fetch active slot from API:', e);
+    }
+  }
+
+  loadActiveSlotBanner();
 </script>
 </body>
 </html>

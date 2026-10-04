@@ -199,18 +199,37 @@
       }
     ];
 
-    function loadServices() {
+    let servicesCache = [];
+
+    const API_BASE = (
+      window.location.protocol === 'file:' ||
+      window.location.hostname === 'localhost' ||
+      window.location.hostname === '127.0.0.1'
+    ) ? 'http://localhost:5000' : '';
+
+    function getAuthToken() {
+      return localStorage.getItem('jsk_admin_token') || '';
+    }
+
+    async function loadServices() {
+      try {
+        const res = await fetch(`${API_BASE}/api/what-we-do`);
+        if (res.ok) {
+          const json = await res.json();
+          if (json.success && Array.isArray(json.data) && json.data.length > 0) {
+            servicesCache = json.data;
+            localStorage.setItem(SERVICES_KEY, JSON.stringify(servicesCache));
+            return servicesCache;
+          }
+        }
+      } catch (e) {
+        console.warn('Could not fetch what-we-do from MongoDB, checking cache:', e);
+      }
       try {
         const stored = localStorage.getItem(SERVICES_KEY);
         if (stored) return JSON.parse(stored);
-      } catch (e) {
-        console.error(e);
-      }
+      } catch (e) {}
       return DEFAULT_SERVICES;
-    }
-
-    function saveServices(data) {
-      localStorage.setItem(SERVICES_KEY, JSON.stringify(data));
     }
 
     function escapeHtml(text) {
@@ -218,8 +237,8 @@
       return String(text).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
     }
 
-    function renderCards() {
-      const services = loadServices();
+    async function renderCards() {
+      const services = await loadServices();
       const grid = document.getElementById('serviceCardsGrid');
       grid.innerHTML = services.map((s, idx) => `
         <div class="service-card-editor" data-index="${idx}">
@@ -231,7 +250,7 @@
                 </div>
                 <div>
                   <div class="service-card-label">${escapeHtml(s.title)}</div>
-                  <div style="font-size:.73rem;color:var(--text-light);">Key: #${s.id}</div>
+                  <div style="font-size:.73rem;color:var(--text-light);">Key: #${s.slug || s.id}</div>
                 </div>
               </div>
               <span class="badge badge-blue">Slot ${idx + 1}</span>
@@ -261,8 +280,8 @@
       `).join('');
     }
 
-    window.saveSingleCard = function(idx) {
-      const services = loadServices();
+    window.saveSingleCard = async function(idx) {
+      const services = await loadServices();
       const titleInput = document.querySelector(`.svc-title[data-idx="${idx}"]`);
       const descInput = document.querySelector(`.svc-desc[data-idx="${idx}"]`);
       const iconInput = document.querySelector(`.svc-icon[data-idx="${idx}"]`);
@@ -276,13 +295,31 @@
       services[idx].desc = descInput.value.trim();
       services[idx].icon = iconInput.value.trim() || 'fa-solid fa-hand-holding-heart';
 
-      saveServices(services);
-      toast(`Service "${services[idx].title}" updated successfully!`, 'success');
-      renderCards();
+      const token = getAuthToken();
+      try {
+        const res = await fetch(`${API_BASE}/api/what-we-do/batch`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({ items: [services[idx]] })
+        });
+        const data = await res.json();
+        if (data.success) {
+          toast(`Service "${services[idx].title}" synced to MongoDB Atlas!`, 'success');
+        } else {
+          toast(data.error || 'Update failed', 'error');
+        }
+      } catch (err) {
+        toast('Network error: saved locally.', 'error');
+      }
+
+      await renderCards();
     };
 
-    document.getElementById('saveAllBtn').addEventListener('click', () => {
-      const services = loadServices();
+    document.getElementById('saveAllBtn').addEventListener('click', async () => {
+      const services = await loadServices();
       let hasError = false;
 
       document.querySelectorAll('.svc-title').forEach(el => {
@@ -309,16 +346,47 @@
         return;
       }
 
-      saveServices(services);
-      toast('All service cards saved successfully!', 'success');
-      renderCards();
+      const token = getAuthToken();
+      try {
+        const res = await fetch(`${API_BASE}/api/what-we-do/batch`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({ items: services })
+        });
+        const data = await res.json();
+        if (data.success) {
+          toast('All service cards saved to MongoDB Atlas!', 'success');
+        } else {
+          toast(data.error || 'Failed to save', 'error');
+        }
+      } catch (err) {
+        toast('Network error: saved locally.', 'error');
+      }
+
+      await renderCards();
     });
 
-    document.getElementById('resetDefaultsBtn').addEventListener('click', () => {
-      if (confirm('Reset all service cards to foundation defaults?')) {
-        saveServices(DEFAULT_SERVICES);
-        renderCards();
-        toast('Reset to default services.', 'success');
+    document.getElementById('resetDefaultsBtn').addEventListener('click', async () => {
+      if (confirm('Reset all service cards in MongoDB Atlas to foundation defaults?')) {
+        const token = getAuthToken();
+        try {
+          const res = await fetch(`${API_BASE}/api/what-we-do/reset`, {
+            method: 'POST',
+            headers: { 'Authorization': `Bearer ${token}` }
+          });
+          const data = await res.json();
+          if (data.success) {
+            toast('Reset to default services in Atlas.', 'success');
+          } else {
+            toast(data.error || 'Failed to reset.', 'error');
+          }
+        } catch (e) {
+          toast('Network error resetting defaults.', 'error');
+        }
+        await renderCards();
       }
     });
 
