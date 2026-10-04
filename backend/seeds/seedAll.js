@@ -1,8 +1,11 @@
+const fs = require('fs');
+const path = require('path');
 const Event = require('../models/Event');
 const Activity = require('../models/Activity');
 const WhatWeDo = require('../models/WhatWeDo');
 const Donation = require('../models/Donation');
 const Gallery = require('../models/Gallery');
+const PaymentConfig = require('../models/PaymentConfig');
 
 const DEFAULT_EVENTS = [
   {
@@ -150,6 +153,30 @@ async function seedDatabaseIfEmpty() {
     }
 
     // 4. Donations are left at 0 real records (ready for live payment integration)
+
+    // 5. Payment QR Code Configuration (stored safely in MongoDB Atlas)
+    const qrConfig = await PaymentConfig.findOne({ key: 'primary_qr' });
+    if (!qrConfig || !qrConfig.qrImageData) {
+      const localQrPath = path.join(__dirname, '..', '..', 'user-side', 'images', 'sbi-qr-scanner.jpg');
+      if (fs.existsSync(localQrPath)) {
+        const fileBuf = fs.readFileSync(localQrPath);
+        const base64Data = 'data:image/jpeg;base64,' + fileBuf.toString('base64');
+        await PaymentConfig.findOneAndUpdate(
+          { key: 'primary_qr' },
+          {
+            key: 'primary_qr',
+            title: 'SBI Official Scan & Pay',
+            upiId: '7010964630@sbi',
+            bankName: 'State Bank of India (SBI)',
+            accountHolder: 'Jayasri Kannan Foundation',
+            qrImageData: base64Data,
+            contentType: 'image/jpeg'
+          },
+          { upsert: true, returnDocument: 'after', setDefaultsOnInsert: true }
+        );
+        console.log('🌱 Seeded Official SBI QR Code safely into MongoDB Atlas');
+      }
+    }
   } catch (err) {
     console.warn('⚠️ Seeding note:', err.message);
   }

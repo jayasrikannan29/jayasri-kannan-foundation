@@ -25,3 +25,10 @@ package.json
 .DS_Store
 Thumbs.db
 desktop.ini
+
+# Sensitive & Database-stored Assets (Not in GitHub)
+*qr-scanner*
+*qr-code*
+user-side/images/*qr*
+user-side/images/sbi-qr-scanner.jpg
+backend/data_gallery.json

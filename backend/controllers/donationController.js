@@ -1,4 +1,5 @@
 const Donation = require('../models/Donation');
+const PaymentConfig = require('../models/PaymentConfig');
 
 /**
  * POST /api/donations
@@ -103,5 +104,91 @@ exports.deleteDonation = async (req, res) => {
     });
   } catch (error) {
     return res.status(500).json({ success: false, error: 'Failed to delete donation.' });
+  }
+};
+
+/**
+ * GET /api/donations/qr
+ * Public: Retrieve official QR code image stored in MongoDB Atlas
+ * Supports direct image streaming (<img src="/api/donations/qr">) or JSON response
+ */
+exports.getQrCode = async (req, res) => {
+  try {
+    const config = await PaymentConfig.findOne({ key: 'primary_qr' });
+    if (!config || !config.qrImageData) {
+      return res.status(404).json({ success: false, error: 'QR Code not found in database.' });
+    }
+
+    // Return JSON if requested explicitly via ?format=json or Accept: application/json
+    if (req.query.format === 'json' || (req.headers.accept && req.headers.accept.includes('application/json'))) {
+      return res.status(200).json({
+        success: true,
+        data: {
+          key: config.key,
+          title: config.title,
+          upiId: config.upiId,
+          bankName: config.bankName,
+          accountHolder: config.accountHolder,
+          accountNumber: config.accountNumber,
+          ifscCode: config.ifscCode,
+          qrImageData: config.qrImageData
+        }
+      });
+    }
+
+    // Serve raw image buffer directly from MongoDB
+    const matches = config.qrImageData.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
+    if (matches && matches.length === 3) {
+      const mimeType = matches[1];
+      const buffer = Buffer.from(matches[2], 'base64');
+      res.set('Content-Type', mimeType);
+      res.set('Cache-Control', 'public, max-age=86400'); // Cache for 24h
+      return res.send(buffer);
+    }
+
+    return res.status(400).json({ success: false, error: 'Invalid QR image format in database.' });
+  } catch (error) {
+    console.error('Error fetching QR code from database:', error);
+    return res.status(500).json({ success: false, error: 'Failed to retrieve QR code from database.' });
+  }
+};
+
+/**
+ * POST /api/donations/qr
+ * Admin Protected: Store / Update Payment QR Code into MongoDB Atlas
+ */
+exports.updateQrCode = async (req, res) => {
+  try {
+    const { qrImageData, upiId, bankName, accountHolder, title } = req.body;
+    if (!qrImageData) {
+      return res.status(400).json({ success: false, error: 'qrImageData is required.' });
+    }
+
+    const config = await PaymentConfig.findOneAndUpdate(
+      { key: 'primary_qr' },
+      {
+        $set: {
+          ...(qrImageData && { qrImageData }),
+          ...(upiId && { upiId }),
+          ...(bankName && { bankName }),
+          ...(accountHolder && { accountHolder }),
+          ...(title && { title })
+        }
+      },
+      { upsert: true, returnDocument: 'after', setDefaultsOnInsert: true }
+    );
+
+    return res.status(200).json({
+      success: true,
+      message: 'Payment QR code securely saved in MongoDB database.',
+      data: {
+        key: config.key,
+        upiId: config.upiId,
+        title: config.title
+      }
+    });
+  } catch (error) {
+    console.error('Error updating QR code in database:', error);
+    return res.status(500).json({ success: false, error: 'Failed to save QR code into database.' });
   }
 };

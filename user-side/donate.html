@@ -8,6 +8,74 @@
   <link rel="icon" type="image/jpeg" href="images/logo.jpg" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <link rel="stylesheet" href="css/style.css" />
+  <style>
+    .qr-zoom-trigger {
+      cursor: pointer;
+      transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.25s ease, border-color 0.25s ease;
+      user-select: none;
+    }
+    .qr-zoom-trigger:hover {
+      transform: translateY(-3px) scale(1.02);
+      border-color: var(--primary-blue) !important;
+      box-shadow: 0 10px 25px rgba(26,58,110,0.18) !important;
+    }
+    .qr-zoom-trigger:active {
+      transform: scale(0.98);
+    }
+    @keyframes qrBackdropIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes qrCardFloatIn {
+      0% {
+        opacity: 0;
+        transform: scale(0.45) translateY(40px);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+    .qr-floating-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(12, 28, 56, 0.82);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 999999;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      cursor: zoom-out;
+      animation: qrBackdropIn 0.22s ease-out forwards;
+    }
+    .qr-floating-card {
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 26px 24px;
+      max-width: 380px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 30px 70px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(255, 255, 255, 0.25);
+      border: 2px solid var(--accent-gold);
+      position: relative;
+      cursor: zoom-out;
+      animation: qrCardFloatIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.25) forwards;
+    }
+    .qr-floating-card .qr-big-img {
+      width: 250px;
+      max-width: 80vw;
+      height: auto;
+      object-fit: contain;
+      border-radius: 12px;
+      display: block;
+      margin: 0 auto;
+      box-shadow: 0 4px 18px rgba(26,58,110,0.12);
+    }
+  </style>
 </head>
 <body>
 
@@ -126,30 +194,53 @@
             <p style="color:var(--text-gray);font-size:0.85rem;margin-top:4px;">Direct UPI &amp; Bank Transfer &bull; 80G Tax Exemption Receipt</p>
           </div>
 
-          <!-- BANK & UPI SCANNER ACCORDION -->
+          <!-- BANK & UPI SCANNER SECTION -->
           <div style="background:rgba(26,58,110,0.04);border:1.5px solid rgba(26,58,110,0.15);border-radius:var(--radius-md);padding:18px;margin-bottom:22px;">
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px;">
               <span style="font-size:.82rem;font-weight:700;color:var(--primary-blue);text-transform:uppercase;letter-spacing:1px;"><i class="fa-solid fa-qrcode"></i> Official Payment Details</span>
-              <span class="badge" style="background:rgba(201,162,39,0.15);color:#8a6b0f;padding:2px 8px;border-radius:4px;font-size:.72rem;font-weight:700;">Verified NGO Account</span>
+              <span style="background:rgba(201,162,39,0.15);color:#8a6b0f;padding:2px 8px;border-radius:4px;font-size:.72rem;font-weight:700;">Verified NGO Account</span>
             </div>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:.84rem;">
-              <div style="background:var(--white);padding:10px 14px;border-radius:8px;border:1px solid var(--border);">
-                <div style="color:var(--text-light);font-size:.7rem;font-weight:600;text-transform:uppercase;">UPI ID / VPA</div>
-                <div style="font-weight:700;color:var(--deep-blue);margin-top:2px;">jskfoundation29@okaxis</div>
+
+            <!-- QR Code + Bank Details side by side -->
+            <div style="display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap;">
+
+              <!-- QR Scanner Card (Click to Float & Zoom) -->
+              <div class="qr-zoom-trigger" onclick="toggleQrZoom()" title="Click to zoom and scan easily" style="flex:0 0 auto;background:var(--white);border:1.5px solid rgba(26,58,110,0.18);border-radius:12px;padding:12px 14px;text-align:center;box-shadow:var(--shadow-sm);min-width:150px;position:relative;">
+                <div style="font-size:.65rem;font-weight:800;color:#003399;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;">🏦 SBI • SCAN &amp; PAY</div>
+                <div style="position:relative;display:inline-block;">
+                  <img id="sbiQrThumb" src="" alt="SBI QR Scanner - Jayasri Kannan Foundation - UPI 7010964630@sbi" style="width:140px;height:140px;object-fit:contain;border-radius:8px;display:none;margin:0 auto 6px;" onerror="this.style.display='none';document.getElementById('qrFallback').style.display='flex';" onload="this.style.display='block';document.getElementById('qrFallback').style.display='none';" />
+                  <div id="qrFallback" style="display:flex;width:140px;height:140px;background:linear-gradient(135deg,#e8f0fe,#c9d8f7);border-radius:8px;align-items:center;justify-content:center;margin:0 auto 8px;font-size:3rem;">📱</div>
+                  <span style="position:absolute;bottom:10px;right:4px;background:rgba(26,58,110,0.85);color:#fff;border-radius:20px;padding:2px 7px;font-size:0.58rem;font-weight:700;display:flex;align-items:center;gap:3px;box-shadow:0 2px 6px rgba(0,0,0,0.3);pointer-events:none;">
+                    <i class="fa-solid fa-magnifying-glass-plus"></i> Zoom
+                  </span>
+                </div>
+                <div style="font-size:.7rem;font-weight:700;color:var(--deep-blue);">
+                  UPI ID: <span style="color:var(--primary-blue);">7010964630@sbi</span>
+                </div>
+                <div style="font-size:.62rem;color:var(--text-light);margin-top:3px;">GPay · PhonePe · Paytm · BHIM</div>
+                <div style="margin-top:7px;display:inline-flex;align-items:center;gap:4px;background:rgba(26,58,110,0.06);color:var(--primary-blue);font-size:.62rem;font-weight:700;padding:3px 9px;border-radius:12px;">
+                  <i class="fa-solid fa-expand"></i> Click to enlarge
+                </div>
               </div>
-              <div style="background:var(--white);padding:10px 14px;border-radius:8px;border:1px solid var(--border);">
-                <div style="color:var(--text-light);font-size:.7rem;font-weight:600;text-transform:uppercase;">Bank Name</div>
-                <div style="font-weight:700;color:var(--deep-blue);margin-top:2px;">Axis Bank, Ambattur</div>
-              </div>
-              <div style="background:var(--white);padding:10px 14px;border-radius:8px;border:1px solid var(--border);">
-                <div style="color:var(--text-light);font-size:.7rem;font-weight:600;text-transform:uppercase;">Account Name</div>
-                <div style="font-weight:700;color:var(--deep-blue);margin-top:2px;">Jayasri Kannan Foundation</div>
-              </div>
-              <div style="background:var(--white);padding:10px 14px;border-radius:8px;border:1px solid var(--border);">
-                <div style="color:var(--text-light);font-size:.7rem;font-weight:600;text-transform:uppercase;">IFSC Code</div>
-                <div style="font-weight:700;color:var(--deep-blue);margin-top:2px;">UTIB0001234</div>
+
+              <!-- Bank Details Grid -->
+              <div style="flex:1;display:grid;grid-template-columns:1fr;gap:8px;font-size:.84rem;min-width:160px;">
+                <div style="background:var(--white);padding:10px 14px;border-radius:8px;border:1px solid var(--border);">
+                  <div style="color:var(--text-light);font-size:.7rem;font-weight:600;text-transform:uppercase;">UPI ID / VPA</div>
+                  <div style="font-weight:700;color:var(--deep-blue);margin-top:2px;font-size:.85rem;">7010964630@sbi</div>
+                </div>
+                <div style="background:var(--white);padding:10px 14px;border-radius:8px;border:1px solid var(--border);">
+                  <div style="color:var(--text-light);font-size:.7rem;font-weight:600;text-transform:uppercase;">Bank Name</div>
+                  <div style="font-weight:700;color:var(--deep-blue);margin-top:2px;">State Bank of India (SBI)</div>
+                </div>
+                <div style="background:var(--white);padding:10px 14px;border-radius:8px;border:1px solid var(--border);">
+                  <div style="color:var(--text-light);font-size:.7rem;font-weight:600;text-transform:uppercase;">Account Name</div>
+                  <div style="font-weight:700;color:var(--deep-blue);margin-top:2px;">Jayasri Kannan Foundation</div>
+                </div>
               </div>
             </div>
+
+            <div style="margin-top:10px;text-align:center;font-size:.72rem;color:var(--text-light);"><i class="fa-solid fa-shield-halved" style="color:var(--accent-gold);"></i> Secure • Verified NGO Account • 80G Tax Exemption Eligible</div>
           </div>
 
           <!-- DONATION FORM -->
@@ -180,32 +271,47 @@
               </div>
             </div>
 
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
-              <div>
-                <label style="display:block;font-size:.78rem;font-weight:700;color:var(--text-gray);margin-bottom:4px;">Email (For 80G Receipt)</label>
-                <input type="email" id="donorEmail" placeholder="donor@gmail.com" style="width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:.88rem;outline:none;" />
-              </div>
-              <div>
-                <label style="display:block;font-size:.78rem;font-weight:700;color:var(--text-gray);margin-bottom:4px;">PAN (For Tax Exemption)</label>
-                <input type="text" id="donorPan" placeholder="ABCDE1234F" style="width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:.88rem;text-transform:uppercase;outline:none;" />
-              </div>
+            <!-- Optional / Secondary Details Toggle -->
+            <div style="margin-bottom:14px;">
+              <button type="button" id="toggleOptional" onclick="toggleOptionalFields()" style="background:none;border:1.5px dashed rgba(26,58,110,0.3);border-radius:8px;width:100%;padding:9px 14px;font-size:.82rem;font-weight:700;color:var(--primary-blue);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--primary-blue)';" onmouseout="this.style.borderColor='rgba(26,58,110,0.3)';">
+                <i class="fa-solid fa-circle-plus" id="toggleOptionalIcon"></i>
+                <span id="toggleOptionalLabel">Add more details (optional)</span>
+              </button>
             </div>
 
-            <div style="margin-bottom:12px;">
-              <label style="display:block;font-size:.78rem;font-weight:700;color:var(--text-gray);margin-bottom:4px;">Cause to Support</label>
-              <select id="donationCause" style="width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:.88rem;outline:none;background:white;">
-                <option value="Healthcare & Medical Outreach">Healthcare & Medical Outreach</option>
-                <option value="Eye Care Camps & Spectacles">Eye Care Camps & Spectacles</option>
-                <option value="Blood Donation Drive Support">Blood Donation Drive Support</option>
-                <option value="Education & Student Scholarships">Education & Student Scholarships</option>
-                <option value="Social Welfare & Disaster Relief">Social Welfare & Disaster Relief</option>
-                <option value="General Foundation Corpus">General Foundation Corpus</option>
-              </select>
+            <!-- Optional Fields (hidden by default) -->
+            <div id="optionalFields" style="display:none;">
+              <div style="background:rgba(26,58,110,0.03);border:1px solid rgba(26,58,110,0.1);border-radius:10px;padding:16px;margin-bottom:14px;">
+                <div style="font-size:.72rem;font-weight:700;color:var(--text-light);text-transform:uppercase;letter-spacing:.8px;margin-bottom:12px;"><i class="fa-solid fa-circle-info" style="color:var(--accent-gold);"></i> Optional — helps us send you a receipt &amp; attribute your donation</div>
+
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
+                  <div>
+                    <label style="display:block;font-size:.78rem;font-weight:700;color:var(--text-gray);margin-bottom:4px;">Email <span style="font-weight:400;color:var(--text-light);">(For 80G Receipt)</span></label>
+                    <input type="email" id="donorEmail" placeholder="donor@gmail.com" style="width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:.88rem;outline:none;" />
+                  </div>
+                  <div>
+                    <label style="display:block;font-size:.78rem;font-weight:700;color:var(--text-gray);margin-bottom:4px;">PAN <span style="font-weight:400;color:var(--text-light);">(Tax Exemption)</span></label>
+                    <input type="text" id="donorPan" placeholder="ABCDE1234F" style="width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:.88rem;text-transform:uppercase;outline:none;" />
+                  </div>
+                </div>
+
+                <div>
+                  <label style="display:block;font-size:.78rem;font-weight:700;color:var(--text-gray);margin-bottom:4px;">Purpose of Donation <span style="font-weight:400;color:var(--text-light);">(optional)</span></label>
+                  <select id="donationCause" style="width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:.88rem;outline:none;background:white;">
+                    <option value="General Foundation Corpus">General Foundation Corpus</option>
+                    <option value="Healthcare & Medical Outreach">Healthcare & Medical Outreach</option>
+                    <option value="Eye Care Camps & Spectacles">Eye Care Camps & Spectacles</option>
+                    <option value="Blood Donation Drive Support">Blood Donation Drive Support</option>
+                    <option value="Education & Student Scholarships">Education & Student Scholarships</option>
+                    <option value="Social Welfare & Disaster Relief">Social Welfare & Disaster Relief</option>
+                  </select>
+                </div>
+              </div>
             </div>
 
             <div style="margin-bottom:18px;">
               <label style="display:block;font-size:.78rem;font-weight:700;color:var(--text-gray);margin-bottom:4px;">Payment UTR / Transaction ID *</label>
-              <input type="text" id="donorTxnId" required placeholder="UPI Ref / Bank Transaction ID from GPay, PhonePe, Paytm, etc." style="width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:.88rem;outline:none;" />
+              <input type="text" id="donorTxnId" required placeholder="UPI Ref / Bank Txn ID from GPay, PhonePe, Paytm, etc." style="width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:.88rem;outline:none;" />
               <span style="font-size:.72rem;color:var(--text-light);margin-top:3px;display:block;">Complete payment via UPI or Net Banking and paste your Transaction ID / UTR above.</span>
             </div>
 
@@ -300,11 +406,27 @@
   </div>
 </footer>
 
+<style>
+  @keyframes fadeInDown {
+    from { opacity:0; transform:translateY(-8px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+</style>
 <button class="scroll-top" id="scrollTop">↑</button>
 <script>
   const navToggle=document.getElementById('navToggle');const closeMenu=document.getElementById('closeMenu');const navMenu=document.getElementById('navMenu');
   navToggle.addEventListener('click',()=>navMenu.classList.add('open'));closeMenu.addEventListener('click',()=>navMenu.classList.remove('open'));
   const s=document.getElementById('scrollTop');window.addEventListener('scroll',()=>s.classList.toggle('visible',scrollY>400));s.addEventListener('click',()=>scrollTo({top:0,behavior:'smooth'}));
+
+  function toggleOptionalFields() {
+    const panel = document.getElementById('optionalFields');
+    const icon  = document.getElementById('toggleOptionalIcon');
+    const label = document.getElementById('toggleOptionalLabel');
+    const isOpen = panel.style.display !== 'none';
+    panel.style.display = isOpen ? 'none' : 'block';
+    icon.className  = isOpen ? 'fa-solid fa-circle-plus' : 'fa-solid fa-circle-minus';
+    label.textContent = isOpen ? 'Add more details (optional)' : 'Hide optional details';
+  }
 </script>
 
 <script>
@@ -420,7 +542,101 @@
       b.style.color = 'var(--primary-blue)';
     });
   }
+
+  // FLOATING QR ZOOM CONTROLLER
+  function toggleQrZoom() {
+    const overlay = document.getElementById('qrFloatingBackdrop');
+    if (!overlay) return;
+    if (overlay.style.display === 'flex') {
+      overlay.style.display = 'none';
+      document.body.style.overflow = '';
+    } else {
+      overlay.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    }
+  }
+
+  // Keyboard accessibility: ESC key closes the floating QR code
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      const overlay = document.getElementById('qrFloatingBackdrop');
+      if (overlay && overlay.style.display === 'flex') {
+        overlay.style.display = 'none';
+        document.body.style.overflow = '';
+      }
+    }
+  });
+
+  // Dynamic QR Code Loader directly from MongoDB Atlas Database
+  async function loadDatabaseQr() {
+    const thumbImg = document.getElementById('sbiQrThumb');
+    const modalImg = document.getElementById('sbiQrModal');
+    const fallback = document.getElementById('qrFallback');
+
+    try {
+      const res = await fetch(`${DONATE_API_BASE}/api/donations/qr?format=json`);
+      if (res.ok) {
+        const json = await res.json();
+        if (json.success && json.data && json.data.qrImageData) {
+          if (thumbImg) {
+            thumbImg.src = json.data.qrImageData;
+            thumbImg.style.display = 'block';
+          }
+          if (modalImg) {
+            modalImg.src = json.data.qrImageData;
+            modalImg.style.display = 'block';
+          }
+          if (fallback) fallback.style.display = 'none';
+          return;
+        }
+      }
+    } catch (err) {
+      console.warn('Direct API load fallback note:', err);
+    }
+
+    // Direct endpoint fallback:
+    const directUrl = `${DONATE_API_BASE}/api/donations/qr`;
+    if (thumbImg) {
+      thumbImg.src = directUrl;
+    }
+    if (modalImg) {
+      modalImg.src = directUrl;
+    }
+  }
+
+  // Load database QR code immediately
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', loadDatabaseQr);
+  } else {
+    loadDatabaseQr();
+  }
 </script>
+
+<!-- FLOATING ZOOM MODAL FOR QR SCANNER -->
+<div id="qrFloatingBackdrop" class="qr-floating-backdrop" onclick="toggleQrZoom()" title="Click anywhere to close">
+  <div class="qr-floating-card" onclick="toggleQrZoom()">
+    <button type="button" onclick="toggleQrZoom(); event.stopPropagation();" aria-label="Close" style="position:absolute;top:12px;right:14px;background:rgba(26,58,110,0.08);border:none;border-radius:50%;width:34px;height:34px;font-size:16px;color:var(--deep-blue);cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700;transition:background 0.2s;" onmouseover="this.style.background='rgba(26,58,110,0.18)';" onmouseout="this.style.background='rgba(26,58,110,0.08)';">✕</button>
+    
+    <div style="font-size:.75rem;font-weight:800;color:#003399;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;">
+      🏦 SBI • OFFICIAL SCAN &amp; PAY
+    </div>
+    
+    <div style="background:#ffffff;padding:12px;border-radius:14px;border:1.5px solid rgba(26,58,110,0.12);display:inline-block;margin-bottom:14px;">
+      <img id="sbiQrModal" src="" alt="Enlarged SBI QR Scanner" class="qr-big-img" onerror="this.style.display='none';" />
+    </div>
+
+    <div style="font-size:1.05rem;font-weight:800;color:var(--deep-blue);margin-bottom:4px;">
+      UPI ID: <span style="color:var(--primary-blue);">7010964630@sbi</span>
+    </div>
+    <div style="font-size:.82rem;color:var(--text-gray);margin-bottom:12px;">
+      Jayasri Kannan Foundation • State Bank of India
+    </div>
+
+    <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(26,58,110,0.07);color:var(--primary-blue);font-size:.76rem;font-weight:700;padding:6px 16px;border-radius:20px;">
+      <i class="fa-solid fa-compress"></i> Click anywhere to zoom back
+    </div>
+  </div>
+</div>
 
 </body>
 </html>
