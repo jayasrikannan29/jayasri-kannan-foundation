@@ -173,16 +173,95 @@ img { max-width: 100%; display: block; }
 .topbar-left a { display: flex; align-items: center; gap: 6px; transition: color 0.2s; }
 .topbar-left a:hover { color: var(--accent-gold); }
 
-.topbar-right { display: flex; gap: 14px; }
-.topbar-right a {
-  width: 26px; height: 26px;
-  background: rgba(255,255,255,0.1);
-  border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 0.75rem;
-  transition: var(--transition);
+.topbar-right { 
+  display: flex; 
+  align-items: center; 
+  gap: 12px; 
 }
-.topbar-right a:hover { background: var(--accent-gold); color: var(--deep-blue); }
+
+.topbar-admin-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.78rem;
+  font-weight: 500;
+  text-decoration: none;
+  padding: 4px 12px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.25s ease;
+  white-space: nowrap;
+  line-height: 1;
+}
+
+.topbar-admin-link i {
+  font-size: 0.72rem;
+}
+
+.topbar-admin-link:hover {
+  background: var(--accent-gold);
+  color: var(--deep-blue);
+  border-color: var(--accent-gold);
+  box-shadow: 0 2px 8px rgba(201, 162, 39, 0.35);
+}
+
+.topbar-divider {
+  width: 1px;
+  height: 16px;
+  background: rgba(255, 255, 255, 0.25);
+  display: inline-block;
+  margin: 0 2px;
+}
+
+.topbar-social {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.topbar-social a,
+.topbar-right > a:not(.topbar-admin-link) {
+  width: 28px;
+  height: 28px;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.9);
+  text-decoration: none;
+  transition: all 0.25s ease;
+}
+
+.topbar-social a:hover,
+.topbar-right > a:not(.topbar-admin-link):hover {
+  transform: translateY(-2px);
+  color: #ffffff;
+}
+
+.topbar-social a[title="Facebook"]:hover,
+.topbar-social a[aria-label="Facebook"]:hover,
+.topbar-right > a[title="Facebook"]:hover,
+.topbar-right > a[aria-label="Facebook"]:hover {
+  background: #1877f2;
+}
+
+.topbar-social a[title="Instagram"]:hover,
+.topbar-social a[aria-label="Instagram"]:hover,
+.topbar-right > a[title="Instagram"]:hover,
+.topbar-right > a[aria-label="Instagram"]:hover {
+  background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285aeb 90%);
+}
+
+.topbar-social a[title="YouTube"]:hover,
+.topbar-social a[aria-label="YouTube"]:hover,
+.topbar-right > a[title="YouTube"]:hover,
+.topbar-right > a[aria-label="YouTube"]:hover {
+  background: #ff0000;
+}
 
 /* ---- HEADER / NAVBAR ---- */
 .navbar {
@@ -987,13 +1066,30 @@ footer {
 
 .footer-social a {
   width: 36px; height: 36px;
-  background: rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.12);
   border-radius: 10px;
   display: flex; align-items: center; justify-content: center;
-  font-size: 0.9rem;
-  transition: var(--transition);
+  font-size: 0.95rem;
+  color: var(--white);
+  transition: all 0.25s ease;
+  text-decoration: none;
 }
-.footer-social a:hover { background: var(--accent-gold); color: var(--deep-blue); }
+.footer-social a:hover { 
+  transform: translateY(-3px);
+  color: #ffffff;
+}
+.footer-social a[title="Facebook"]:hover,
+.footer-social a[aria-label="Facebook"]:hover {
+  background: #1877f2;
+}
+.footer-social a[title="Instagram"]:hover,
+.footer-social a[aria-label="Instagram"]:hover {
+  background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285aeb 90%);
+}
+.footer-social a[title="YouTube"]:hover,
+.footer-social a[aria-label="YouTube"]:hover {
+  background: #ff0000;
+}
 
 .footer-col h4 {
   font-size: 0.9rem;
