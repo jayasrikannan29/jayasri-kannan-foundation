@@ -201,54 +201,21 @@
             <p style="color:var(--text-gray);font-size:0.85rem;margin-top:4px;">Direct UPI &amp; Bank Transfer &bull; 80G Tax Exemption Receipt</p>
           </div>
 
-          <!-- BANK & UPI SCANNER SECTION -->
-          <div style="background:rgba(26,58,110,0.04);border:1.5px solid rgba(26,58,110,0.15);border-radius:var(--radius-md);padding:18px;margin-bottom:22px;">
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px;">
-              <span style="font-size:.82rem;font-weight:700;color:var(--primary-blue);text-transform:uppercase;letter-spacing:1px;"><i class="fa-solid fa-qrcode"></i> Official Payment Details</span>
-              <span style="background:rgba(201,162,39,0.15);color:#8a6b0f;padding:2px 8px;border-radius:4px;font-size:.72rem;font-weight:700;">Verified NGO Account</span>
+          <!-- STEP PROGRESS INDICATOR -->
+          <div style="display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid var(--border);">
+            <div id="step1Indicator" style="display:flex;align-items:center;gap:8px;font-size:.82rem;font-weight:700;color:var(--primary-blue);">
+              <span id="step1Badge" style="width:24px;height:24px;border-radius:50%;background:var(--primary-blue);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:.72rem;">1</span>
+              <span>1. Enter Details</span>
             </div>
-
-            <!-- QR Code + Bank Details side by side -->
-            <div style="display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap;">
-
-              <!-- QR Scanner Card (Click to Float & Zoom) -->
-              <div class="qr-zoom-trigger" onclick="toggleQrZoom()" title="Click to zoom and scan easily" style="flex:0 0 auto;background:var(--white);border:1.5px solid rgba(26,58,110,0.18);border-radius:12px;padding:12px 14px;text-align:center;box-shadow:var(--shadow-sm);min-width:150px;position:relative;">
-                <div style="font-size:.65rem;font-weight:800;color:#003399;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;">🏦 SBI • SCAN &amp; PAY</div>
-                <div style="position:relative;display:inline-block;">
-                  <img id="sbiQrThumb" src="" alt="SBI QR Scanner - Jayasri Kannan Foundation - UPI 7010964630@sbi" style="width:140px;height:140px;object-fit:contain;border-radius:8px;display:none;margin:0 auto 6px;" onerror="this.style.display='none';document.getElementById('qrFallback').style.display='flex';" onload="this.style.display='block';document.getElementById('qrFallback').style.display='none';" />
-                  <div id="qrFallback" style="display:flex;width:140px;height:140px;background:linear-gradient(135deg,#e8f0fe,#c9d8f7);border-radius:8px;align-items:center;justify-content:center;margin:0 auto 8px;font-size:3rem;">📱</div>
-                  <span style="position:absolute;bottom:10px;right:4px;background:rgba(26,58,110,0.85);color:#fff;border-radius:20px;padding:2px 7px;font-size:0.58rem;font-weight:700;display:flex;align-items:center;gap:3px;box-shadow:0 2px 6px rgba(0,0,0,0.3);pointer-events:none;">
-                    <i class="fa-solid fa-magnifying-glass-plus"></i> Zoom
-                  </span>
-                </div>
-                <div style="font-size:.7rem;font-weight:700;color:var(--deep-blue);">
-                  UPI ID: <span style="color:var(--primary-blue);">7010964630@sbi</span>
-                </div>
-                <div style="font-size:.62rem;color:var(--text-light);margin-top:3px;">GPay · PhonePe · Paytm · BHIM</div>
-                <div style="margin-top:7px;display:inline-flex;align-items:center;gap:4px;background:rgba(26,58,110,0.06);color:var(--primary-blue);font-size:.62rem;font-weight:700;padding:3px 9px;border-radius:12px;">
-                  <i class="fa-solid fa-expand"></i> Click to enlarge
-                </div>
-              </div>
-
-              <!-- Bank Details Grid -->
-              <div style="flex:1;display:grid;grid-template-columns:1fr;gap:8px;font-size:.84rem;min-width:160px;">
-                <div style="background:var(--white);padding:10px 14px;border-radius:8px;border:1px solid var(--border);">
-                  <div style="color:var(--text-light);font-size:.7rem;font-weight:600;text-transform:uppercase;">UPI ID / VPA</div>
-                  <div style="font-weight:700;color:var(--deep-blue);margin-top:2px;font-size:.85rem;">7010964630@sbi</div>
-                </div>
-                <div style="background:var(--white);padding:10px 14px;border-radius:8px;border:1px solid var(--border);">
-                  <div style="color:var(--text-light);font-size:.7rem;font-weight:600;text-transform:uppercase;">Bank Name</div>
-                  <div style="font-weight:700;color:var(--deep-blue);margin-top:2px;">State Bank of India (SBI)</div>
-                </div>
-                <div style="background:var(--white);padding:10px 14px;border-radius:8px;border:1px solid var(--border);">
-                  <div style="color:var(--text-light);font-size:.7rem;font-weight:600;text-transform:uppercase;">Account Name</div>
-                  <div style="font-weight:700;color:var(--deep-blue);margin-top:2px;">Jayasri Kannan Foundation</div>
-                </div>
-              </div>
+            <div style="width:36px;height:2px;background:rgba(26,58,110,0.2);"></div>
+            <div id="step2Indicator" style="display:flex;align-items:center;gap:8px;font-size:.82rem;font-weight:600;color:var(--text-light);">
+              <span id="step2Badge" style="width:24px;height:24px;border-radius:50%;background:rgba(26,58,110,0.15);color:var(--text-gray);display:inline-flex;align-items:center;justify-content:center;font-size:.72rem;">2</span>
+              <span>2. Scan QR &amp; Pay</span>
             </div>
-
-            <div style="margin-top:10px;text-align:center;font-size:.72rem;color:var(--text-light);"><i class="fa-solid fa-shield-halved" style="color:var(--accent-gold);"></i> Secure • Verified NGO Account • 80G Tax Exemption Eligible</div>
           </div>
+
+          <!-- ================= STEP 1: DONOR FORM ================= -->
+          <div id="donationStep1">
 
           <!-- DONATION FORM -->
           <form id="publicDonationForm" onsubmit="handleDonationSubmit(event);">
@@ -316,23 +283,118 @@
               </div>
             </div>
 
-            <div style="margin-bottom:18px;">
-              <label style="display:block;font-size:.78rem;font-weight:700;color:var(--text-gray);margin-bottom:4px;">Payment UTR / Transaction ID *</label>
-              <input type="text" id="donorTxnId" required placeholder="UPI Ref / Bank Txn ID from GPay, PhonePe, Paytm, etc." style="width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:.88rem;outline:none;" />
-              <span style="font-size:.72rem;color:var(--text-light);margin-top:3px;display:block;">Complete payment via UPI or Net Banking and paste your Transaction ID / UTR above.</span>
+              <button type="submit" id="proceedBtn" class="btn btn-primary btn-lg" style="width:100%;justify-content:center;background:var(--primary-blue);padding:13px 20px;font-size:.98rem;font-weight:700;border-radius:10px;box-shadow:0 4px 14px rgba(26,58,110,0.25);">
+                <span>Proceed to Pay &amp; Get QR Code</span> <i class="fa-solid fa-arrow-right" style="margin-left:8px;"></i>
+              </button>
+              
+              <div style="margin-top:12px;text-align:center;font-size:.74rem;color:var(--text-light);">
+                <i class="fa-solid fa-lock" style="color:var(--accent-gold);"></i> Details are securely stored in the foundation database before payment.
+              </div>
+            </form>
+          </div>
+
+          <!-- ================= STEP 2: SCAN QR & PAY ================= -->
+          <div id="donationStep2" style="display:none;">
+            <!-- Donor Summary Header -->
+            <div style="background:linear-gradient(135deg,rgba(26,58,110,0.06),rgba(201,162,39,0.08));border:1.5px solid rgba(201,162,39,0.3);border-radius:12px;padding:14px 16px;margin-bottom:18px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+                <div>
+                  <div style="font-size:.7rem;font-weight:700;color:var(--text-light);text-transform:uppercase;letter-spacing:.5px;">Donor Information</div>
+                  <div style="font-size:1.05rem;font-weight:800;color:var(--deep-blue);" id="summaryDonorName">S. Ramakrishnan</div>
+                  <div style="font-size:.78rem;color:var(--text-gray);" id="summaryDonorPhone">+91 98400 12345</div>
+                </div>
+                <div style="text-align:right;">
+                  <div style="font-size:.7rem;font-weight:700;color:var(--text-light);text-transform:uppercase;letter-spacing:.5px;">Amount to Pay</div>
+                  <div style="font-size:1.45rem;font-weight:800;color:var(--accent-gold);" id="summaryAmount">&#8377;1,000</div>
+                </div>
+              </div>
+              <div style="margin-top:8px;padding-top:8px;border-top:1px dashed rgba(26,58,110,0.15);display:flex;justify-content:space-between;align-items:center;font-size:.75rem;color:var(--text-gray);flex-wrap:wrap;gap:6px;">
+                <span><i class="fa-solid fa-tag" style="color:var(--accent-gold);"></i> <strong id="summaryCause">General Foundation Corpus</strong></span>
+                <button type="button" onclick="editDonorDetails()" style="background:none;border:none;color:var(--primary-blue);font-weight:700;cursor:pointer;font-size:.75rem;display:inline-flex;align-items:center;gap:4px;">
+                  <i class="fa-solid fa-pen-to-square"></i> Edit Details
+                </button>
+              </div>
             </div>
 
-            <button type="submit" class="btn btn-primary btn-lg" style="width:100%;justify-content:center;background:var(--primary-blue);"><i class="fa-solid fa-receipt"></i> Submit &amp; Log Donation Record</button>
-          </form>
+            <!-- BANK & UPI SCANNER SECTION -->
+            <div style="background:rgba(26,58,110,0.04);border:1.5px solid rgba(26,58,110,0.15);border-radius:var(--radius-md);padding:18px;margin-bottom:20px;">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px;">
+                <span style="font-size:.82rem;font-weight:700;color:var(--primary-blue);text-transform:uppercase;letter-spacing:1px;"><i class="fa-solid fa-qrcode"></i> Official Payment Details</span>
+                <span style="background:rgba(201,162,39,0.15);color:#8a6b0f;padding:2px 8px;border-radius:4px;font-size:.72rem;font-weight:700;">Verified NGO Account</span>
+              </div>
+
+              <!-- QR Code + Bank Details side by side -->
+              <div style="display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap;">
+                <!-- QR Scanner Card -->
+                <div class="qr-zoom-trigger" onclick="toggleQrZoom()" title="Click to zoom and scan easily" style="flex:0 0 auto;background:var(--white);border:1.5px solid rgba(26,58,110,0.18);border-radius:12px;padding:12px 14px;text-align:center;box-shadow:var(--shadow-sm);min-width:150px;position:relative;cursor:pointer;">
+                  <div style="font-size:.65rem;font-weight:800;color:#003399;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;">🏦 SBI • SCAN &amp; PAY</div>
+                  <div style="position:relative;display:inline-block;">
+                    <img id="sbiQrThumb" src="" alt="SBI QR Scanner - Jayasri Kannan Foundation - UPI 7010964630@sbi" style="width:140px;height:140px;object-fit:contain;border-radius:8px;display:none;margin:0 auto 6px;" onerror="this.style.display='none';document.getElementById('qrFallback').style.display='flex';" onload="this.style.display='block';document.getElementById('qrFallback').style.display='none';" />
+                    <div id="qrFallback" style="display:flex;width:140px;height:140px;background:linear-gradient(135deg,#e8f0fe,#c9d8f7);border-radius:8px;align-items:center;justify-content:center;margin:0 auto 8px;font-size:3rem;">📱</div>
+                    <span style="position:absolute;bottom:10px;right:4px;background:rgba(26,58,110,0.85);color:#fff;border-radius:20px;padding:2px 7px;font-size:0.58rem;font-weight:700;display:flex;align-items:center;gap:3px;box-shadow:0 2px 6px rgba(0,0,0,0.3);pointer-events:none;">
+                      <i class="fa-solid fa-magnifying-glass-plus"></i> Zoom
+                    </span>
+                  </div>
+                  <div style="font-size:.7rem;font-weight:700;color:var(--deep-blue);">
+                    UPI ID: <span style="color:var(--primary-blue);">7010964630@sbi</span>
+                  </div>
+                  <div style="font-size:.62rem;color:var(--text-light);margin-top:3px;">GPay · PhonePe · Paytm · BHIM</div>
+                  <div style="margin-top:7px;display:inline-flex;align-items:center;gap:4px;background:rgba(26,58,110,0.06);color:var(--primary-blue);font-size:.62rem;font-weight:700;padding:3px 9px;border-radius:12px;">
+                    <i class="fa-solid fa-expand"></i> Click to enlarge
+                  </div>
+                </div>
+
+                <!-- Bank Details Grid -->
+                <div style="flex:1;display:grid;grid-template-columns:1fr;gap:8px;font-size:.84rem;min-width:160px;">
+                  <div style="background:var(--white);padding:10px 14px;border-radius:8px;border:1px solid var(--border);">
+                    <div style="color:var(--text-light);font-size:.7rem;font-weight:600;text-transform:uppercase;">UPI ID / VPA</div>
+                    <div style="display:flex;align-items:center;justify-content:space-between;margin-top:2px;">
+                      <span style="font-weight:700;color:var(--deep-blue);font-size:.85rem;" id="copyUpiText">7010964630@sbi</span>
+                      <button type="button" onclick="copyUpiId()" id="copyUpiBtn" style="background:rgba(26,58,110,0.08);border:none;padding:3px 8px;border-radius:4px;font-size:.7rem;font-weight:700;color:var(--primary-blue);cursor:pointer;display:inline-flex;align-items:center;gap:4px;">
+                        <i class="fa-regular fa-copy"></i> Copy
+                      </button>
+                    </div>
+                  </div>
+                  <div style="background:var(--white);padding:10px 14px;border-radius:8px;border:1px solid var(--border);">
+                    <div style="color:var(--text-light);font-size:.7rem;font-weight:600;text-transform:uppercase;">Bank Name</div>
+                    <div style="font-weight:700;color:var(--deep-blue);margin-top:2px;">State Bank of India (SBI)</div>
+                  </div>
+                  <div style="background:var(--white);padding:10px 14px;border-radius:8px;border:1px solid var(--border);">
+                    <div style="color:var(--text-light);font-size:.7rem;font-weight:600;text-transform:uppercase;">Account Name</div>
+                    <div style="font-weight:700;color:var(--deep-blue);margin-top:2px;">Jayasri Kannan Foundation</div>
+                  </div>
+                </div>
+              </div>
+
+              <div style="margin-top:10px;text-align:center;font-size:.72rem;color:var(--text-light);"><i class="fa-solid fa-shield-halved" style="color:var(--accent-gold);"></i> Secure • Verified NGO Account • 80G Tax Exemption Eligible</div>
+            </div>
+
+            <!-- UTR / TRANSACTION ID CONFIRMATION FORM -->
+            <form id="utrSubmissionForm" onsubmit="handleUtrSubmit(event);">
+              <div style="background:var(--off-white);padding:18px;border-radius:12px;border:1px solid var(--border);margin-bottom:16px;">
+                <label style="display:block;font-size:.82rem;font-weight:700;color:var(--deep-blue);margin-bottom:6px;">
+                  <i class="fa-solid fa-receipt" style="color:var(--accent-gold);"></i> Enter Payment UTR / Transaction ID <span style="color:#d93025;">*</span>
+                </label>
+                <input type="text" id="donorTxnId" required placeholder="12-digit UPI Ref / Bank Txn ID from GPay, PhonePe, Paytm, etc." style="width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:.88rem;outline:none;" />
+                <span style="font-size:.74rem;color:var(--text-light);margin-top:5px;display:block;">
+                  Complete your payment via SBI QR or UPI, then paste your Transaction Ref / UTR above to receive your receipt.
+                </span>
+              </div>
+
+              <button type="submit" id="confirmUtrBtn" class="btn btn-primary btn-lg" style="width:100%;justify-content:center;background:#1b7340;border-color:#1b7340;color:white;font-weight:700;padding:13px 20px;border-radius:10px;box-shadow:0 4px 14px rgba(27,115,64,0.3);">
+                <i class="fa-solid fa-circle-check"></i> Confirm Payment &amp; Get Receipt
+              </button>
+            </form>
+          </div>
 
           <!-- SUCCESS POPUP CONFIRMATION -->
-          <div id="donationSuccessCard" style="display:none;margin-top:20px;padding:20px;background:#edf7f1;border:1.5px solid #2e8b57;border-radius:12px;text-align:center;">
-            <div style="font-size:2.5rem;color:#2e8b57;margin-bottom:8px;"><i class="fa-solid fa-circle-check"></i></div>
-            <h4 style="color:#1b5e20;font-weight:800;font-size:1.15rem;margin-bottom:4px;">Thank You for Your Generosity!</h4>
-            <p style="font-size:.85rem;color:#2e7d32;line-height:1.5;margin-bottom:12px;" id="successMsg">
+          <div id="donationSuccessCard" style="display:none;margin-top:20px;padding:24px;background:#edf7f1;border:1.5px solid #2e8b57;border-radius:12px;text-align:center;">
+            <div style="font-size:2.8rem;color:#2e8b57;margin-bottom:8px;"><i class="fa-solid fa-circle-check"></i></div>
+            <h4 style="color:#1b5e20;font-weight:800;font-size:1.25rem;margin-bottom:6px;">Thank You for Your Generosity!</h4>
+            <p style="font-size:.9rem;color:#2e7d32;line-height:1.6;margin-bottom:12px;" id="successMsg">
               Your contribution has been logged under Transaction ID: <strong id="successTxn"></strong>.
             </p>
-            <div style="font-size:.8rem;color:#555;margin-bottom:12px;">Our accounts team will verify the payment and email the official 80G tax receipt to you.</div>
+            <div style="font-size:.82rem;color:#555;margin-bottom:16px;">Our accounts team will verify the payment and email the official 80G tax receipt to you.</div>
             <button type="button" class="btn btn-outline-blue btn-sm" onclick="resetDonationForm()">Submit Another Contribution</button>
           </div>
         </div>
@@ -478,7 +540,10 @@
     document.getElementById('customAmount').value = val;
   }
 
-  async function handleDonationSubmit(e) {
+  let currentDonationId = null;
+
+  // STEP 1 SUBMIT: Save donor details in MongoDB Atlas first, then show QR
+  async function handleStep1Submit(e) {
     e.preventDefault();
 
     const amount = Number(document.getElementById('customAmount').value);
@@ -487,17 +552,16 @@
     const email  = document.getElementById('donorEmail').value.trim();
     const pan    = document.getElementById('donorPan').value.trim().toUpperCase();
     const cause  = document.getElementById('donationCause').value;
-    const txnId  = document.getElementById('donorTxnId').value.trim();
 
-    if (!amount || !name || !phone || !txnId) {
-      alert('Please fill in all mandatory fields marked with an asterisk (*).');
+    if (!amount || amount <= 0 || !name || !phone) {
+      alert('Please fill in your Name, Phone Number, and a valid Donation Amount.');
       return;
     }
 
-    const submitBtn = document.querySelector('#publicDonationForm button[type="submit"]');
-    const originalBtnHTML = submitBtn.innerHTML;
-    submitBtn.disabled = true;
-    submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Submitting...';
+    const proceedBtn = document.getElementById('proceedBtn');
+    const originalBtnHTML = proceedBtn.innerHTML;
+    proceedBtn.disabled = true;
+    proceedBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving Details...';
 
     const payload = {
       name,
@@ -505,10 +569,9 @@
       email,
       pan,
       amount,
-      txnId,
       cause,
-      paymentMethod: 'UPI / Direct Bank Transfer',
-      notes: 'Submitted via public website donate portal.'
+      paymentMethod: 'UPI / SBI QR',
+      notes: 'Initial donor registration - awaiting payment confirmation.'
     };
 
     try {
@@ -521,37 +584,146 @@
       const json = await res.json();
 
       if (res.ok && json.success) {
-        // SUCCESS — record saved to MongoDB Atlas
-        document.getElementById('publicDonationForm').style.display = 'none';
-        const successCard = document.getElementById('donationSuccessCard');
-        document.getElementById('successTxn').textContent = txnId;
-        successCard.style.display = 'block';
-        successCard.scrollIntoView({ behavior: 'smooth' });
+        currentDonationId = json.data._id;
+
+        // Populate Step 2 Summary
+        document.getElementById('summaryDonorName').textContent = name;
+        document.getElementById('summaryDonorPhone').textContent = phone;
+        document.getElementById('summaryAmount').innerHTML = `&#8377;${amount.toLocaleString('en-IN')}`;
+        document.getElementById('summaryCause').textContent = cause;
+
+        // Transition from Step 1 to Step 2
+        document.getElementById('donationStep1').style.display = 'none';
+        document.getElementById('donationStep2').style.display = 'block';
+
+        // Update Step Indicators
+        const s1 = document.getElementById('step1Indicator');
+        const s2 = document.getElementById('step2Indicator');
+        s1.style.color = 'var(--accent-green)';
+        s1.innerHTML = '<span style="width:24px;height:24px;border-radius:50%;background:var(--accent-green);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:.72rem;"><i class="fa-solid fa-check"></i></span><span>1. Details Saved</span>';
+        
+        s2.style.color = 'var(--primary-blue)';
+        s2.innerHTML = '<span style="width:24px;height:24px;border-radius:50%;background:var(--primary-blue);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:.72rem;">2</span><span>2. Scan QR &amp; Pay</span>';
+
+        // Load QR image from DB if not already loaded
+        loadDatabaseQr();
+
+        // Smooth scroll to step 2
+        document.getElementById('donationStep2').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       } else {
-        // Server returned an error
-        alert(json.error || 'Something went wrong. Please try again.');
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = originalBtnHTML;
+        alert(json.error || 'Failed to save donor details. Please try again.');
+        proceedBtn.disabled = false;
+        proceedBtn.innerHTML = originalBtnHTML;
       }
     } catch (err) {
-      console.error('Network error submitting donation:', err);
-      alert('Unable to connect to the server. Please check your internet connection and try again.');
-      submitBtn.disabled = false;
-      submitBtn.innerHTML = originalBtnHTML;
+      console.error('Network error saving donation details:', err);
+      alert('Unable to connect to the server. Please check your internet connection.');
+      proceedBtn.disabled = false;
+      proceedBtn.innerHTML = originalBtnHTML;
     }
   }
 
-  function resetDonationForm() {
-    const form = document.getElementById('publicDonationForm');
-    form.reset();
-    form.style.display = 'block';
-    document.getElementById('donationSuccessCard').style.display = 'none';
-    // Reset amount chip highlights
-    document.querySelectorAll('.amt-chip').forEach(b => {
-      b.classList.remove('active');
-      b.style.background = 'transparent';
-      b.style.color = 'var(--primary-blue)';
+  // STEP 2: Return to Step 1 to edit
+  function editDonorDetails() {
+    document.getElementById('donationStep2').style.display = 'none';
+    document.getElementById('donationStep1').style.display = 'block';
+    const proceedBtn = document.getElementById('proceedBtn');
+    proceedBtn.disabled = false;
+    proceedBtn.innerHTML = '<span>Proceed to Pay &amp; Get QR Code</span> <i class="fa-solid fa-arrow-right" style="margin-left:8px;"></i>';
+  }
+
+  // STEP 2 SUBMIT: Confirm UTR / Transaction ID
+  async function handleUtrSubmit(e) {
+    e.preventDefault();
+
+    const txnId = document.getElementById('donorTxnId').value.trim();
+    if (!txnId) {
+      alert('Please enter your Payment UTR or Transaction ID.');
+      return;
+    }
+
+    if (!currentDonationId) {
+      alert('Session expired. Please re-enter your details.');
+      resetDonationForm();
+      return;
+    }
+
+    const confirmBtn = document.getElementById('confirmUtrBtn');
+    const originalBtnHTML = confirmBtn.innerHTML;
+    confirmBtn.disabled = true;
+    confirmBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Confirming Payment...';
+
+    try {
+      const res = await fetch(`${DONATE_API_BASE}/api/donations/${currentDonationId}/transaction`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ txnId, notes: 'Payment completed via SBI QR / UPI.' })
+      });
+
+      const json = await res.json();
+
+      if (res.ok && json.success) {
+        document.getElementById('donationStep2').style.display = 'none';
+        const successCard = document.getElementById('donationSuccessCard');
+        document.getElementById('successTxn').textContent = txnId;
+        const name = document.getElementById('donorName').value.trim();
+        const amt = document.getElementById('customAmount').value;
+        document.getElementById('successMsg').innerHTML = `Dear <strong>${name}</strong>, your generous contribution of <strong>&#8377;${Number(amt).toLocaleString('en-IN')}</strong> has been logged under Transaction ID: <strong>${txnId}</strong>.`;
+        successCard.style.display = 'block';
+        successCard.scrollIntoView({ behavior: 'smooth' });
+      } else {
+        alert(json.error || 'Failed to update transaction ID.');
+        confirmBtn.disabled = false;
+        confirmBtn.innerHTML = originalBtnHTML;
+      }
+    } catch (err) {
+      console.error('Network error confirming UTR:', err);
+      alert('Unable to connect to the server. Please check your internet connection.');
+      confirmBtn.disabled = false;
+      confirmBtn.innerHTML = originalBtnHTML;
+    }
+  }
+
+  // Copy UPI ID helper
+  function copyUpiId() {
+    const text = '7010964630@sbi';
+    navigator.clipboard.writeText(text).then(() => {
+      const btn = document.getElementById('copyUpiBtn');
+      btn.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
+      setTimeout(() => {
+        btn.innerHTML = '<i class="fa-regular fa-copy"></i> Copy';
+      }, 2500);
     });
+  }
+
+  function resetDonationForm() {
+    currentDonationId = null;
+    document.getElementById('publicDonationForm').reset();
+    document.getElementById('utrSubmissionForm').reset();
+    document.getElementById('donationStep1').style.display = 'block';
+    document.getElementById('donationStep2').style.display = 'none';
+    document.getElementById('donationSuccessCard').style.display = 'none';
+
+    const s1 = document.getElementById('step1Indicator');
+    const s2 = document.getElementById('step2Indicator');
+    s1.style.color = 'var(--primary-blue)';
+    s1.innerHTML = '<span style="width:24px;height:24px;border-radius:50%;background:var(--primary-blue);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:.72rem;">1</span><span>1. Enter Details</span>';
+    s2.style.color = 'var(--text-light)';
+    s2.innerHTML = '<span style="width:24px;height:24px;border-radius:50%;background:rgba(26,58,110,0.15);color:var(--text-gray);display:inline-flex;align-items:center;justify-content:center;font-size:.72rem;">2</span><span>2. Scan QR &amp; Pay</span>';
+
+    // Reset amount chip
+    document.querySelectorAll('.amt-chip').forEach((b, i) => {
+      if (i === 1) {
+        b.classList.add('active');
+        b.style.background = 'var(--primary-blue)';
+        b.style.color = '#ffffff';
+      } else {
+        b.classList.remove('active');
+        b.style.background = 'transparent';
+        b.style.color = 'var(--primary-blue)';
+      }
+    });
+    document.getElementById('customAmount').value = 1000;
   }
 
   // FLOATING QR ZOOM CONTROLLER
