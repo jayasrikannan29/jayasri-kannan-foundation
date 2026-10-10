@@ -397,7 +397,7 @@ section[id], #home {
   height: 100%;
   position: relative;
   overflow: hidden;
-  background-size: contain;
+  background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   background-color: var(--deep-blue);
@@ -406,25 +406,27 @@ section[id], #home {
 .hero-slide img, .slide img {
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: cover;
   object-position: center;
 }
 
-.slide-1 { background-image: url('../images/slide-ph-1_2.jpg'); }
-.slide-2 { background-image: url('../images/slide-ph-2_2.jpg'); }
-.slide-3 { background-image: url('../images/slide-ph-3_2.jpeg'); }
-.slide-4 { background-image: url('../images/slide-ph-4_2.jpg'); }
+.slide-1 { background-image: url('../images/hero-blood-donation-recognition.jpg?v=2'); }
+.slide-2 { background-image: url('../images/hero-community-eye-camp-group.jpg?v=2'); }
+.slide-3 { background-image: url('../images/hero-eye-camp-child-blindness.jpg?v=2'); }
+.slide-4 { background-image: url('../images/hero-free-medical-camp.jpg?v=2'); }
 .slide-5 { background-image: url('../images/slide-ph-5_2.png'); }
-.slide-6 { background-image: url('../images/slide-ph-6_2.png'); }
-.slide-7 { background-image: url('../images/slide-ph-7_2.jpeg'); }
+.slide-6 { background-image: url('../images/hero-eye-camp-adult-blindness.jpg?v=2'); }
+.slide-7 { background-image: url('../images/hero-blood-donation-drive.jpg?v=2'); }
 
 .hero-overlay {
   position: absolute; inset: 0;
+  /* Dark navy behind the text on the left, fades out on the right so photos show bright */
   background: linear-gradient(
-    135deg,
-    rgba(13,37,72,0.82) 0%,
-    rgba(13,37,72,0.55) 50%,
-    rgba(13,37,72,0.35) 100%
+    to right,
+    rgba(13,37,72,0.88) 0%,
+    rgba(13,37,72,0.72) 30%,
+    rgba(13,37,72,0.30) 58%,
+    rgba(13,37,72,0.08) 100%
   );
   z-index: 1;
 }
